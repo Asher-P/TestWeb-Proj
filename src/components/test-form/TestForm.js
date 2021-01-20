@@ -16,6 +16,11 @@ function ColorRow(e){
     }
 }
 
+function handleSubmit(e){
+    e.preventDefault();
+    console.log("e",e);
+}
+
 function TestForm(props) {
    const questions=props.questions;
    const dataTable = [];
@@ -31,31 +36,45 @@ function TestForm(props) {
     return (
         <div className="TestForm">
 
-            <form className="ui form">
-                <div className="filed">
+            <form className="ui form" submit="handleSubmit" method="post">
+                <div className="field">
                     <label>Test Title</label>
-                    <input type="text" placeholder="Title"></input>
+                    <input id="Title" type="text" placeholder="Title"></input>
                 </div>
 
-                <div className="filed">
+                <div className="field">
                     <label>Language</label>
-                    <select>
+                    <select id="Lenguge">
                         <option value="">Lenguge</option>
                         <option value="0">Hebrew</option>
                         <option value="1">English</option>
                     </select>
                 </div>
-                <div className="filed">
+                <div className="field">
                     <label>Passing grade</label>
-                    <input type="number" />
+                    <input id="PassingGrade" type="number" />
                 </div>
 
-                <div className="filed">
+                <div className="field">
                     <label>Content</label>
-                    <textarea></textarea>
+                    <textarea id="Content"></textarea>
+                </div>
+                <div className="field">
+                    <label>Email</label>
+                    <input id="email" type="email"></input>
+                </div>
+                <div className="two fields">
+                    <div className="field">
+                    <label>Success Message</label>
+                    <input id="SuccessMes" type="text"></input>
+                    </div>
+                    <div className="field">
+                    <label>Failure Message</label>
+                    <input id="FailureMes" type="text"></input>
+                    </div>
                 </div>
 
-                <div className="filed">
+                <div className="field">
                     <label>Chose questions</label>
                     <table className="ui celled table">
                         <thead>
@@ -70,6 +89,7 @@ function TestForm(props) {
                         </tbody>
                     </table>
                 </div>
+                <input type="submit"/>
             </form>
 
         </div>
