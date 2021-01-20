@@ -10,6 +10,18 @@ class QuestionsForm extends Component {
     this.state = {title: "", errors: {}, questionBody: "", answers: []}
   }
 
+  answerChanged = (e) =>{
+    let allAnswers = [...this.state.answers]
+    let answerId = e.currentTarget.id;
+    allAnswers[answerId] = {Content: "", isCorrect: false}
+    allAnswers[answerId] = e.currentTarget.value;
+    this.setState({answers: allAnswers})
+    console.log(this.state.answers);
+ }
+
+ correctAnswerChanged = (e) =>{
+   
+ }
   typeChanged = (e) =>{
     let multiple = document.getElementById("multipleChoiceQ");
     let choice = document.getElementById("choiceQ");
@@ -48,18 +60,6 @@ class QuestionsForm extends Component {
     this.setState({ title: "", questionBody: "", answers: {}});
   };
 
-  checkAnswers = (allAnswers) =>{
-    let submitButton = document.getElementById("submitButton");
-    submitButton.hidden = false;
-    console.log(submitButton);
-    console.log("allAnswers are");
-    console.log(allAnswers);
-    console.log("Current answers are ");
-    console.log(this.state.answers);
-    
-    // submitButton.hidden = false;
-  }
-
   render() {
     const { title, errors, questionBody } = this.state;
     return (
@@ -81,7 +81,7 @@ class QuestionsForm extends Component {
           </div>
           <div className="form-group space">
           <label htmlFor="Content">Content: </label>
-            <textarea value={questionBody} 
+            <input value={questionBody} 
             onChange={this.bodyChanged}
             id="Content"
             type="text"/>
@@ -89,11 +89,8 @@ class QuestionsForm extends Component {
               <div className="alert alert-danger">{errors.content}</div>
             )}
           </div>
-          <div hidden={true} id="submitButton">
-            <button className="btn btn-primary btn-sm">Add question</button>
-          </div>
           <div hidden={true} id="choiceQ">
-              <ChoiceQuestion checkAnswers = {this.checkAnswers}/>
+              <ChoiceQuestion  answerChanged = {this.answerChanged} correctAnswerChanged={this.correctAnswerChanged}/>
           </div>
           <div hidden={true} id="multipleChoiceQ">
               <MultipleChoiceQuestion/>
