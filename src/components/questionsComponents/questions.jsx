@@ -24,12 +24,15 @@ class Questions extends Component {
     this.setState({ questions: [...this.state.questions, addedQuestion.data] });
   };
 
+  showQuestion = (question) =>{
+    console.log(question);
+  }
   render() {
     return (
       <div className="container questions">
         <div>
           <h1>Add a new question</h1>
-          <QuestionsForm onAddQuestion={this.addQuestion} />
+          <QuestionsForm onAddQuestion={this.addQuestion} showQuestion={this.showQuestion}/>
         </div>      
       </div>
     );
