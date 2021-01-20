@@ -1,5 +1,5 @@
 import axios from "axios";
-import environment from "../evairoments/enviroment";
+import environment from "../enviroments/enviroment";
 
 const axiosCreate = axios.create({ baseURL: environment.serverUrl });
 

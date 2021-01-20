@@ -1,7 +1,9 @@
 import React, {useState,useEffect} from 'react';
 import './App.css';
 import TestForm from '../test-form/TestForm';
+import Questions from '../questionsComponents/questions'
 import QuestionsService from '../../services/questionsService';
+import QuestionsForm from '../questionsComponents/questionsForm';
 
 
 function App() {
@@ -10,9 +12,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      App Component
       <div>
-        <TestForm questions={questions}></TestForm>
+        <Questions/>
       </div>
       </header>
     </div>
