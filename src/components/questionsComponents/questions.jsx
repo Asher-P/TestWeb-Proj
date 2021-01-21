@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import QuestionService from "../../services/questionsService"
 import QuestionsForm from "./questionsForm";
 // import QuestionsTable from "./questionsTable";
-import QuestionTypes from "./questionTypes"
 
 class Questions extends Component {
   state = {
