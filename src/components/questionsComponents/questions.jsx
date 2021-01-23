@@ -26,6 +26,7 @@ class Questions extends Component {
   showQuestion = (question) =>{
     console.log(question);
   }
+  
   render() {
     return (
       <div className="container questions">

@@ -8,23 +8,27 @@ class MultipleChoiceQuestion extends Component {
       super(props);
       this.state = { Index: 5 }
    }
+   
    addAnswerInput = (e) =>{
       if(this.state.Index <= 8){
          let input = document.getElementById(this.state.Index);
          input.hidden = false;
+         this.props.updateInputsNum(this.state.Index);
          if(this.state.Index < 8){
             this.setState({ Index: this.state.Index + 1 });
          }
          else{
             alert("Reached the maximum limit of answers you can add");
          }
-      }
+      }     
    }
+
    removeAnswerInput = (e) =>{
       if(this.state.Index >= 5){
          let input = document.getElementById(this.state.Index);
          input.hidden = true;
-         if(this.state.Index > 5){
+         this.props.updateInputsNum(this.state.Index - 1);
+         if(this.state.Index > 5){           
             this.setState({ Index: this.state.Index - 1 });
          }
          else{
@@ -32,6 +36,7 @@ class MultipleChoiceQuestion extends Component {
          }
       }
    }
+
    render(){
       return ( 
          <div>
