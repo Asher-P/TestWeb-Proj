@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import QuestionService from "../../services/questionsService"
 import QuestionsForm from "./questionsForm";
 // import QuestionsTable from "./questionsTable";
-import QuestionTypes from "./questionTypes"
 
 class Questions extends Component {
   state = {
@@ -24,12 +23,15 @@ class Questions extends Component {
     this.setState({ questions: [...this.state.questions, addedQuestion.data] });
   };
 
+  showQuestion = (question) =>{
+    console.log(question);
+  }
   render() {
     return (
       <div className="container questions">
         <div>
           <h1>Add a new question</h1>
-          <QuestionsForm onAddQuestion={this.addQuestion} />
+          <QuestionsForm onAddQuestion={this.addQuestion} showQuestion={this.showQuestion}/>
         </div>      
       </div>
     );
