@@ -11,8 +11,12 @@ class QuestionsForm extends Component {
     extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice"}
   }
 
-  cleanAllInputs = (numOfInputs) =>{
-    for (let index = 1; index <= numOfInputs; index++) {
+  cleanAllInputs = () =>{
+    for (let index = 1; index <= 8; index++) {
+      let input = document.getElementById(index)
+      input.value = "";
+    }
+    for (let index = 21; index <= 24; index++) {
       let input = document.getElementById(index)
       input.value = "";
     }
@@ -54,7 +58,6 @@ class QuestionsForm extends Component {
 
  correctMultiAnswerChanged = (e) =>{
   let answerIndex = e.currentTarget.id;
-  console.log(this.state.answers);
   let allAnswers = [...this.state.answers];
   if(allAnswers[answerIndex] === undefined){
     allAnswers[answerIndex] = {Content: "", isCorrect: true}
@@ -76,6 +79,7 @@ class QuestionsForm extends Component {
     let multiple = document.getElementById("multipleChoiceQ");
     let choice = document.getElementById("choiceQ");
     this.setState( { answers: [ { Content: "", isCorrect: false } ]});
+    this.cleanAllInputs();
     if(e.currentTarget.value === "Choice"){
       this.setState({inputsNum: 4, questionType: "Choice"});
       multiple.hidden = true;
@@ -86,7 +90,6 @@ class QuestionsForm extends Component {
       multiple.hidden = false;
       choice.hidden = true;
     }
-    this.cleanAllInputs(8);
   }
 
   titleChanged = (e) => {
@@ -149,13 +152,14 @@ class QuestionsForm extends Component {
   submitQuestion = (e) => {
     e.preventDefault();
     const errors = this.validateQuestion();
-    let tagsArr = this.state.tags.split(",");
+    let tags = this.state.tags.trim();
+    let tagsArr = tags.split(",");
     this.setState({ errors: errors || {} });
     if (errors){ return; }
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
       Answers: this.state.answers, ExtraInfo: this.state.extraInfo, Tags: tagsArr, QuestionType: this.state.questionType };
     this.props.onAddQuestion(questionToAdd);
-    this.cleanAllInputs(8);
+    this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
   };
 
