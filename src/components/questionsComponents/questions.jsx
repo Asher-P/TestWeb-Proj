@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import QuestionService from "../../services/questionsService"
 import QuestionsForm from "./questionsForm";
-// import QuestionsTable from "./questionsTable";
+import QuestionsTable from "./questionsTable";
 
 class Questions extends Component {
   state = {
@@ -30,10 +30,13 @@ class Questions extends Component {
   render() {
     return (
       <div className="container questions">
+        {/* <div>
+          <QuestionsTable questions= {this.state.questions}/>
+        </div> */}
         <div>
           <h1>Add a new question</h1>
           <QuestionsForm onAddQuestion={this.addQuestion} showQuestion={this.showQuestion}/>
-        </div>      
+        </div>  
       </div>
     );
   }

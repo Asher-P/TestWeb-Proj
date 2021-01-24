@@ -9,6 +9,7 @@ class QuestionsTable extends Component {
     }
     questionsTableData() {
         return this.state.questions.map((question) => {
+          console.log(question);
            const { Id, Title, QuestionBody } = question
            return (
               <tr key={Id}>
