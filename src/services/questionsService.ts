@@ -10,7 +10,7 @@ const serverRoute = "/api/Questions/";
 
 const QuestionService = {
   async getAllQuestions() {
-    return await http.get(serverRoute + "getQuestions");
+    return await (await http.get(serverRoute + "getQuestions"));
   },
 
   async addQuestion(question: any) {

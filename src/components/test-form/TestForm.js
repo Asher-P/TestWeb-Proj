@@ -1,79 +1,90 @@
 import React from 'react';
 import './TestForm.css';
+import { connect } from 'react-redux';
+import { selectQuestions } from '../../actions'
+import FormInputs from './FormInputs';
+import TestsSerevice from '../../services/testsService'
 
-function ColorRow(e){
-    if(e.target.parentNode.tagName == "TR")
-    {
-        console.log(e.target.parentNode.classList.contains("green"))
-        if(e.target.parentNode.classList.contains("green")){
+
+function ColorRow(e) {
+    if (e.target.parentNode.tagName == "TR") {
+        if (e.target.parentNode.classList.contains("green")) {
             e.target.parentNode.classList.remove("green");
             /*console.log("disable")*/
         }
-        else{
+        else {
             e.target.parentNode.classList.add("green");
             /*console.log("enable")*/
         }
     }
 }
 
-function TestForm(props) {
-   const questions=props.questions;
-   const dataTable = [];
-   questions.map((question,index) => {
-    dataTable.push(<tr key={question.Id} data-item={question} onClick={ColorRow} >
-        <td>{index}</td>
-        <td>{question.Id}</td>
-        <td>{question.Title}</td>
-    </tr>)
-})
-    console.log(props);
-    console.log(questions);
-    return (
-        <div className="TestForm">
 
-            <form className="ui form">
-                <div className="filed">
-                    <label>Test Title</label>
-                    <input type="text" placeholder="Title"></input>
-                </div>
 
-                <div className="filed">
-                    <label>Language</label>
-                    <select>
-                        <option value="">Lenguge</option>
-                        <option value="0">Hebrew</option>
-                        <option value="1">English</option>
-                    </select>
-                </div>
-                <div className="filed">
-                    <label>Passing grade</label>
-                    <input type="number" />
-                </div>
+class TestForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {dataTable:[]};
+        
 
-                <div className="filed">
-                    <label>Content</label>
-                    <textarea></textarea>
-                </div>
+    }
+    
+    componentDidMount(){
+        this.setState({dataTable:this.renderQuestions()});
+    }
 
-                <div className="filed">
-                    <label>Chose questions</label>
-                    <table className="ui celled table">
-                        <thead>
+    onSubmit = (test)=>{
+        test={...test, questions: this.props.selectedQuestions.map(q=>q.Id)};
+        alert("Test successfully created");
+        TestsSerevice.addTest(test);
+       window.location.reload();
+    }
+    renderQuestions() {
+            let temp=[];
+            this.props.questions
+                .then(res => {
+                    res.data.map((question, index) => {
+                         temp.push(<tr key={question.Id} data-item={question}
+                            onClick={(e)=>{
+                                ColorRow(e)
+                                this.props.selectQuestions(question);}} >
+                            <td>{index}</td>
+                            <td>{question.Id}</td>
+                            <td>{question.Title}</td>
+                        </tr>)
+                        this.setState({dataTable:temp});
+                    })})}
+
+    render() {
+        return (
+            <div className="TestForm">
+                <FormInputs renderField={this.renderQuestions} onSubmit={this.onSubmit}></FormInputs>
+                <div className="field">
+                        <label>Chose questions</label>
+                        <table className="ui celled table">
+                            <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
                                     <th>Content</th>
                                 </tr>
                             </thead>
-                        <tbody>
-                            {dataTable}
-                        </tbody>
-                    </table>
-                </div>
-            </form>
-
-        </div>
-    )
+                            <tbody>
+                                {this.state.dataTable}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        )
+    }
 }
 
-export default TestForm
+const mapStateToProps = (state) => {
+    
+    return {
+        questions: state.questions,
+        selectedQuestions : state.questionsSelect
+    };
+}
+
+export default connect(mapStateToProps, { selectQuestions })(TestForm);
