@@ -1,99 +1,90 @@
 import React from 'react';
 import './TestForm.css';
+import { connect } from 'react-redux';
+import { selectQuestions } from '../../actions'
+import FormInputs from './FormInputs';
+import TestsSerevice from '../../services/testsService'
 
-function ColorRow(e){
-    if(e.target.parentNode.tagName == "TR")
-    {
-        console.log(e.target.parentNode.classList.contains("green"))
-        if(e.target.parentNode.classList.contains("green")){
+
+function ColorRow(e) {
+    if (e.target.parentNode.tagName == "TR") {
+        if (e.target.parentNode.classList.contains("green")) {
             e.target.parentNode.classList.remove("green");
             /*console.log("disable")*/
         }
-        else{
+        else {
             e.target.parentNode.classList.add("green");
             /*console.log("enable")*/
         }
     }
 }
 
-function handleSubmit(e){
-    e.preventDefault();
-    console.log("e",e);
-}
 
-function TestForm(props) {
-   const questions=props.questions;
-   const dataTable = [];
-   questions.map((question,index) => {
-    dataTable.push(<tr key={question.Id} data-item={question} onClick={ColorRow} >
-        <td>{index}</td>
-        <td>{question.Id}</td>
-        <td>{question.Title}</td>
-    </tr>)
-})
-    console.log(props);
-    console.log(questions);
-    return (
-        <div className="TestForm">
 
-            <form className="ui form" submit="handleSubmit" method="post">
-                <div className="field">
-                    <label>Test Title</label>
-                    <input id="Title" type="text" placeholder="Title"></input>
-                </div>
+class TestForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {dataTable:[]};
+        
 
-                <div className="field">
-                    <label>Language</label>
-                    <select id="Lenguge">
-                        <option value="">Lenguge</option>
-                        <option value="0">Hebrew</option>
-                        <option value="1">English</option>
-                    </select>
-                </div>
-                <div className="field">
-                    <label>Passing grade</label>
-                    <input id="PassingGrade" type="number" />
-                </div>
+    }
+    
+    componentDidMount(){
+        this.setState({dataTable:this.renderQuestions()});
+    }
 
-                <div className="field">
-                    <label>Content</label>
-                    <textarea id="Content"></textarea>
-                </div>
-                <div className="field">
-                    <label>Email</label>
-                    <input id="email" type="email"></input>
-                </div>
-                <div className="two fields">
-                    <div className="field">
-                    <label>Success Message</label>
-                    <input id="SuccessMes" type="text"></input>
-                    </div>
-                    <div className="field">
-                    <label>Failure Message</label>
-                    <input id="FailureMes" type="text"></input>
-                    </div>
-                </div>
+    onSubmit = (test)=>{
+        test={...test, questions: this.props.selectedQuestions.map(q=>q.Id)};
+        alert("Test successfully created");
+        TestsSerevice.addTest(test);
+       window.location.reload();
+    }
+    renderQuestions() {
+            let temp=[];
+            this.props.questions
+                .then(res => {
+                    res.data.map((question, index) => {
+                         temp.push(<tr key={question.Id} data-item={question}
+                            onClick={(e)=>{
+                                ColorRow(e)
+                                this.props.selectQuestions(question);}} >
+                            <td>{index}</td>
+                            <td>{question.Id}</td>
+                            <td>{question.Title}</td>
+                        </tr>)
+                        this.setState({dataTable:temp});
+                    })})}
 
+    render() {
+        return (
+            <div className="TestForm">
+                <FormInputs renderField={this.renderQuestions} onSubmit={this.onSubmit}></FormInputs>
                 <div className="field">
-                    <label>Chose questions</label>
-                    <table className="ui celled table">
-                        <thead>
+                        <label>Chose questions</label>
+                        <table className="ui celled table">
+                            <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
                                     <th>Content</th>
                                 </tr>
                             </thead>
-                        <tbody>
-                            {dataTable}
-                        </tbody>
-                    </table>
-                </div>
-                <input type="submit"/>
-            </form>
-
-        </div>
-    )
+                            <tbody>
+                                {this.state.dataTable}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        )
+    }
 }
 
-export default TestForm
+const mapStateToProps = (state) => {
+    
+    return {
+        questions: state.questions,
+        selectedQuestions : state.questionsSelect
+    };
+}
+
+export default connect(mapStateToProps, { selectQuestions })(TestForm);
