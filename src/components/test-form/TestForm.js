@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { selectQuestions } from '../../actions'
 import FormInputs from './FormInputs';
 import TestsSerevice from '../../services/testsService'
+import QuestionBox from '../question-box-component/QuestionBox';
 
 
 function ColorRow(e) {
@@ -50,7 +51,7 @@ class TestForm extends React.Component {
                                 this.props.selectQuestions(question);}} >
                             <td>{index}</td>
                             <td>{question.Id}</td>
-                            <td>{question.Title}</td>
+                            <td><QuestionBox question={question}/></td>
                         </tr>)
                         this.setState({dataTable:temp});
                     })})}
