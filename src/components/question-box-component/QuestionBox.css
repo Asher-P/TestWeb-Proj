@@ -1,0 +1,14 @@
+ul.white {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(252, 249, 249);
+    color:blue;
+    font-size:medium;
+  }
+  
+  li {
+    float: left;
+  }
+  
