@@ -6,25 +6,29 @@ class MultipleChoiceQuestion extends Component {
 
    constructor(props){
       super(props);
-      this.state = { Index: 5 }
+      this.state = { Index: 13 }
    }
+   
    addAnswerInput = (e) =>{
-      if(this.state.Index <= 8){
+      if(this.state.Index <= 16){
          let input = document.getElementById(this.state.Index);
          input.hidden = false;
-         if(this.state.Index < 8){
+         this.props.updateInputsNum(this.state.Index);
+         if(this.state.Index < 16){
             this.setState({ Index: this.state.Index + 1 });
          }
          else{
             alert("Reached the maximum limit of answers you can add");
          }
-      }
+      }     
    }
+
    removeAnswerInput = (e) =>{
-      if(this.state.Index >= 5){
+      if(this.state.Index >= 13){
          let input = document.getElementById(this.state.Index);
          input.hidden = true;
-         if(this.state.Index > 5){
+         this.props.updateInputsNum(this.state.Index - 1);
+         if(this.state.Index > 13){           
             this.setState({ Index: this.state.Index - 1 });
          }
          else{
@@ -32,48 +36,49 @@ class MultipleChoiceQuestion extends Component {
          }
       }
    }
+
    render(){
       return ( 
          <div>
-            <div Id="1">
+            <div Id="9">
                <AnswerInput Id="1" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="2">
+            <div Id="10">
                <AnswerInput Id="2" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="3">
+            <div Id="11">
                <AnswerInput Id="3" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="4">
+            <div Id="12">
                <AnswerInput Id="4" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="5" hidden = {true}>
+            <div Id="13" hidden = {true}>
                <AnswerInput Id="5" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="6" hidden = {true}>
+            <div Id="14" hidden = {true}>
                <AnswerInput Id="6" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="7" hidden = {true}>
+            <div Id="15" hidden = {true}>
                <AnswerInput Id="7" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="8" hidden = {true}>
+            <div Id="16" hidden = {true}>
                <AnswerInput Id="8" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
-            </div>
+            </div>          
             <div>
                <button className="btn btn-primary btn-sm">Add Question</button>
             </div>

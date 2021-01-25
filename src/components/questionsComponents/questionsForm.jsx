@@ -7,11 +7,16 @@ import ChoiceQuestion from "./choiceQuestion"
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
-    this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], extraInfo: "", tags: ""}
+    this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice"}
   }
 
-  cleanAllInputs = (numOfInputs) =>{
-    for (let index = 1; index <= numOfInputs; index++) {
+  cleanAllInputs = () =>{
+    for (let index = 1; index <= 8; index++) {
+      let input = document.getElementById(index)
+      input.value = "";
+    }
+    for (let index = 21; index <= 24; index++) {
       let input = document.getElementById(index)
       input.value = "";
     }
@@ -53,7 +58,6 @@ class QuestionsForm extends Component {
 
  correctMultiAnswerChanged = (e) =>{
   let answerIndex = e.currentTarget.id;
-  console.log(this.state.answers);
   let allAnswers = [...this.state.answers];
   if(allAnswers[answerIndex] === undefined){
     allAnswers[answerIndex] = {Content: "", isCorrect: true}
@@ -75,13 +79,14 @@ class QuestionsForm extends Component {
     let multiple = document.getElementById("multipleChoiceQ");
     let choice = document.getElementById("choiceQ");
     this.setState( { answers: [ { Content: "", isCorrect: false } ]});
+    this.cleanAllInputs();
     if(e.currentTarget.value === "Choice"){
-      this.cleanAllInputs(4);
+      this.setState({inputsNum: 4, questionType: "Choice"});
       multiple.hidden = true;
       choice.hidden = false;
     }
     else{
-      this.cleanAllInputs(8);
+      this.setState({questionType: "MultipleChoice"});
       multiple.hidden = false;
       choice.hidden = true;
     }
@@ -104,26 +109,68 @@ class QuestionsForm extends Component {
   }
   //////////end of onChange events\\\\\\\\\\
 
+  //////////Validation\\\\\\\\\\
   validateQuestion = () => {
     const errors = {};
     if (this.state.title.trim() === "") errors.title = "Title is required.";
     if (this.state.questionBody.trim() === "") errors.content = "Content is required.";
+    if(!this.validateAllAnswers()) errors.answers = "Please fill all of the answers and have at least 1 correct answer depends on the question type.";
     return Object.keys(errors).length === 0 ? null : errors;
   };
+
+  validateAllAnswers = () =>{
+    let allAnswers = this.state.answers;
+    console.log(this.state.answers);
+    let count = 0;
+    for (let index = 0; index < this.state.inputsNum; index++) {
+       if(!this.validateAnswer(allAnswers[index])){
+        return false;
+       } 
+       if(allAnswers[index].isCorrect) count++;
+    }
+    if(count === 0){
+      return false;
+    } 
+    return true;
+  }
+
+  validateAnswer = (answer) =>{
+    if(answer === undefined){
+      console.log(answer === undefined);
+       return false; 
+    }
+    else{
+      if(answer.Content.trim() === ""){
+        console.log(answer.Content.trim() === "");
+        return false;
+      } 
+    }
+    return true;      
+  }
+  //////////End of validation\\\\\\\\\\
 
   submitQuestion = (e) => {
     e.preventDefault();
     const errors = this.validateQuestion();
+    let tags = this.state.tags.trim();
+    let tagsArr = tags.split(",");
     this.setState({ errors: errors || {} });
     if (errors){ return; }
-    const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers };
+    const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
+      Answers: this.state.answers, ExtraInfo: this.state.extraInfo, Tags: tagsArr, QuestionType: this.state.questionType };
     this.props.onAddQuestion(questionToAdd);
-    this.setState({ title: "", questionBody: "", answers: {}});
+    this.cleanAllInputs();
+    this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
   };
 
   showCurrentQuestion = (e) =>{
-    const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers };
+    const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers, 
+      ExtraInfo: this.state.extraInfo, Tags: this.state.tags };
     this.props.showQuestion(question);
+  }
+
+  updateInputsNum = (numOfInputs) =>{
+    if(this.state.inputsNum !== numOfInputs) this.setState({inputsNum: numOfInputs});
   }
 
   render() {
@@ -162,9 +209,15 @@ class QuestionsForm extends Component {
           </div>
           <div hidden={false} id="choiceQ">
               <ChoiceQuestion  answerChanged = {this.answerChanged} correctAnswerChanged={this.correctChoiceAnswerChanged}/>
+              {errors.answers && (
+              <div className="alert alert-danger">{errors.answers}</div>
+            )}
           </div>
           <div hidden={true} id="multipleChoiceQ">
-              <MultipleChoiceQuestion answerChanged = {this.answerChanged} correctAnswerChanged={this.correctMultiAnswerChanged}/>
+              <MultipleChoiceQuestion answerChanged = {this.answerChanged} correctAnswerChanged={this.correctMultiAnswerChanged} updateInputsNum = {this.updateInputsNum}/>
+              {errors.answers && (
+              <div className="alert alert-danger">{errors.answers}</div>
+            )}
           </div>      
           </form>
           <br/>

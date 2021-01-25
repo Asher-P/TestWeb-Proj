@@ -26,7 +26,7 @@ class FormInputs extends React.Component {
     }
     createSelect(formProps) {
         return (<select id="Lenguge" onChange={formProps.input.onChange}>
-            <option value="">Lenguge</option>
+            <option value="">Lenguage</option>
             <option value="0">Hebrew</option>
             <option value="1">English</option>
         </select>)
