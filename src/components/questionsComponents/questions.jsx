@@ -27,13 +27,20 @@ class Questions extends Component {
   render() {
     return (
       <div className="container questions">
-        {/* <div>
-          <QuestionsTable questions= {this.state.questions}/>
-        </div> */}
         <div>
-          <h1>Add a new question</h1>
-          <QuestionsForm onAddQuestion={this.addQuestion}/>
-        </div>  
+        <nav>
+        <ul>
+          <li><a href="/questions/questioncreate">Add a Question</a></li>
+          <li><a href="/questions/allquestions">All Questions</a></li>
+        </ul>
+      </nav>
+        </div>
+        {/* <Route path={`/questions/allquestions`}> */}
+        {/* <QuestionsTable/> */}
+        {/* </Route> */}
+        {/* <Route path={`/questions/questioncreate`}> */}
+          <QuestionsForm onAddQuestion = {this.addQuestion}/>
+        {/* </Route>   */}
       </div>
     );
   }

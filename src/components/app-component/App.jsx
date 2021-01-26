@@ -15,7 +15,7 @@ function App() {
       <nav>
         <ul>
           <li><a href="/testcreate">Test Form</a></li>
-          <li><a href="/questioncreate">Questions</a></li>
+          <li><a href="/questions">Questions</a></li>
           <li><a href="/testlist">Test List</a></li>
         </ul>
       </nav>
@@ -24,7 +24,7 @@ function App() {
         <Route path="/testcreate">
         <TestForm/>
         </Route>
-        <Route path="/questioncreate">
+        <Route path="/questions">
           <Questions/>
         </Route>
         <Route path="/testlist">
