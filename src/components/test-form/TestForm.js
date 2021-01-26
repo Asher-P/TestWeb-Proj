@@ -24,8 +24,6 @@ function ColorRow(e) {
 }
 
 
-
-
 class TestForm extends React.Component {
     constructor(props) {
         super(props);
