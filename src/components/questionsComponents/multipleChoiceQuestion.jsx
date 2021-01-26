@@ -13,7 +13,7 @@ class MultipleChoiceQuestion extends Component {
       if(this.state.Index <= 16){
          let input = document.getElementById(this.state.Index);
          input.hidden = false;
-         this.props.updateInputsNum(this.state.Index);
+         this.props.updateInputsNum(this.state.Index - 8);
          if(this.state.Index < 16){
             this.setState({ Index: this.state.Index + 1 });
          }
@@ -27,7 +27,7 @@ class MultipleChoiceQuestion extends Component {
       if(this.state.Index >= 13){
          let input = document.getElementById(this.state.Index);
          input.hidden = true;
-         this.props.updateInputsNum(this.state.Index - 1);
+         this.props.updateInputsNum(this.state.Index - 9);
          if(this.state.Index > 13){           
             this.setState({ Index: this.state.Index - 1 });
          }
@@ -40,22 +40,22 @@ class MultipleChoiceQuestion extends Component {
    render(){
       return ( 
          <div>
-            <div Id="9">
+            <div>
                <AnswerInput Id="1" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="10">
+            <div>
                <AnswerInput Id="2" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="11">
+            <div>
                <AnswerInput Id="3" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>
             <br/>
-            <div Id="12">
+            <div>
                <AnswerInput Id="4" answerChanged={this.props.answerChanged} 
                correctAnswerChanged={this.props.correctAnswerChanged}/>
             </div>

@@ -12,14 +12,14 @@ class QuestionsForm extends Component {
   }
 
   cleanAllInputs = () =>{
-    for (let index = 1; index <= 8; index++) {
-      let input = document.getElementById(index)
-      input.value = "";
-    }
-    for (let index = 21; index <= 24; index++) {
-      let input = document.getElementById(index)
-      input.value = "";
-    }
+    let allAnswers = document.getElementsByName("allAnswers");
+    allAnswers.forEach(element =>{
+      element.value = "";
+    });
+    let allRadioAndCheckboxes = document.getElementsByName("correctAnswers");
+    allRadioAndCheckboxes.forEach(element => {
+      element.checked = false;
+    });
   }
 
   //////////start of onChange events\\\\\\\\\\
@@ -31,6 +31,7 @@ class QuestionsForm extends Component {
     }
     allAnswers[answerId - 1].Content = e.currentTarget.value;
     this.setState({answers: allAnswers})
+    console.log(allAnswers);
  }
 
  correctChoiceAnswerChanged = (e) =>{
@@ -120,14 +121,25 @@ class QuestionsForm extends Component {
 
   validateAllAnswers = () =>{
     let allAnswers = this.state.answers;
-    console.log(this.state.answers);
     let count = 0;
-    for (let index = 0; index < this.state.inputsNum; index++) {
-       if(!this.validateAnswer(allAnswers[index])){
-        return false;
-       } 
-       if(allAnswers[index].isCorrect) count++;
+    console.log(this.state.questionType);
+    if(this.state.questionType === "MultipleChoice"){
+      for (let index = 0; index < this.state.inputsNum; index++) {
+        if(!this.validateAnswer(allAnswers[index])){
+         return false;
+        } 
+        if(allAnswers[index].isCorrect) count++;
+     }
     }
+    else{
+      for (let index = 9; index < 12; index++) {
+        if(!this.validateAnswer(allAnswers[index])){
+         return false;
+        } 
+        if(allAnswers[index].isCorrect) count++;
+     }
+    }
+    
     if(count === 0){
       return false;
     } 

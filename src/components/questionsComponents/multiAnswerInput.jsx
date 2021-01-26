@@ -4,7 +4,7 @@ function MultiAnswerInput(props) {
     return ( 
         <div>
             <label htmlFor={props.Id}>Answer:</label>
-            <input id={props.Id} onChange={props.answerChanged}/>
+            <input id={props.Id} onChange={props.answerChanged} name = "allAnswers"/>
             <div>
                 <label>
                     <input type="checkbox" id={props.Id - 1} name="correctAnswers" onChange={props.correctAnswerChanged}/>
