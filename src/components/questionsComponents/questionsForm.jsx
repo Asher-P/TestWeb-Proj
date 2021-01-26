@@ -2,13 +2,14 @@ import { Component } from "react";
 import QuestionTypes from "./questionTypes";
 import MultipleChoiceQuestion from "./multipleChoiceQuestion"
 import ChoiceQuestion from "./choiceQuestion"
+import Popup from '../popup-component/Popup'
 
 // jsx class component
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice"}
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
   }
 
   cleanAllInputs = () =>{
@@ -175,11 +176,19 @@ class QuestionsForm extends Component {
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
   };
 
-  showCurrentQuestion = (e) =>{
+  showCurrentQuestion = () =>{
+    let tags = this.state.tags.trim();
+    tags = tags.split(",");
     const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers, 
-      ExtraInfo: this.state.extraInfo, Tags: this.state.tags };
-    this.props.showQuestion(question);
+      ExtraInfo: this.state.extraInfo, Tags: tags };
+    this.togglePopup(question);
   }
+
+  togglePopup=(question)=> {
+    this.setState({
+        showPopup:{show: !this.state.showPopup.show, content:question}
+    });
+}
 
   updateInputsNum = (numOfInputs) =>{
     if(this.state.inputsNum !== numOfInputs) this.setState({inputsNum: numOfInputs});
@@ -232,6 +241,14 @@ class QuestionsForm extends Component {
             )}
           </div>      
           </form>
+          <div>{this.state.showPopup.show ?
+                    <Popup
+                        content = {this.state.showPopup.content}
+                        text='Close Me'
+                        closePopup={()=>this.togglePopup(null)}
+                    />
+                    : null
+                }</div>
           <br/>
           <div>
             <label>

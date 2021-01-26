@@ -22,10 +22,6 @@ class Questions extends Component {
     const addedQuestion = await QuestionService.addQuestion(question);
     this.setState({ questions: [...this.state.questions, addedQuestion.data] });
   };
-
-  showQuestion = (question) =>{
-    console.log(question);
-  }
   
   render() {
     return (
@@ -35,7 +31,7 @@ class Questions extends Component {
         </div> */}
         <div>
           <h1>Add a new question</h1>
-          <QuestionsForm onAddQuestion={this.addQuestion} showQuestion={this.showQuestion}/>
+          <QuestionsForm onAddQuestion={this.addQuestion}/>
         </div>  
       </div>
     );
