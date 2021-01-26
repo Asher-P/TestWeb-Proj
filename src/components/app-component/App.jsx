@@ -3,7 +3,7 @@ import './App.css';
 import TestForm from '../test-form/TestForm';
 import Questions from '../questionsComponents/questions'
 import QuestionsService from '../../services/questionsService';
-import QuestionsForm from '../questionsComponents/questionsForm';
+import TestList from '../tests-list-componenet/TestList';
 import Route from '../routeComponent/Route';
 
 
@@ -16,6 +16,7 @@ function App() {
         <ul>
           <li><a href="/testcreate">Test Form</a></li>
           <li><a href="/questioncreate">Question Form</a></li>
+          <li><a href="/testlist">Test List</a></li>
         </ul>
       </nav>
       </header>
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route path="/questioncreate">
           <Questions/>
+        </Route>
+        <Route path="/testlist">
+          <TestList/>
         </Route>
       </div>
     </div>

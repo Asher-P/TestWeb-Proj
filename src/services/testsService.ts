@@ -1,10 +1,5 @@
 import http from "./httpService";
 
-export interface Question {
-    Id: number;
-    Title: string;
-    QuestionBody: string;
-  }
   
   const serverRoute = "/api/tests/";
   

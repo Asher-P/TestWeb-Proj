@@ -31,6 +31,8 @@ class FormInputs extends React.Component {
         </select>)
     }
 
+
+
     onSubmit=(e)=>{
         this.props.onSubmit(e);
         this.props.reset();
@@ -46,7 +48,7 @@ class FormInputs extends React.Component {
                 </div>
 
                 <div className="field">
-                    <label>Language</label>
+                    <label>Lenguage</label>
                     <Field name="Language" component={this.createSelect} />
                 </div>
                 <div className="field">
@@ -62,7 +64,7 @@ class FormInputs extends React.Component {
                     <label>Email</label>
                     <Field name="email" type="email" component={this.createInput} />
                 </div>
-                <div className=" fields">
+                <div className="two fields">
                     <div className="field">
                         <label>Success Message</label>
                         <Field name="SuccessMes" type="text" component={this.createInput} />
@@ -73,6 +75,10 @@ class FormInputs extends React.Component {
                         <Field name="FailureMes" type="text" component={this.createInput} />
                     </div>
                 </div>
+                    <div className="field">
+                        <label>"Show answers on submit"</label>
+                        <Field name="ShowAnswers" type="checkbox" component={this.createInput}/>
+                    </div>
 
 
                 <input type="submit" />
