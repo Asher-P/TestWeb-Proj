@@ -15,7 +15,7 @@ function App() {
       <nav>
         <ul>
           <li><a href="/testcreate">Test Form</a></li>
-          <li><a href="/questioncreate">Question Form</a></li>
+          <li><a href="/questioncreate">Questions</a></li>
           <li><a href="/testlist">Test List</a></li>
         </ul>
       </nav>

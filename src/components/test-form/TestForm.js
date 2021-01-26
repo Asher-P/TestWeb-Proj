@@ -56,6 +56,7 @@ class TestForm extends React.Component {
         TestsSerevice.addTest(test);
         window.location.reload();
     }
+    
     checkTags=(tag)=>{
             const filterTags = this.state.filterTag.split(",");
             console.log("FilterTag:",filterTags);
@@ -64,9 +65,8 @@ class TestForm extends React.Component {
             if(filterTags.includes(tag))
                 return true;
         return false
-        
-
     }
+
     renderQuestions() {
         let temp = [];
         this.props.questions

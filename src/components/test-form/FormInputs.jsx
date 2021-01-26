@@ -24,8 +24,8 @@ class FormInputs extends React.Component {
         return <textarea onChange={formProps.input.onChange} value={formProps.input.value} />
     }
     createSelect(formProps) {
-        return (<select id="Lenguge" onChange={formProps.input.onChange}>
-            <option value="">Lenguage</option>
+        return (<select id="Language" onChange={formProps.input.onChange}>
+            <option value="">Language</option>
             <option value="0">Hebrew</option>
             <option value="1">English</option>
         </select>)
