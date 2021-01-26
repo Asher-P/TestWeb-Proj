@@ -11,8 +11,12 @@ class Popup extends React.Component {
         let data = [];
         for (var key in this.props.content) {
             var value = this.props.content[key];
-           if(key !== "Answers")
-            data.push(<div className="item black">{`${key}: ${value}`}</div>)
+            if (key !== "Answers")
+                data.push(<div className="item black">{`${key}: ${value}`}</div>)
+            else {
+                data.push(<div>{key}:{value.map(item=><div className={`item ${item.isCorrect? "greenText" : "redText"}`}>{item.Content}</div>)}
+                </div>)
+            }
         }
         return data;
     }

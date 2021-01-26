@@ -4,11 +4,15 @@ ul.white {
     padding: 0;
     overflow: hidden;
     background-color: rgb(252, 249, 249);
-    color:blue;
+  
     font-size:medium;
   }
   
-  li {
+  li.tag {
+    color:blue;
     float: left;
   }
   
+  .littleLow{
+      margin-top: 5px;
+  }

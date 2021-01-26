@@ -22,3 +22,19 @@
   .black{
       color: black;
   }
+
+  
+    ul.answers {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: aliceblue;
+      }
+      
+      div.redText {
+          color: red
+      }
+      div.greenText{
+        color:green;
+      }

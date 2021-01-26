@@ -58,13 +58,26 @@ class TestForm extends React.Component {
         TestsSerevice.addTest(test);
         window.location.reload();
     }
+    checkTags=(tag)=>{
+            const filterTags = this.state.filterTag.split(",");
+            console.log("FilterTag:",filterTags);
+            console.log("tag:",tag);
+            console.log("flag", filterTags.includes(tag));
+            if(filterTags.includes(tag))
+                return true;
+        return false
+        
+
+    }
     renderQuestions() {
         let temp = [];
         this.props.questions
             .then(res => {
                 res.data.map((question, index) => {
                     if (this.state.filterTag !== "") {
-                        if (question.Tags.find(t => t === this.state.filterTag)) {
+                        question.Tags.forEach(t=>{
+                        if (this.checkTags(t)) {
+                            console.log("push");
                             temp.push(
                                 <tr key={question.Id} data-item={question}
                                     onClick={(e) => {
@@ -79,7 +92,7 @@ class TestForm extends React.Component {
 
                                 </tr>)
                             this.setState({ dataTable: temp });
-                        }
+                        }                        })
                     }
                     else {
                         temp.push(<tr key={question.Id} data-item={question}
@@ -116,7 +129,7 @@ class TestForm extends React.Component {
                     <button onClick={this.FilerQuestions}>Search</button>
                 </div>
                 <div className="field">
-                    <label>Chose questions</label>
+                    <label className="white">Chose questions</label>
                     <table className="ui celled table">
                         <thead>
                             <tr>

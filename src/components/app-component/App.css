@@ -4,9 +4,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  height: -webkit-fill-available;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+label.white{
+  color:white;
 }
 
 ul {
