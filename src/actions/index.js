@@ -4,3 +4,9 @@ export const selectQuestions = (question)=>{
         payload: question
     }
 }
+export const clearselectQuestions = ()=>{
+    return {
+        type:"CLEAR_SELECT_QUESTIONS",
+        payload:null
+    }
+}

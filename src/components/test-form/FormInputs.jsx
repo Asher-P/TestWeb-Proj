@@ -10,22 +10,29 @@ class FormInputs extends React.Component {
     //     console.log("FromValues:",FormValues);
     //     this.props.onSubmit(FormValues);
     // }
+     test={};
     constructor(props) {
         super(props);
+       this.test =props.children;
+        console.log("Form Input",props);
     }
-    createInput(formProps) {
-
+    createInput=(formprops)=> {
+       
+        formprops.input.value=formprops.children;
         return (
-            <input {...formProps.input} type={formProps.type} />
+            <input {...formprops.input}  type={formprops.type} />
         )
     }
 
     createTextArea(formProps) {
+        formProps.input.value=formProps.children;
         return <textarea onChange={formProps.input.onChange} value={formProps.input.value} />
     }
     createSelect(formProps) {
-        return (<select id="Language" onChange={formProps.input.onChange}>
-            <option value="">Language</option>
+        formProps.input.value = formProps.children;
+        console.log(formProps);
+        return (<select id="Languge" onChange={formProps.input.onChange}>
+            <option value="">Lenguage</option>
             <option value="0">Hebrew</option>
             <option value="1">English</option>
         </select>)
@@ -44,40 +51,40 @@ class FormInputs extends React.Component {
                 onSubmit={this.props.handleSubmit(this.onSubmit)} method="post">
                 <div className="field">
                     <label>Test Title</label>
-                    <Field name="Title" component={this.createInput} />
+                    <Field name="Title" component={this.createInput}>{this.test.Title}</Field>
                 </div>
 
                 <div className="field">
                     <label>Lenguage</label>
-                    <Field name="Language" component={this.createSelect} />
+                    <Field name="Language" component={this.createSelect}>{this.test.Language}</Field>
                 </div>
                 <div className="field">
                     <label>Passing grade</label>
-                    <Field name="PassingGrade" type="number" component={this.createInput} />
+                    <Field name="PassingGrade" type="number" component={this.createInput}>{this.test.PassingGrade}</Field>
                 </div>
 
                 <div className="field">
                     <label>Content</label>
-                    <Field name="Content" component={this.createTextArea} />
+                    <Field name="Content" component={this.createTextArea}>{this.test.Content}</Field>
                 </div>
                 <div className="field">
                     <label>Email</label>
-                    <Field name="email" type="email" component={this.createInput} />
+                    <Field name="email" type="email" component={this.createInput}>{this.test.email}</Field>
                 </div>
                 <div className="two fields">
                     <div className="field">
                         <label>Success Message</label>
-                        <Field name="SuccessMes" type="text" component={this.createInput} />
+                        <Field name="SuccessMes" type="text" component={this.createInput}>{this.test.SuccessMes}</Field>
                     </div>
 
                     <div className="field">
                         <label>Failure Message</label>
-                        <Field name="FailureMes" type="text" component={this.createInput} />
+                        <Field name="FailureMes" type="text" component={this.createInput}>{this.test.FailureMes}</Field>
                     </div>
                 </div>
                     <div className="field">
                         <label>"Show answers on submit"</label>
-                        <Field name="ShowAnswers" type="checkbox" component={this.createInput}/>
+                        <Field name="ShowAnswers" type="checkbox" component={this.createInput}>{this.test.FailureMes}</Field>
                     </div>
 
 
@@ -87,4 +94,4 @@ class FormInputs extends React.Component {
     }
 }
 
-export default reduxForm({ form: 'TestCreate' })(FormInputs)
+export default reduxForm({  form: 'TestCreate' })(FormInputs)
