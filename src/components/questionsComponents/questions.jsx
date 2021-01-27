@@ -13,6 +13,10 @@ class Questions extends Component {
     this.getQuestions();
   }
 
+  editQuestion = (question) =>{
+    console.log(question);
+  } 
+
   async getQuestions() {
     const { data: questions } = await QuestionService.getAllQuestions();
     this.setState({ questions });

@@ -36,6 +36,7 @@ class QuestionsTable extends Component {
                             <td>{question.Id}</td>
                             <td><QuestionBox question={question} /></td>
                             <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+                            <td> <button className="ui button" onClick={()=>this.editQuestion(question.id)}>Edit</button></td>
                         </tr>)
                     this.setState({ dataTable: temp });
                 }                        
@@ -47,6 +48,7 @@ class QuestionsTable extends Component {
                     <td>{question.Id}</td>
                     <td><QuestionBox question={question} /></td>
                     <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+                    <td> <button className="ui button" onClick={()=>this.editQuestion(question)}>Edit</button></td>
                 </tr>)
                 this.setState({ dataTable: temp });
             }
@@ -70,6 +72,10 @@ class QuestionsTable extends Component {
         if(filterTags.includes(tag))
             return true;
         return false
+      }
+
+      editQuestion = (question) =>{
+          this.props.editQuestion(question);
       }
 
 togglePopup=(question)=> {
