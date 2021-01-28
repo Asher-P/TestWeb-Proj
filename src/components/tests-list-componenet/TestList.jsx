@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { clearselectQuestions } from '../../actions';
-import TestEdit from '../test-edit/TestEdit';
+import {Link} from 'react-router-dom';
 
 const TestList = (props) => {
-    console.log("TestList props",props);
     const [testEdit, setTestEdit] = useState(null);
     const [data, setData] = useState([]);
-    const getChoosenTest=(test)=>{return test}
 
     const setTestData=(test)=>{
         setTestEdit(null);
-        setTestEdit(<TestEdit Test={test}></TestEdit>);
+        setTestEdit(test);
     }
     const clearData=()=>{
         setTestEdit(null);
@@ -20,10 +18,12 @@ const TestList = (props) => {
 
     useEffect(() => {
         let tmp = [];
+        console.log("props",props)
         props.tests.then(res => {
 
             res.data.map((t, index) => {
                 {
+                    console.log("t",t);
                     tmp.push(<tr key={index}>
                         <td>
                             {t.Title}
@@ -34,7 +34,7 @@ const TestList = (props) => {
                         </td>
                         <td>
                             <div>
-                                <button onClick={()=>setTestData(t)}>Edit</button>
+                                <a href={`/testedit?id=${t.id}`}><button>Edit</button></a>
                             </div>
                         </td>
                     </tr>)

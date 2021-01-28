@@ -5,6 +5,7 @@ import Questions from '../questionsComponents/questions'
 import QuestionsService from '../../services/questionsService';
 import TestList from '../tests-list-componenet/TestList';
 import Route from '../routeComponent/Route';
+import TestEdit from '../test-edit/TestEdit';
 
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
         </Route>
         <Route path="/testlist">
           <TestList/>
+        </Route>
+        <Route path="/testedit">
+          <TestEdit/>
         </Route>
       </div>
     </div>

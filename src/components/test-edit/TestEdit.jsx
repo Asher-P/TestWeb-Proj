@@ -3,6 +3,7 @@ import '../test-form/TestForm.css';
 import { connect } from 'react-redux';
 import { selectQuestions, clearselectQuestions } from '../../actions'
 import FormInputs from '../test-form/FormInputs';
+import ReactDOM from 'react-dom';
 import TestsSerevice from '../../services/testsService'
 import QuestionBox from '../question-box-component/QuestionBox';
 import Popup from '../popup-component/Popup'
@@ -31,21 +32,38 @@ function ColorRow(e) {
 class TestEdit extends React.Component {
     constructor(props) {
         super(props);
-        console.log("testEdit Prpos",this.props);
-
-        this.state = { dataTable: [], filterTag: "", questions: [], showPopup:{show:false, content:null} };
-         props.Test.questions.map(qustionId=>{
-             QuestionService.getQuestionById(qustionId).then(res=>{
-                 props.selectQuestions(res.data);
-             });
-         })
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('id')
+        
+        TestsService.getTestById(myParam).then(res=>{
+            this.setState({Test: res.data});
+            console.log(this.state.Test);
+        })
+        setTimeout(function() {
+            //your code to be executed after 1 second
+          }, 2200);
+        console.log("constructor");
         this.initQuestions();
+        this.questionsRef = React.createRef();
+        this.state = { dataTable: [], Test:{}, filterTag: "", questions: [],questionsSelected:[], showPopup:{show:false, content:null} };
+        console.log("test",this.state.Test); 
+        // Test.questions.map(qustionId=>{
+        //      QuestionService.getQuestionById(qustionId).then(res=>{
+        //          props.selectQuestions(res.data);
+        //          this.setState({questionsSelected:[...this.state.questionsSelected,res.data]});
+        //      });
+        //  })
 
+    }
+
+    componentWillMount(){
+        console.log("componentWillMount",this.state.Test);
     }
 
     initQuestions = () => {
         this.props.questions.then(res => {
             this.setState({ questions: res.data });
+            console.log(this.state);
         })
     }
 
@@ -58,13 +76,22 @@ class TestEdit extends React.Component {
 
     componentDidMount() {
         this.setState({ dataTable: this.renderQuestions() });
+        console.log("DidMount state",this.state.Test);
+        ReactDOM.render(
+            this.state.dataTable,
+            document.getElementById('tableHolder')
+            );
+    }
+    componentDidUpdate(){
+        console.log("Udate state",this.state);
     }
 
     onSubmit = (test) => {
         test = { ...test, questions: this.props.selectedQuestions.map(q => q.Id) };
+       console.log("test", test);
         alert("Test successfully created");
-        TestsSerevice.addTest(test);
-        window.location.reload();
+        //TestsSerevice.addTest(test);
+        //window.location.reload();
     }
     checkTags=(tag)=>{
             const filterTags = this.state.filterTag.split(",");
@@ -78,6 +105,7 @@ class TestEdit extends React.Component {
 
     }
     renderQuestions() {
+        console.log("Render",this.state)
         let temp = [];
         this.props.questions
             .then(res => {
@@ -92,6 +120,7 @@ class TestEdit extends React.Component {
                                         ColorRow(e)
                                         this.props.selectQuestions(question);
                                     }}
+                                    ref={this.questionsRef}
                                     className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
                                     <td>{index}</td>
                                     <td>{question.Id}</td>
@@ -108,6 +137,7 @@ class TestEdit extends React.Component {
                                 ColorRow(e)
                                 this.props.selectQuestions(question);
                             }}
+                            ref={this.questionsRef}
                             className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
                             <td>{index}</td>
                             <td>{question.Id}</td>
@@ -148,7 +178,7 @@ class TestEdit extends React.Component {
                                 <th>Content</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableHolder">
                             {this.state.dataTable}
                         </tbody>
                     </table>
