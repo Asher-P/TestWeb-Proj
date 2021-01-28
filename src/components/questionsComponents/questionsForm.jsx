@@ -3,6 +3,7 @@ import QuestionTypes from "./questionTypes";
 import MultipleChoiceQuestion from "./multipleChoiceQuestion"
 import ChoiceQuestion from "./choiceQuestion"
 import Popup from '../popup-component/Popup'
+import QuestionService from "../../services/questionsService"
 
 // jsx class component
 class QuestionsForm extends Component {
@@ -22,6 +23,10 @@ class QuestionsForm extends Component {
       element.checked = false;
     });
   }
+
+  onAddQuestion = async (question) => {
+    await QuestionService.addQuestion(question);
+  };
 
   //////////start of onChange events\\\\\\\\\\
   answerChanged = (e) =>{
@@ -171,7 +176,7 @@ class QuestionsForm extends Component {
     if (errors){ return; }
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
       Answers: this.state.answers, ExtraInfo: this.state.extraInfo, Tags: tagsArr, QuestionType: this.state.questionType };
-    this.props.onAddQuestion(questionToAdd);
+    this.onAddQuestion(questionToAdd);
     this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
   };

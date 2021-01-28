@@ -4,7 +4,6 @@ import './Popup.css';
 class Popup extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
 
     }
     renderContent = () => {

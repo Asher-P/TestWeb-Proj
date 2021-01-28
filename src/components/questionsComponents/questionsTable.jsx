@@ -36,6 +36,7 @@ class QuestionsTable extends Component {
                             <td>{question.Id}</td>
                             <td><QuestionBox question={question} /></td>
                             <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+                            <td> <button className="ui button" onClick={()=>this.editQuestion(question.id)}>Edit</button></td>
                         </tr>)
                     this.setState({ dataTable: temp });
                 }                        
@@ -47,6 +48,7 @@ class QuestionsTable extends Component {
                     <td>{question.Id}</td>
                     <td><QuestionBox question={question} /></td>
                     <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+                    <td> <button className="ui button" onClick={()=>this.editQuestion(question)}>Edit</button></td>
                 </tr>)
                 this.setState({ dataTable: temp });
             }
@@ -72,6 +74,14 @@ class QuestionsTable extends Component {
         return false
       }
 
+      editQuestion = (path) =>{
+         
+      }
+
+    //   nextPath(path) {
+    //     this.props.history.push(path);
+    //   }
+    
 togglePopup=(question)=> {
   this.setState({
       showPopup:{show: !this.state.showPopup.show, content:question}

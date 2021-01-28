@@ -1,49 +1,17 @@
 import React, { Component } from "react";
-import QuestionService from "../../services/questionsService"
-import QuestionsForm from "./questionsForm";
-import QuestionsTable from "./questionsTable";
-import Route from '../routeComponent/Route';
+import { Button } from 'react-bootstrap';
+import history from '../../History/history';
 
-class Questions extends Component {
-  state = {
-    questions: [],
-  };
-
-  async componentDidMount() {
-    this.getQuestions();
-  }
-
-  async getQuestions() {
-    const { data: questions } = await QuestionService.getAllQuestions();
-    this.setState({ questions });
-    console.log(this.state.questions)
-  }
-
-  addQuestion = async (question) => {
-    const addedQuestion = await QuestionService.addQuestion(question);
-    this.setState({ questions: [...this.state.questions, addedQuestion.data] });
-  };
-  
-  render() {
+function Questions() {
     return (
       <div className="container questions">
         <div>
-        <nav>
-        <ul>
-          <li><a href="/questions/questioncreate">Add a Question</a></li>
-          <li><a href="/questions/allquestions">All Questions</a></li>
-        </ul>
-      </nav>
+          <Button variant="btn btn-success" onClick={() => history.push('/QuestionsForm')}>Add a question</Button>
         </div>
-        {/* <Route path={`/questions/allquestions`}> */}
-        {/* <QuestionsTable/> */}
-        {/* </Route> */}
-        {/* <Route path={`/questions/questioncreate`}> */}
-          <QuestionsForm onAddQuestion = {this.addQuestion}/>
-        {/* </Route>   */}
+        <div>
+          <Button variant="btn btn-success" onClick={() => history.push('/AllQuestions')}>Show all Questions</Button>
+        </div>
       </div>
     );
   }
-}
-
 export default Questions;
