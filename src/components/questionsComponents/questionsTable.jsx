@@ -74,10 +74,14 @@ class QuestionsTable extends Component {
         return false
       }
 
-      editQuestion = (question) =>{
-          this.props.editQuestion(question);
+      editQuestion = (path) =>{
+         
       }
 
+    //   nextPath(path) {
+    //     this.props.history.push(path);
+    //   }
+    
 togglePopup=(question)=> {
   this.setState({
       showPopup:{show: !this.state.showPopup.show, content:question}

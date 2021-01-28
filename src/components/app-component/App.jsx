@@ -1,35 +1,17 @@
-import React, {useState,useEffect} from 'react';
+import React from 'react';
 import './App.css';
-import TestForm from '../test-form/TestForm';
-import Questions from '../questionsComponents/questions'
-import QuestionsService from '../../services/questionsService';
-import TestList from '../tests-list-componenet/TestList';
-import Route from '../routeComponent/Route';
+import Routes from '../routeComponent/Routes';
+import Navigation from '../Navigation/navigation';
 
 
 function App() {
-  return (
-    
+  return (   
     <div className="App">
       <header className="App-header">
-      <nav>
-        <ul>
-          <li><a href="/testcreate">Test Form</a></li>
-          <li><a href="/questions">Questions</a></li>
-          <li><a href="/testlist">Test List</a></li>
-        </ul>
-      </nav>
       </header>
       <div>
-        <Route path="/testcreate">
-        <TestForm/>
-        </Route>
-        <Route path="/questions">
-          <Questions/>
-        </Route>
-        <Route path="/testlist">
-          <TestList/>
-        </Route>
+      <Navigation />
+      <Routes />
       </div>
     </div>
   );
