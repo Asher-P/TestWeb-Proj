@@ -7,6 +7,8 @@ import TestList from '../tests-list-componenet/TestList';
 import TestForm from '../test-form/TestForm';
 import Home from '../homeComponents/home';
 import History from '../../History/history';
+import TestNav from "../testsNav/TestNav";
+import TestEdit from "../test-edit/TestEdit";
 
 export default class Routes extends Component {
     render() {
@@ -17,7 +19,13 @@ export default class Routes extends Component {
                     <Route path="/Questions" component={Questions} />
                     <Route path="/QuestionsForm" component={QuestionsForm} />
                     <Route path="/AllQuestions" component={QuestionsTable} />
-                    <Route path="/TestForm" component={TestForm} />
+                    <Route path="/tests" component={TestNav} />
+                    <Route path="/testlist" component={TestList} />
+                    <Route path="/createtest" component={TestForm} />
+                    <Route path={`/edittest/:testId`} component={TestEdit} />
+                    <Route path={"/edittest/"}>
+                        <h3>Please select a topic.</h3>
+                    </Route>
                 </Switch>
             </Router>
         )

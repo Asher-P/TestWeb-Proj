@@ -10,28 +10,26 @@ class FormInputs extends React.Component {
     //     console.log("FromValues:",FormValues);
     //     this.props.onSubmit(FormValues);
     // }
-     test={};
+    test={}
     constructor(props) {
         super(props);
        this.test =props.children;
         console.log("Form Input",props);
     }
+
+    
     createInput=({input,type, children})=> {
-        input.value=children;
         //console.log("value",input.value)
-        children =null; 
         return (
-            <input value={input.value} onChange={input.onChange}  type={type} />
+            <input placeholder={children} value={input.value} onChange={input.onChange}  type={type} />
         )
     }
 
     createTextArea(formProps) {
-        formProps.input.value=formProps.children;
-        return <textarea onChange={formProps.input.onChange} value={formProps.input.value} />
+        return <textarea placeholder={formProps.children} onChange={formProps.input.onChange} value={formProps.input.value} />
     }
     createSelect(formProps) {
-        formProps.input.value = formProps.children;
-        return (<select id="Languge" onChange={formProps.input.onChange}>
+        return (<select id="Languge" placeholder={formProps.children} onChange={formProps.input.onChange}>
             <option value="">Lenguage</option>
             <option value="0">Hebrew</option>
             <option value="1">English</option>
@@ -48,11 +46,14 @@ class FormInputs extends React.Component {
     renderInputs=()=>{
         
     }
-    componentDidMount=()=>{
+    componentDidUpdate=()=>{
+        this.test =this.props.children;
     //console.log("formInput props",this.props);
     }
 
     render() {
+        console.log("render");
+        console.log("child",this.test);
         return (
             <form id="createTestForm" className="ui form"
                 onSubmit={this.props.handleSubmit(this.onSubmit)} method="post">

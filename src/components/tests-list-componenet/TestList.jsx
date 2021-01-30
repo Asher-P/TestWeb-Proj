@@ -1,81 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { clearselectQuestions } from '../../actions';
-import {Link} from 'react-router-dom';
+import { fetchTests } from '../../actions';
+import {
+    BrowserRouter as Router,
+    Link,
+    useRouteMatch
+} from "react-router-dom";
+import TestEdit from '../test-edit/TestEdit';
 
-const TestList = (props) => {
-    const [testEdit, setTestEdit] = useState(null);
-    const [data, setData] = useState([]);
+class TestList extends React.Component {
 
-    const setTestData=(test)=>{
-        setTestEdit(null);
-        setTestEdit(test);
+
+    constructor(props) {
+        super(props);
+        this.state = { data: [] };
     }
-    const clearData=()=>{
-        setTestEdit(null);
-        props.clearselectQuestions();
+
+    renderList() {
+        console.log(this.props);
+      return  this.props.tests.map((t, index) =>{
+          return( <tr key={index}>
+                    <td>
+                        {t.Title}
+                    </td>
+                    <td></td>
+                    <td>
+                        {t.questions.length}
+                    </td>
+                    <td>
+
+                        <div>
+                            <Link to={`edittest/${t.Id}`}><button className="ui button">Edit</button></Link>
+                        </div>
+                    </td>
+                </tr>)
+            }
+      )
     }
 
-    useEffect(() => {
+    componentWillMount() {
+        this.props.fetchTests();
         let tmp = [];
-        console.log("props",props)
-        props.tests.then(res => {
+        console.log("props", this.props)
 
-            res.data.map((t, index) => {
-                {
-                    console.log("t",t);
-                    tmp.push(<tr key={index}>
-                        <td>
-                            {t.Title}
-                        </td>
-                        <td></td>
-                        <td>
-                            {t.questions.length}
-                        </td>
-                        <td>
-                            <div>
-                                <a href={`/testedit?id=${t.id}`}><button>Edit</button></a>
-                            </div>
-                        </td>
-                    </tr>)
-                }
-            })
-            setData(tmp);
-        })
-    }, [])
-    return (
-        <div className="TestList">
-            <div>
-            <table className="ui table">
-                <thead>
-                    <tr>
-                        <td>Title</td>
-                        <td>Link</td>
-                        <td>Questions Sum</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data}
-                </tbody>
-            </table>
+    }
+
+    render() {
+        return (
+            <div className="TestList">
+                <div>
+                    <table className="ui table">
+                        <thead>
+                            <tr>
+                                <td>Title</td>
+                                <td>Link</td>
+                                <td>Questions Sum</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderList()}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                </div>
+
             </div>
-            <div>
-                <button onClick={()=>clearData()}>cencel
-                </button>
-            </div>
-            <div>
-                {testEdit}
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
     return ({
-        tests: state.tests
+        tests: state.test
     })
 
 }
 
-export default connect(mapStateToProps,{clearselectQuestions})(TestList)
+export default connect(mapStateToProps, { fetchTests })(TestList)

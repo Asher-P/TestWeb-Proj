@@ -1,7 +1,7 @@
 import React from 'react';
 import './TestForm.css';
 import { connect } from 'react-redux';
-import { selectQuestions } from '../../actions'
+import { selectQuestions, fetchQuestions } from '../../actions'
 import FormInputs from './FormInputs';
 import TestsSerevice from '../../services/testsService'
 import QuestionBox from '../question-box-component/QuestionBox';
@@ -27,6 +27,7 @@ function ColorRow(e) {
 class TestForm extends React.Component {
     constructor(props) {
         super(props);
+        props.fetchQuestions();
         console.log(props);
         this.state = { dataTable: [], filterTag: "", questions: [], showPopup:{show:false, content:null} };
         this.initQuestions();
@@ -34,8 +35,10 @@ class TestForm extends React.Component {
     }
 
     initQuestions = () => {
-        this.props.questions.then(res => {
-            this.setState({ questions: res.data });
+        console.log("data",this.props.questions.data);
+
+        this.props.questions?.data?.map(res => {
+            this.setState({ questions: res });
         })
     }
 
@@ -47,7 +50,7 @@ class TestForm extends React.Component {
 
 
     componentDidMount() {
-        this.setState({ dataTable: this.renderQuestions() });
+        this.props.fetchQuestions()
     }
 
     onSubmit = (test) => {
@@ -69,50 +72,42 @@ class TestForm extends React.Component {
     }
 
     renderQuestions() {
-        let temp = [];
-        this.props.questions
-            .then(res => {
-                res.data.map((question, index) => {
-                    if (this.state.filterTag !== "") {
-                        question.Tags.forEach(t=>{
-                        if (this.checkTags(t)) {
-                            console.log("push");
-                            temp.push(
-                                <tr key={question.Id} data-item={question}
-                                    onClick={(e) => {
-                                        ColorRow(e)
-                                        this.props.selectQuestions(question);
-                                    }}
-                                    className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
-                                    <td>{index}</td>
-                                    <td>{question.Id}</td>
-                                    <td><QuestionBox question={question} /></td>
-                                    <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+        if (this.state.filterTag !== "") {
+            let filterTags = this.state.filterTag.split(',');
+            return this.props.questions.filter(q => filterTags.some(t=>q.Tags.includes(t)))
+                .map((question, index) => {
+                    return (<tr key={question.Id} data-item={question}
+                        onClick={(e) => {
+                            ColorRow(e)
+                            this.props.selectQuestions(question);
+                        }}
 
-                                </tr>)
-                            this.setState({ dataTable: temp });
-                        }                        })
-                    }
-                    else {
-                        temp.push(<tr key={question.Id} data-item={question}
-                            onClick={(e) => {
-                                ColorRow(e)
-                                this.props.selectQuestions(question);
-                            }}
-                            className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
-                            <td>{index}</td>
-                            <td>{question.Id}</td>
-                            <td><QuestionBox question={question} /></td>
-                            <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
-                        </tr>)
-                        this.setState({ dataTable: temp });
-
-                    }
-                })
-            })
-
+                        className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
+                        <td>{index}</td>
+                        <td>{question.Id}</td>
+                        <td><QuestionBox question={question} /></td>
+                        <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
+                    </tr>)
+                }
+                )
+        }
+        else {
+            return this.props.questions.map((question, index) => {
+                return (<tr key={question.Id} data-item={question}
+                    onClick={(e) => {
+                        ColorRow(e)
+                        this.props.selectQuestions(question);
+                    }}
+                    className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
+                    <td>{index}</td>
+                    <td>{question.Id}</td>
+                    <td><QuestionBox question={question} /></td>
+                    <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
+                </tr>)
+            }
+            )
+        }
     }
-
     updateFiletrState = () => {
         this.setState({ filterTag: window.document.getElementById("filterInput").value });
     }
@@ -138,7 +133,7 @@ class TestForm extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.dataTable}
+                            {this.renderQuestions()}
                         </tbody>
                     </table>
                 </div>
@@ -163,4 +158,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, { selectQuestions })(TestForm);
+export default connect(mapStateToProps, { selectQuestions, fetchQuestions })(TestForm);
