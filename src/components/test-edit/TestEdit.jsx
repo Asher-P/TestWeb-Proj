@@ -14,6 +14,7 @@ function ColorRow(e) {
     while (TR.tagName != "TR") {
         TR = TR.parentNode;
     }
+    console.log("TR", TR);
     if (TR.classList.contains("green")) {
         TR.classList.remove("green");
         /*console.log("disable")*/
@@ -70,6 +71,15 @@ class TestEdit extends React.Component {
         this.props.test.questions?.forEach(q =>{
             this.props.selectQuestions(this.props.fetchQuestion(q));
         })
+        this.props.test.questions?.map(q => {
+            let TRList = window.document.getElementsByName(q.toString());
+            {/*console.log("TR",TRList)
+        console.log(TRList[0]);*/}
+        if(TRList)
+            TRList[0].classList.add("green");
+        }
+
+        )
 
         //console.log("DidMount state",this.state.Test);
 
@@ -80,7 +90,7 @@ class TestEdit extends React.Component {
         test = { ...test, questions: this.props.selectedQuestions.map(q => q.Id) };
         console.log("test", test);
         alert("Test successfully created");
-        //TestsSerevice.addTest(test);
+        TestsService.editTest(test);
         //window.location.reload();
     }
     checkTags = (tag) => {
@@ -137,15 +147,7 @@ class TestEdit extends React.Component {
         this.test = this.props.test;
 
         console.log("test", this.props.test);
-        this.props.test.questions?.map(q => {
-            let TRList = window.document.getElementsByName(q.toString());
-            {/*console.log("TR",TRList)
-        console.log(TRList[0]);*/}
-            TRList[0].classList.add("green");
-        }
-
-        )
-
+       
     }
     updateFiletrState = () => {
         this.setState({ filterTag: window.document.getElementById("filterInput").value });

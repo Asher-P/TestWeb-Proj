@@ -63,7 +63,7 @@ class FormInputs extends React.Component {
                 </div>
 
                 <div className="field">
-                    <label>Lenguage</label>
+                    <label>Language</label>
                     <Field name="Language" component={this.createSelect}>{this.test?.Language}</Field>
                 </div>
                 <div className="field">
