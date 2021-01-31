@@ -4,15 +4,15 @@ import MultipleChoiceQuestion from "./multipleChoiceQuestion"
 import ChoiceQuestion from "./choiceQuestion"
 import Popup from '../popup-component/Popup'
 import QuestionService from "../../services/questionsService"
-import { fetchQuestion } from "../../actions";
+import { connect } from 'react-redux';
+import { moveQuestion } from "../../actions";
 
-// jsx class component
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
+    if(props.match.params.id !== undefined) props.moveQuestion(props.match.params.id);
     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""},
-    question: {}}
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
   }
 
   cleanAllInputs = () =>{
@@ -27,21 +27,21 @@ class QuestionsForm extends Component {
   }
 
   componentDidMount() {
-      if(this.state.question !== undefined){    
-        let currentQuestion = this.state.question;  
-        console.log(currentQuestion);
-        // this.setState({title: currentQuestion.Title, questionBody: currentQuestion.QuestionBody, answers: currentQuestion.Answers,
-        // extraInfo: currentQuestion.ExtraInfo, tags: currentQuestion.Tags, questionType: currentQuestion.QuestionType});
-        // if(currentQuestion.QuestionType === "Choice") this.setState({inputsNum: 4});
-        // else {
-        //   let inputsNumber = 0;
-        //   for (let index = 0; index < currentQuestion.Answers.length; index++) {
-        //     inputsNumber++;          
-        //   }
-        //   this.setState({inputsNum: inputsNumber});
-        // }
+      if(this.props.question !== undefined && this.props.question !== null){    
+        let question = this.props.question;  
+        this.setState({title: question.Title, questionBody: question.QuestionBody, answers: question.Answers,
+        extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType});
+        if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
+        else {
+          let inputsNumber = 0;
+          for (let index = 0; index < question.Answers.length; index++) {
+            inputsNumber++;          
+          }
+          this.setState({inputsNum: inputsNumber});
+        }
     }
   }
+  
   onAddQuestion = async (question) => {
     await QuestionService.addQuestion(question);
   };
@@ -292,8 +292,8 @@ class QuestionsForm extends Component {
 const mapStateToProps = (state) => {
 
   return {
-      question: state.question
+      question: state.currentQuestion
   };
 }
 
-export default connect(mapStateToProps, { fetchQuestion })(QuestionsForm);
+export default connect(mapStateToProps, { moveQuestion })(QuestionsForm);

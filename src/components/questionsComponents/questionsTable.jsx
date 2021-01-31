@@ -2,60 +2,54 @@ import React,{ Component } from "react";
 import QuestionBox from '../question-box-component/QuestionBox';
 import Popup from '../popup-component/Popup';
 import { connect } from 'react-redux';
-import { selectQuestions } from '../../actions';
-import { Button } from "react-bootstrap";
+import { selectQuestions, fetchQuestions } from '../../actions';
 import { Link } from "react-router-dom";
 
 class QuestionsTable extends Component {
     constructor(props) {
         super(props);
+        props.fetchQuestions();
         this.state = { questions: [], dataTable: [], filterTag: "", showPopup:{show:false, content:null} }
         this.initQuestions();
     }
 
     initQuestions = () => {
-      this.props.questions.then(res => {
-          this.setState({ questions: res.data });
-      })
+        this.props.questions?.data?.map(res => {
+            this.setState({ questions: res });
+        })
   }
 
     componentDidMount() {
       this.setState({ dataTable: this.renderQuestions() });
   }
+  
   renderQuestions() {
-    let temp = [];
-    this.props.questions
-        .then(res => {
-            res.data.map((question, index) => {
-              if (this.state.filterTag !== "") {
-                question.Tags.forEach(t=>{
-                if (this.checkTags(t)) {
-                    temp.push(
-                        <tr key={question.Id} data-item={question}>
-                            <td>{index}</td>
-                            <td>{question.Id}</td>
-                            <td><QuestionBox question={question} /></td>
-                            <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
-                            {/* <td> <Link className="ui button" onClick={()=>this.editQuestion(question.id)}>Edit</Link></td> */}
-                            <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
-                        </tr>)
-                    this.setState({ dataTable: temp });
-                }                        
-              })
-            }
-            else {
-                temp.push(<tr key={question.Id} data-item={question}>
+    if (this.state.filterTag !== "") {
+        let filterTags = this.state.filterTag.split(',');
+        return this.props.questions.filter(q => filterTags.some(t=>q.Tags.includes(t)))
+            .map((question, index) => {
+                return (<tr key={question.Id} data-item={question}>
                     <td>{index}</td>
                     <td>{question.Id}</td>
                     <td><QuestionBox question={question} /></td>
-                    <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
+                    <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
                     <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
                 </tr>)
-                this.setState({ dataTable: temp });
             }
-          })
+            )
+    }
+    else {
+        return this.props.questions.map((question, index) => {
+            return (<tr key={question.Id} data-item={question}>
+                <td>{index}</td>
+                <td>{question.Id}</td>
+                <td><QuestionBox question={question} /></td>
+                <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
+                <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
+            </tr>)
         })
-      }
+    }
+}
 
       updateFiletrState = () => {
         this.setState({ filterTag: window.document.getElementById("filterInput").value });
@@ -74,14 +68,6 @@ class QuestionsTable extends Component {
             return true;
         return false
       }
-
-      editQuestion = (question) =>{
-         
-      }
-
-    //   nextPath(path) {
-    //     this.props.history.push(path);
-    //   }
     
 togglePopup=(question)=> {
   this.setState({
@@ -106,7 +92,7 @@ togglePopup=(question)=> {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.dataTable}
+                            {this.renderQuestions()}
                         </tbody>
                     </table>
                 </div>
@@ -131,5 +117,5 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { selectQuestions })(QuestionsTable);
+export default connect(mapStateToProps, { selectQuestions, fetchQuestions })(QuestionsTable);
   
