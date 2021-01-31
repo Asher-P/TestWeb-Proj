@@ -3,7 +3,8 @@ import QuestionBox from '../question-box-component/QuestionBox';
 import Popup from '../popup-component/Popup';
 import { connect } from 'react-redux';
 import { selectQuestions } from '../../actions';
-
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 class QuestionsTable extends Component {
     constructor(props) {
@@ -29,14 +30,14 @@ class QuestionsTable extends Component {
               if (this.state.filterTag !== "") {
                 question.Tags.forEach(t=>{
                 if (this.checkTags(t)) {
-                    console.log("push");
                     temp.push(
                         <tr key={question.Id} data-item={question}>
                             <td>{index}</td>
                             <td>{question.Id}</td>
                             <td><QuestionBox question={question} /></td>
                             <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
-                            <td> <button className="ui button" onClick={()=>this.editQuestion(question.id)}>Edit</button></td>
+                            {/* <td> <Link className="ui button" onClick={()=>this.editQuestion(question.id)}>Edit</Link></td> */}
+                            <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
                         </tr>)
                     this.setState({ dataTable: temp });
                 }                        
@@ -48,7 +49,7 @@ class QuestionsTable extends Component {
                     <td>{question.Id}</td>
                     <td><QuestionBox question={question} /></td>
                     <td> <button className="ui button" onClick={()=>this.togglePopup(question)}>Show</button></td>
-                    <td> <button className="ui button" onClick={()=>this.editQuestion(question)}>Edit</button></td>
+                    <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
                 </tr>)
                 this.setState({ dataTable: temp });
             }
@@ -74,7 +75,7 @@ class QuestionsTable extends Component {
         return false
       }
 
-      editQuestion = (path) =>{
+      editQuestion = (question) =>{
          
       }
 

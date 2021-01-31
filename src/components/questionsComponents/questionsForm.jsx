@@ -4,13 +4,15 @@ import MultipleChoiceQuestion from "./multipleChoiceQuestion"
 import ChoiceQuestion from "./choiceQuestion"
 import Popup from '../popup-component/Popup'
 import QuestionService from "../../services/questionsService"
+import { fetchQuestion } from "../../actions";
 
 // jsx class component
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""},
+    question: {}}
   }
 
   cleanAllInputs = () =>{
@@ -24,9 +26,30 @@ class QuestionsForm extends Component {
     });
   }
 
+  componentDidMount() {
+      if(this.state.question !== undefined){    
+        let currentQuestion = this.state.question;  
+        console.log(currentQuestion);
+        // this.setState({title: currentQuestion.Title, questionBody: currentQuestion.QuestionBody, answers: currentQuestion.Answers,
+        // extraInfo: currentQuestion.ExtraInfo, tags: currentQuestion.Tags, questionType: currentQuestion.QuestionType});
+        // if(currentQuestion.QuestionType === "Choice") this.setState({inputsNum: 4});
+        // else {
+        //   let inputsNumber = 0;
+        //   for (let index = 0; index < currentQuestion.Answers.length; index++) {
+        //     inputsNumber++;          
+        //   }
+        //   this.setState({inputsNum: inputsNumber});
+        // }
+    }
+  }
   onAddQuestion = async (question) => {
     await QuestionService.addQuestion(question);
   };
+
+  getQuestionByID = async (Id) => {
+    const { data: Question } = await QuestionService.getQuestionById(Id);
+    this.setState({question: Question});
+  }
 
   //////////start of onChange events\\\\\\\\\\
   answerChanged = (e) =>{
@@ -175,7 +198,8 @@ class QuestionsForm extends Component {
     this.setState({ errors: errors || {} });
     if (errors){ return; }
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
-      Answers: this.state.answers, ExtraInfo: this.state.extraInfo, Tags: tagsArr, QuestionType: this.state.questionType };
+      Answers: this.state.answers, ExtraInfo: this.state.extraInfo,
+      Tags: tagsArr, QuestionType: this.state.questionType, LastUpdated: new Date() };
     this.onAddQuestion(questionToAdd);
     this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
@@ -265,4 +289,11 @@ class QuestionsForm extends Component {
   }
 }
 
-export default QuestionsForm;
+const mapStateToProps = (state) => {
+
+  return {
+      question: state.question
+  };
+}
+
+export default connect(mapStateToProps, { fetchQuestion })(QuestionsForm);
