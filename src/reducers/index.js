@@ -1,12 +1,16 @@
 import {reducer as formReducer} from 'redux-form';
 import {combineReducers} from 'redux';
+import {answerReducer} from './answersReducer';
 import questionReducer from './questionReducer'
 import questionsSelectReducer from './questionsSelectReducer'
-import testsReducer from './testReducer';
+import testReducer from './testReducer';
+import currentQuestionReducer from './currentQuestion';
 
 export default combineReducers({
 form: formReducer,
 questions: questionReducer,
-tests: testsReducer,
+test: testReducer,
 questionsSelect: questionsSelectReducer,
+currentQuestion: currentQuestionReducer,
+answers: answerReducer,
 })
