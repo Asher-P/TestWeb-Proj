@@ -5,16 +5,24 @@ import ChoiceQuestion from "./choiceQuestion"
 import Popup from '../popup-component/Popup'
 import QuestionService from "../../services/questionsService"
 import { connect } from 'react-redux';
-import { moveQuestion } from "../../actions";
+import { fetchQuestion } from "../../actions";
 import { render } from "@testing-library/react";
 
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
-    if(props.match.params.id !== undefined && props.match.params.id !== null) props.moveQuestion(props.match.params.id); 
- 
+    //   if(props.question !== undefined && props.question !== null){
+    //     this.state = {title: props.question.Title, errors: {}, questionBody: props.question.QuestionBody, answers: props.question.Answers, 
+    //     extraInfo: props.question.ExtraInfo, tags: props.question.Tags, inputsNum: 4, questionType: props.question.QuestionType, showPopup:{show: false, content: ""}}
+    //   }       
+    //   else{
+    //     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
+    //     extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
+    //   } 
+    // } 
+    // else{
     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}  
   }
 
   cleanAllInputs = () =>{
@@ -29,21 +37,26 @@ class QuestionsForm extends Component {
   }
 
   componentDidMount() {
-      if(this.props.question !== undefined && this.props.question !== null){    
-        let question = this.props.question;
-        console.log(this.props.question);  
-        this.setState({title: question.Title, questionBody: question.QuestionBody, answers: question.Answers,
-        extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType});
-        if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
-        else {
-          let inputsNumber = 0;
-          for (let index = 0; index < question.Answers.length; index++) {
-            inputsNumber++;          
-          }
-          this.setState({inputsNum: inputsNumber});
-        }
+    if(this.props.match.params.id !== undefined && this.props.match.params.id !== null){
+      console.log("props ", this.props.location);
+      let question = this.props.location.formProps.currentQuestion;
+      console.log("Question: ", question);
+      this.setState({title: ""});
     }
   }
+    //   if(this.props.question !== undefined && this.props.question !== null){    
+    //     let question = this.props.question;
+    //     this.setState({title: question.Title, questionBody: question.QuestionBody, answers: question.Answers,
+    //     extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType});
+    //     if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
+    //     else {
+    //       let inputsNumber = 0;
+    //       for (let index = 0; index < question.Answers.length; index++) {
+    //         inputsNumber++;          
+    //       }
+    //       this.setState({inputsNum: inputsNumber});
+    //     }
+    // }
   
   onAddQuestion = async (question) => {
     await QuestionService.addQuestion(question);
@@ -199,6 +212,11 @@ class QuestionsForm extends Component {
   }
 
   render() {
+    console.log("rendered");
+    let question = this.props.currentQuestion;
+      console.log("Question: ", question);
+      let question2 = this.state.currentQuestion;
+      console.log("Question2: ", question2);
     const { title, errors, questionBody, extraInfo, tags } = this.state;
     return (
       <div>
@@ -273,4 +291,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { moveQuestion })(QuestionsForm);
+export default connect(mapStateToProps, { fetchQuestion })(QuestionsForm);

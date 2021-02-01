@@ -33,10 +33,11 @@ class QuestionsTable extends Component {
                     <td>{question.Id}</td>                  
                     <td><QuestionBox question={question} /></td>
                     <td>{question.LastUpdated}</td>
-                    
                     <td>{question.QuestionType}</td>
                     <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
-                    <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
+                    <td> <Link className="ui button" 
+                       to={{pathname: `/questionsform/${question.Id}`, formProps: {currentQuestion: question}}}>
+                       Edit</Link></td>
                 </tr>)
             }
             )
@@ -50,7 +51,9 @@ class QuestionsTable extends Component {
                 <td>{question.LastUpdated}</td>
                 <td>{question.QuestionType}</td>
                 <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
-                <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
+                <td> <Link className="ui button" 
+                       to={{pathname: `/questionsform/${question.Id}`, formProps: {currentQuestion: question}}}>
+                       Edit</Link></td>
             </tr>)
         })
     }
@@ -82,9 +85,9 @@ togglePopup=(question)=> {
     render() { 
         return ( 
             <div>
-              <div>
-                    <input id="filterInput" value={this.state.filterTag} onChange={this.updateFiletrState} />
-                    <button onClick={this.FilerQuestions}>Search</button>
+                <div>
+                   <label htmlFor="filterInput">Search by Tag</label>
+                   <input id="filterInput" value={this.state.filterTag} onChange={this.updateFiletrState} />
                 </div>
                 <div className="field">
                     <label className="white">All Questions</label>

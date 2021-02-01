@@ -41,6 +41,7 @@ export const addAnswer = (answer) => {
 }
 export const moveQuestion = (id) => async dispatch=> {
     const response = await QuestionService.getQuestionById(id);
+    console.log("in actions", response.data);
     if (response.status == 200) {
         dispatch({ type: "MOVE_QUESTION", payload: response.data });
     }
