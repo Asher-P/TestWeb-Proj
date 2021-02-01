@@ -7,7 +7,8 @@ function ChoiceAnswerInput(props) {
             <input id={props.Id} onChange={props.answerChanged} name = "allAnswers"/>
             <div>
                 <label>
-                    <input type="radio" id={props.Id - 1} name="correctAnswers" onChange={props.correctAnswerChanged}/>
+                    <input type="radio" id={props.Id - 1} name="correctAnswers" onChange={props.correctAnswerChanged}
+                    value = {props.value}/>
                     Correct Answer 
                 </label>
             </div>

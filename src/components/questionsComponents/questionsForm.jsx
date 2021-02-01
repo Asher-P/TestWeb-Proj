@@ -6,11 +6,13 @@ import Popup from '../popup-component/Popup'
 import QuestionService from "../../services/questionsService"
 import { connect } from 'react-redux';
 import { moveQuestion } from "../../actions";
+import { render } from "@testing-library/react";
 
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
-    if(props.match.params.id !== undefined) props.moveQuestion(props.match.params.id);
+    if(props.match.params.id !== undefined && props.match.params.id !== null) props.moveQuestion(props.match.params.id); 
+ 
     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
     extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
   }
@@ -28,7 +30,8 @@ class QuestionsForm extends Component {
 
   componentDidMount() {
       if(this.props.question !== undefined && this.props.question !== null){    
-        let question = this.props.question;  
+        let question = this.props.question;
+        console.log(this.props.question);  
         this.setState({title: question.Title, questionBody: question.QuestionBody, answers: question.Answers,
         extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType});
         if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
@@ -46,11 +49,6 @@ class QuestionsForm extends Component {
     await QuestionService.addQuestion(question);
   };
 
-  getQuestionByID = async (Id) => {
-    const { data: Question } = await QuestionService.getQuestionById(Id);
-    this.setState({question: Question});
-  }
-
   //////////start of onChange events\\\\\\\\\\
   answerChanged = (e) =>{
     let allAnswers = [...this.state.answers];
@@ -59,50 +57,29 @@ class QuestionsForm extends Component {
       allAnswers[answerId - 1] = {Content: "", isCorrect: false}
     }
     allAnswers[answerId - 1].Content = e.currentTarget.value;
-    this.setState({answers: allAnswers})
-    console.log(allAnswers);
+    console.log(allAnswers[answerId - 1].Content);
+    this.setState({answers: allAnswers});
  }
 
  correctChoiceAnswerChanged = (e) =>{
-   let answerIndex = e.currentTarget.id;
-   let allAnswers = [...this.state.answers];   
-   for (let index = 0; index < allAnswers.length; index++) {
-    if(allAnswers[index] === undefined){
-      allAnswers[index] = {Content: "", isCorrect: false}
-    }
-    else{
-      let content = allAnswers[index].Content;
-      allAnswers[index] = {Content: content, isCorrect: false}
-    }
-  }  
-   if(allAnswers[answerIndex] === undefined){
-     allAnswers[answerIndex] = {Content: "", isCorrect: true}
-   }
-   else{
-     let content = allAnswers[answerIndex].Content;
-     allAnswers[answerIndex] = {Content: content, isCorrect: true}    
-   }
-   this.setState({answers: allAnswers});
-   console.log(this.state.answers);
+  let answerIndex = e.currentTarget.id;
+  let allAnswers = [...this.state.answers]; 
+  for (let index = 8; index < 12; index++) {
+    if(allAnswers[index] !== undefined) allAnswers[index].isCorrect = false;
+    else allAnswers[index] = { Content: "", isCorrect: false }
+  }
+  allAnswers[answerIndex].isCorrect = true;
+  this.setState({answers: allAnswers});
  }
 
  correctMultiAnswerChanged = (e) =>{
   let answerIndex = e.currentTarget.id;
   let allAnswers = [...this.state.answers];
-  if(allAnswers[answerIndex] === undefined){
-    allAnswers[answerIndex] = {Content: "", isCorrect: true}
-    this.setState({answers: allAnswers});
-  }
-  else{
-    let answer = allAnswers[answerIndex];
-    if(!answer.isCorrect){
-      allAnswers[answerIndex] = {Content: answer.Content, isCorrect: true}
-    }
-    else{
-      allAnswers[answerIndex] = {Content: answer.Content, isCorrect: false}
-    }   
-    this.setState({answers: allAnswers});
-  }
+  let answer = allAnswers[answerIndex];
+  if(answer === undefined) allAnswers[answerIndex] = {Content: "", isCorrect: true}
+  else allAnswers[answerIndex] = {Content: answer.Content, isCorrect: !answer.isCorrect} 
+  this.setState({answers: allAnswers});
+  console.log("all answers: ", allAnswers);
  }
 
   typeChanged = (e) =>{
@@ -199,17 +176,15 @@ class QuestionsForm extends Component {
     if (errors){ return; }
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
       Answers: this.state.answers, ExtraInfo: this.state.extraInfo,
-      Tags: tagsArr, QuestionType: this.state.questionType, LastUpdated: new Date() };
+      Tags: tagsArr, QuestionType: this.state.questionType, LastUpdated: new Date().toLocaleDateString() };
     this.onAddQuestion(questionToAdd);
     this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
   };
 
   showCurrentQuestion = () =>{
-    let tags = this.state.tags.trim();
-    tags = tags.split(",");
     const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers, 
-      ExtraInfo: this.state.extraInfo, Tags: tags };
+      ExtraInfo: this.state.extraInfo, Tags: this.state.tags };
     this.togglePopup(question);
   }
 
@@ -258,13 +233,15 @@ class QuestionsForm extends Component {
             <input id="Tags" type="text" value={tags} onChange={this.tagsChanged}/>
           </div>
           <div hidden={false} id="choiceQ">
-              <ChoiceQuestion  answerChanged = {this.answerChanged} correctAnswerChanged={this.correctChoiceAnswerChanged}/>
+              <ChoiceQuestion  answerChanged = {this.answerChanged} answers = {this.state.answers}
+              correctAnswerChanged={this.correctChoiceAnswerChanged}/>
               {errors.answers && (
               <div className="alert alert-danger">{errors.answers}</div>
             )}
           </div>
           <div hidden={true} id="multipleChoiceQ">
-              <MultipleChoiceQuestion answerChanged = {this.answerChanged} correctAnswerChanged={this.correctMultiAnswerChanged} updateInputsNum = {this.updateInputsNum}/>
+              <MultipleChoiceQuestion answerChanged = {this.answerChanged} 
+              correctAnswerChanged={this.correctMultiAnswerChanged} updateInputsNum = {this.updateInputsNum}/>
               {errors.answers && (
               <div className="alert alert-danger">{errors.answers}</div>
             )}

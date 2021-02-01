@@ -30,8 +30,11 @@ class QuestionsTable extends Component {
             .map((question, index) => {
                 return (<tr key={question.Id} data-item={question}>
                     <td>{index}</td>
-                    <td>{question.Id}</td>
+                    <td>{question.Id}</td>                  
                     <td><QuestionBox question={question} /></td>
+                    <td>{question.LastUpdated}</td>
+                    
+                    <td>{question.QuestionType}</td>
                     <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
                     <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
                 </tr>)
@@ -44,6 +47,8 @@ class QuestionsTable extends Component {
                 <td>{index}</td>
                 <td>{question.Id}</td>
                 <td><QuestionBox question={question} /></td>
+                <td>{question.LastUpdated}</td>
+                <td>{question.QuestionType}</td>
                 <td> <button className="ui button" onClick={() => this.togglePopup(question)}>Show</button></td>
                 <td> <Link className="ui button" to={`/questionsform/${question.Id}`}>Edit</Link></td>
             </tr>)
@@ -89,6 +94,8 @@ togglePopup=(question)=> {
                                 <th>#</th>
                                 <th>ID</th>
                                 <th>Content</th>
+                                <th>Last Updated</th>
+                                <th>Type</th>
                             </tr>
                         </thead>
                         <tbody>
