@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchTest, moveQuestion, addAnswer } from '../../actions';
 import QuestionPresent from './QuestionPresent';
+import {Link} from 'react-router';
 
 class Exam extends React.Component {
     testId = this.props.match.params.testid;
@@ -14,14 +15,14 @@ class Exam extends React.Component {
     componentDidMount() {
 
     }
-    examDone =()=> this.props.test.questions.length > this.qustionIndex;
+    examNotDone =()=> this.props.test.questions.length > this.qustionIndex;
     startExam(e) {
         this.props.moveQuestion(this.props.test.questions[this.qustionIndex]);
         this.setState({ showQuestions: !this.props.currentQuestion });
     }
     onSubmit = (answer) => {
         this.qustionIndex = this.qustionIndex + 1;
-        if (this.examDone){
+        if (this.examNotDone){
             this.props.moveQuestion(this.props.test.questions[this.qustionIndex]);
         //console.log("props:", this.props);
         }
@@ -29,6 +30,11 @@ class Exam extends React.Component {
         let sendAnswer ={ questionId: this.props.currentQuestion.Id, answer }
         console.log("answer", sendAnswer);
         this.props.addAnswer(sendAnswer);
+        if(!this.examNotDone()){
+            React.ReactDom.render(
+                //<Link><button>submit</button></Link>
+            )
+        }
 
     }
     SubmitExam = (e)=>{
