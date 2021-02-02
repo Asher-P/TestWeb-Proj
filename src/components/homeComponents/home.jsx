@@ -8,8 +8,11 @@ export default class Home extends Component {
       <div className="Home">
         <div className="lander">
           <h1>Home page</h1>
-          <p>WhaleCum!</p>
+          <h2>Welcome!</h2>
           <form>
+            <div>
+              <label>Please Select a Domain</label>
+            </div>
             <Button variant="btn btn-success" onClick={() => history.push('/AllQuestions')}>Show Questions</Button>
           </form>
         </div>

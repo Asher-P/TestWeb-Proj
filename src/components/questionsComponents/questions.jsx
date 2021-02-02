@@ -6,10 +6,10 @@ function Questions() {
     return (
       <div className="container questions">
         <div>
-          <Button variant="btn btn-success" onClick={() => history.push('/QuestionsForm')}>Add a question</Button>
+          <Button variant="btn btn-success" onClick={() => history.push('/questionsform')}>Add a question</Button>
         </div>
         <div>
-          <Button variant="btn btn-success" onClick={() => history.push('/AllQuestions')}>Show all Questions</Button>
+          <Button variant="btn btn-success" onClick={() => history.push('/allquestions')}>Show all Questions</Button>
         </div>
       </div>
     );
