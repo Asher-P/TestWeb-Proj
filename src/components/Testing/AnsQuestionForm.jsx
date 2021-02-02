@@ -76,7 +76,7 @@ class AnsQuestionForm extends React.Component {
 
 
             <div className="nextbtn">
-                <button type="submit">Next</button>
+                {this.props.children? (<button type="submit">Next</button>) : null}
             </div>
         </form>
         )
