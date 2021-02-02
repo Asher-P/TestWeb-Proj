@@ -6,23 +6,13 @@ import Popup from '../popup-component/Popup'
 import QuestionService from "../../services/questionsService"
 import { connect } from 'react-redux';
 import { fetchQuestion } from "../../actions";
-import { render } from "@testing-library/react";
 
 class QuestionsForm extends Component {
   constructor(props){
     super(props);
-    //   if(props.question !== undefined && props.question !== null){
-    //     this.state = {title: props.question.Title, errors: {}, questionBody: props.question.QuestionBody, answers: props.question.Answers, 
-    //     extraInfo: props.question.ExtraInfo, tags: props.question.Tags, inputsNum: 4, questionType: props.question.QuestionType, showPopup:{show: false, content: ""}}
-    //   }       
-    //   else{
-    //     this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    //     extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}
-    //   } 
-    // } 
-    // else{
-    this.state = {title: "", errors: {}, questionBody: "", answers: [ {Content: "", isCorrect: false} ], 
-    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}}  
+    this.state = {title: "", errors: {}, questionBody: "", multiAnswers: [ {Content: "", isCorrect: false} ], 
+    choiceAnswers: [ {Content: "", isCorrect: false} ],
+    extraInfo: "", tags: "", inputsNum: 4, questionType: "Choice", showPopup:{show: false, content: ""}, Index: 13}  
   }
 
   cleanAllInputs = () =>{
@@ -36,77 +26,134 @@ class QuestionsForm extends Component {
     });
   }
 
+  addAnswerInput = () =>{
+    if(this.state.Index <= 16){
+       let input = document.getElementById(this.state.Index);
+       input.hidden = false;
+       this.updateInputsNum(this.state.Index - 8);
+       if(this.state.Index < 16){
+          this.setState({ Index: this.state.Index + 1 });
+       }
+       else{
+          alert("Reached the maximum limit of answers you can add");
+       }
+       console.log("done", input.id);
+    }     
+ }
+
+ removeAnswerInput = () =>{
+    if(this.state.Index >= 13){
+       let input = document.getElementById(this.state.Index);
+       input.hidden = true;
+       this.updateInputsNum(this.state.Index - 9);
+       if(this.state.Index > 13){           
+          this.setState({ Index: this.state.Index - 1 });
+       }
+       else{
+          alert("You can not remove any more answers");
+       }
+    }
+ }
+
   componentDidMount() {
     if(this.props.match.params.id !== undefined && this.props.match.params.id !== null){
-      console.log("props ", this.props.location);
-      let question = this.props.location.formProps.currentQuestion;
-      console.log("Question: ", question);
-      this.setState({title: ""});
+      if(this.props.location.formProps !== undefined){     
+        let question = this.props.location.formProps.currentQuestion;
+        let AddButton = document.getElementById("AddButton");
+        let EditButton = document.getElementById("EditButton");
+        AddButton.hidden = true; 
+        EditButton.hidden = false;
+        this.setState({title: question.Title, questionBody: question.QuestionBody,
+        extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType}); 
+        if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
+        else {
+          this.loadAsMultiChoiceType(question);
+        }
+      }    
     }
   }
-    //   if(this.props.question !== undefined && this.props.question !== null){    
-    //     let question = this.props.question;
-    //     this.setState({title: question.Title, questionBody: question.QuestionBody, answers: question.Answers,
-    //     extraInfo: question.ExtraInfo, tags: question.Tags, questionType: question.QuestionType});
-    //     if(question.QuestionType === "Choice") this.setState({inputsNum: 4});
-    //     else {
-    //       let inputsNumber = 0;
-    //       for (let index = 0; index < question.Answers.length; index++) {
-    //         inputsNumber++;          
-    //       }
-    //       this.setState({inputsNum: inputsNumber});
-    //     }
-    // }
   
+  loadAsMultiChoiceType = (question) =>{
+    let selectElement = document.getElementById("MultiChoiceSelect");
+    let multiple = document.getElementById("multipleChoiceQ");
+    let choice = document.getElementById("choiceQ");
+    choice.hidden = true;
+    multiple.hidden = false;
+    selectElement.selected = true;
+    let inputsNumber = 0;
+    for (let index = 0; index < this.state.multiAnswers; index++) {
+      inputsNumber++;      
+    }
+    for (let index = 4; index < inputsNumber; index++) {
+      let input = document.getElementById(index+9);
+      input.hidden = false;
+    } 
+    this.setState({inputsNum: inputsNumber, Index: inputsNumber + 9});   
+  }
+
   onAddQuestion = async (question) => {
+    console.log("ok great!");
     await QuestionService.addQuestion(question);
   };
 
-  //////////start of onChange events\\\\\\\\\\
-  answerChanged = (e) =>{
-    let allAnswers = [...this.state.answers];
+  onEditQuestion = async (question) => {
+    await QuestionService.editQuestion(question);
+  };
+
+ //|================= start of onChange events =================|
+  multiAnswerChanged = (e) =>{
+    let allAnswers = [...this.state.multiAnswers];
     let answerId = e.currentTarget.id; 
     if(allAnswers[answerId - 1] === undefined){ //id is higher than the index by one
       allAnswers[answerId - 1] = {Content: "", isCorrect: false}
     }
     allAnswers[answerId - 1].Content = e.currentTarget.value;
-    console.log(allAnswers[answerId - 1].Content);
-    this.setState({answers: allAnswers});
+    this.setState({multiAnswers: allAnswers});
  }
 
+ choiceAnswerChanged = (e) =>{
+  let allAnswers = [...this.state.choiceAnswers];
+  let answerIndex = e.currentTarget.id - 8; 
+  if(allAnswers[answerIndex] === undefined){ //id is higher than the index by one
+    allAnswers[answerIndex] = {Content: "", isCorrect: false}
+  }
+  allAnswers[answerIndex].Content = e.currentTarget.value;
+  this.setState({choiceAnswers: allAnswers});
+}
+
  correctChoiceAnswerChanged = (e) =>{
-  let answerIndex = e.currentTarget.id;
-  let allAnswers = [...this.state.answers]; 
-  for (let index = 8; index < 12; index++) {
+  let answerIndex = e.currentTarget.id - 8;
+  let allAnswers = [...this.state.choiceAnswers]; 
+  for (let index = 0; index < 4; index++) {
     if(allAnswers[index] !== undefined) allAnswers[index].isCorrect = false;
     else allAnswers[index] = { Content: "", isCorrect: false }
   }
   allAnswers[answerIndex].isCorrect = true;
-  this.setState({answers: allAnswers});
+  console.log("all answers", allAnswers);
+  this.setState({choiceAnswers: allAnswers});
  }
 
  correctMultiAnswerChanged = (e) =>{
   let answerIndex = e.currentTarget.id;
-  let allAnswers = [...this.state.answers];
+  let allAnswers = [...this.state.multiAnswers];
   let answer = allAnswers[answerIndex];
   if(answer === undefined) allAnswers[answerIndex] = {Content: "", isCorrect: true}
   else allAnswers[answerIndex] = {Content: answer.Content, isCorrect: !answer.isCorrect} 
-  this.setState({answers: allAnswers});
+  this.setState({multiAnswers: allAnswers});
   console.log("all answers: ", allAnswers);
  }
 
   typeChanged = (e) =>{
     let multiple = document.getElementById("multipleChoiceQ");
     let choice = document.getElementById("choiceQ");
-    this.setState( { answers: [ { Content: "", isCorrect: false } ]});
     this.cleanAllInputs();
     if(e.currentTarget.value === "Choice"){
-      this.setState({inputsNum: 4, questionType: "Choice"});
+      this.setState({inputsNum: 4, questionType: "Choice", choiceAnswers: [ { Content: "", isCorrect: false } ]});
       multiple.hidden = true;
       choice.hidden = false;
     }
     else{
-      this.setState({questionType: "MultipleChoice"});
+      this.setState({questionType: "MultipleChoice", multiAnswers: [ { Content: "", isCorrect: false } ]});
       multiple.hidden = false;
       choice.hidden = true;
     }
@@ -127,7 +174,7 @@ class QuestionsForm extends Component {
   tagsChanged = (e) =>{
     this.setState({tags: e.currentTarget.value, errors: {}});
   }
-  //////////end of onChange events\\\\\\\\\\
+//|================= end of onChange events =================|
 
   //////////Validation\\\\\\\\\\
   validateQuestion = () => {
@@ -139,10 +186,10 @@ class QuestionsForm extends Component {
   };
 
   validateAllAnswers = () =>{
-    let allAnswers = this.state.answers;
+    let allAnswers = [];
     let count = 0;
-    console.log(this.state.questionType);
     if(this.state.questionType === "MultipleChoice"){
+      allAnswers = this.state.multiAnswers;
       for (let index = 0; index < this.state.inputsNum; index++) {
         if(!this.validateAnswer(allAnswers[index])){
          return false;
@@ -151,7 +198,8 @@ class QuestionsForm extends Component {
      }
     }
     else{
-      for (let index = 9; index < 12; index++) {
+      allAnswers = this.state.choiceAnswers;
+      for (let index = 0; index < allAnswers.length; index++) {
         if(!this.validateAnswer(allAnswers[index])){
          return false;
         } 
@@ -183,20 +231,30 @@ class QuestionsForm extends Component {
   submitQuestion = (e) => {
     e.preventDefault();
     const errors = this.validateQuestion();
-    let tags = this.state.tags.trim();
+    let tags = this.state.tags.toString();
+    tags = tags.trim();
     let tagsArr = tags.split(",");
+    console.log(this.state.inputsNum);
     this.setState({ errors: errors || {} });
     if (errors){ return; }
+    let answers = []
+    if(this.state.questionType === "Choice") answers = this.state.choiceAnswers;
+    else answers = this.state.multiAnswers;
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
-      Answers: this.state.answers, ExtraInfo: this.state.extraInfo,
+      Answers: answers, ExtraInfo: this.state.extraInfo,
       Tags: tagsArr, QuestionType: this.state.questionType, LastUpdated: new Date().toLocaleDateString() };
-    this.onAddQuestion(questionToAdd);
+    if(this.props.location.formProps === undefined || this.props.location.formProps === null) this.onAddQuestion(questionToAdd);
+    else this.onEditQuestion(questionToAdd, this.props.match.params.id);
     this.cleanAllInputs();
-    this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", answers: [ {Content: "", isCorrect: false} ]});
+    this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", multiAnswers: [ {Content: "", isCorrect: false} ], 
+    choiceAnswers: [ {Content: "", isCorrect: false} ]});
   };
 
   showCurrentQuestion = () =>{
-    const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: this.state.answers, 
+    let answers = [];
+    if(this.state.questionType === "Choice") answers = this.state.choiceAnswers;
+    else answers = this.state.multiAnswers;
+    const question = { Title: this.state.title, QuestionBody: this.state.questionBody, Answers: answers, 
       ExtraInfo: this.state.extraInfo, Tags: this.state.tags };
     this.togglePopup(question);
   }
@@ -212,11 +270,6 @@ class QuestionsForm extends Component {
   }
 
   render() {
-    console.log("rendered");
-    let question = this.props.currentQuestion;
-      console.log("Question: ", question);
-      let question2 = this.state.currentQuestion;
-      console.log("Question2: ", question2);
     const { title, errors, questionBody, extraInfo, tags } = this.state;
     return (
       <div>
@@ -251,20 +304,22 @@ class QuestionsForm extends Component {
             <input id="Tags" type="text" value={tags} onChange={this.tagsChanged}/>
           </div>
           <div hidden={false} id="choiceQ">
-              <ChoiceQuestion  answerChanged = {this.answerChanged} answers = {this.state.answers}
-              correctAnswerChanged={this.correctChoiceAnswerChanged}/>
-              {errors.answers && (
-              <div className="alert alert-danger">{errors.answers}</div>
+              <ChoiceQuestion  answerChanged = {this.choiceAnswerChanged} correctAnswerChanged={this.correctChoiceAnswerChanged}/>
+              {errors.choiceAnswers && (
+              <div className="alert alert-danger">{errors.choiceAnswers}</div>
             )}
           </div>
           <div hidden={true} id="multipleChoiceQ">
-              <MultipleChoiceQuestion answerChanged = {this.answerChanged} 
-              correctAnswerChanged={this.correctMultiAnswerChanged} updateInputsNum = {this.updateInputsNum}/>
-              {errors.answers && (
-              <div className="alert alert-danger">{errors.answers}</div>
+              <MultipleChoiceQuestion answerChanged = {this.multiAnswerChanged} addAnswerInput = {this.addAnswerInput}
+              removeAnswerInput = {this.removeAnswerInput} correctAnswerChanged={this.correctMultiAnswerChanged} 
+              updateInputsNum = {this.updateInputsNum}/>
+              {errors.multiAnswers && (
+              <div className="alert alert-danger">{errors.multiAnswers}</div>
             )}
-          </div>      
+          </div>           
           </form>
+          <input hidden={false} type="button" id="AddButton" onClick={this.submitQuestion} className="btn btn-primary btn-sm" value="Add Question"/>        
+          <input hidden={true} type="button" id="EditButton" onClick={this.submitQuestion} className="btn btn-primary btn-sm" value="Edit Question"/> 
           <div>{this.state.showPopup.show ?
                     <Popup
                         content = {this.state.showPopup.content}
@@ -275,9 +330,7 @@ class QuestionsForm extends Component {
                 }</div>
           <br/>
           <div>
-            <label>
             <input type="button" onClick={this.showCurrentQuestion} value="Show Question"/>
-            </label>
           </div>
       </div>
     );
