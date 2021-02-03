@@ -7,6 +7,7 @@ class QuestionPresent extends React.Component {
     {
         super(props);
     }
+
     onSubmit=(answer)=>{
         this.props.onSubmit(answer);
     }
@@ -26,7 +27,7 @@ class QuestionPresent extends React.Component {
                         <h4>{this.props.question?.ExtraInfo}</h4>
                     </div>
                     <div>
-                        <AnsQuestionForm onSubmit={this.onSubmit}>{this.props.question?.Answers}</AnsQuestionForm>
+                        <AnsQuestionForm onSubmit={this.onSubmit}>{this.props.question}</AnsQuestionForm>
                     </div>
             </div>
         )
