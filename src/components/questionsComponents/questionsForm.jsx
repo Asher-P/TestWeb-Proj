@@ -81,13 +81,15 @@ class QuestionsForm extends Component {
     multiple.hidden = false;
     selectElement.selected = true;
     let inputsNumber = 0;
-    for (let index = 0; index < this.state.multiAnswers; index++) {
+    for (let index = 0; index < question.Answers.length; index++) {
       inputsNumber++;      
     }
     for (let index = 4; index < inputsNumber; index++) {
       let input = document.getElementById(index+9);
       input.hidden = false;
-    } 
+      console.log("done:", input.id);
+    }
+    console.log("inputs: ", inputsNumber, inputsNumber+9); 
     this.setState({inputsNum: inputsNumber, Index: inputsNumber + 9});   
   }
 
@@ -96,8 +98,9 @@ class QuestionsForm extends Component {
     await QuestionService.addQuestion(question);
   };
 
-  onEditQuestion = async (question) => {
-    await QuestionService.editQuestion(question);
+  onEditQuestion = async (question, id) => {
+    console.log("great!");
+    await QuestionService.editQuestion(question, id);
   };
 
  //|================= start of onChange events =================|
@@ -113,7 +116,7 @@ class QuestionsForm extends Component {
 
  choiceAnswerChanged = (e) =>{
   let allAnswers = [...this.state.choiceAnswers];
-  let answerIndex = e.currentTarget.id - 8; 
+  let answerIndex = e.currentTarget.id - 9; 
   if(allAnswers[answerIndex] === undefined){ //id is higher than the index by one
     allAnswers[answerIndex] = {Content: "", isCorrect: false}
   }
@@ -190,6 +193,7 @@ class QuestionsForm extends Component {
     let count = 0;
     if(this.state.questionType === "MultipleChoice"){
       allAnswers = this.state.multiAnswers;
+      console.log("all answers on validation", allAnswers);
       for (let index = 0; index < this.state.inputsNum; index++) {
         if(!this.validateAnswer(allAnswers[index])){
          return false;
@@ -199,6 +203,7 @@ class QuestionsForm extends Component {
     }
     else{
       allAnswers = this.state.choiceAnswers;
+      console.log("all answers on validation", allAnswers);
       for (let index = 0; index < allAnswers.length; index++) {
         if(!this.validateAnswer(allAnswers[index])){
          return false;
@@ -215,12 +220,12 @@ class QuestionsForm extends Component {
 
   validateAnswer = (answer) =>{
     if(answer === undefined){
-      console.log(answer === undefined);
+      console.log("wait what?",answer === undefined);
        return false; 
     }
     else{
       if(answer.Content.trim() === ""){
-        console.log(answer.Content.trim() === "");
+        console.log("ok what the hell?", answer.Content.trim() === "");
         return false;
       } 
     }
@@ -240,11 +245,18 @@ class QuestionsForm extends Component {
     let answers = []
     if(this.state.questionType === "Choice") answers = this.state.choiceAnswers;
     else answers = this.state.multiAnswers;
+    console.log(answers);
     const questionToAdd = { Title: this.state.title, QuestionBody: this.state.questionBody, 
       Answers: answers, ExtraInfo: this.state.extraInfo,
       Tags: tagsArr, QuestionType: this.state.questionType, LastUpdated: new Date().toLocaleDateString() };
-    if(this.props.location.formProps === undefined || this.props.location.formProps === null) this.onAddQuestion(questionToAdd);
-    else this.onEditQuestion(questionToAdd, this.props.match.params.id);
+      console.log(this.props.location.formProps);
+    if(this.props.location.formProps === undefined || this.props.location.formProps === null){
+      this.onAddQuestion(questionToAdd);
+    } 
+    else {
+      this.onEditQuestion(questionToAdd, this.props.match.params.id);
+      window.location.replace("/questionsform");
+    }
     this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", multiAnswers: [ {Content: "", isCorrect: false} ], 
     choiceAnswers: [ {Content: "", isCorrect: false} ]});

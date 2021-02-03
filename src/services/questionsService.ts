@@ -15,9 +15,9 @@ const QuestionService = {
     return await http.post(serverRoute + "addQuestion", question);
   },
 
-  async editQuestion(question: any, id: any) {
-    console.log("correct");    
+  async editQuestion(question: any, id: any) {    
     let questionToEdit = { question: question, id: id }; 
+    console.log("correct", questionToEdit);  
     return await http.post(serverRoute + "editQuestion", questionToEdit);
   }
 };
