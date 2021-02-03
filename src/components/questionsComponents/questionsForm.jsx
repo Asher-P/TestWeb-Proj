@@ -255,11 +255,11 @@ class QuestionsForm extends Component {
     } 
     else {
       this.onEditQuestion(questionToAdd, this.props.match.params.id);
-      window.location.replace("/questionsform");
     }
     this.cleanAllInputs();
     this.setState({ title: "", questionBody: "", extraInfo: "", tags: "", multiAnswers: [ {Content: "", isCorrect: false} ], 
     choiceAnswers: [ {Content: "", isCorrect: false} ]});
+    window.location.replace("/questionsform");
   };
 
   showCurrentQuestion = () =>{
