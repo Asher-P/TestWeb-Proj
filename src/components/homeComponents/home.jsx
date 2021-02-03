@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import history from '../../History/history';
-import { Button } from 'react-bootstrap';
+import history from "../../History/history";
+import { Button } from "react-bootstrap";
 
 export default class Home extends Component {
   render() {
@@ -11,9 +11,13 @@ export default class Home extends Component {
           <h2>Welcome!</h2>
           <form>
             <div>
-              <label>Please Select a Domain</label>
+              <label>Please Select an organization</label>
             </div>
-            <Button variant="btn btn-success" onClick={() => history.push('/AllQuestions')}>Show Questions</Button>
+            <Button
+              variant="btn btn-success"
+              onClick={() => history.push("/AllQuestions")}>
+              Show Questions
+            </Button>
           </form>
         </div>
       </div>

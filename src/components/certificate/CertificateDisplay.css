@@ -1,22 +1,31 @@
-.CertificateDisplay{
-  background-color:white
+.CertificateDisplay {
+  background-color: white;
 }
-.div1{
-    width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878
+.div1 {
+  width: 800px;
+  height: 600px;
+  padding: 20px;
+  text-align: center;
+  border: 10px solid #787878;
 }
-.div2{
-    width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878
+.div2 {
+  width: 750px;
+  height: 550px;
+  padding: 20px;
+  text-align: center;
+  border: 5px solid #787878;
 }
-.span1{
-    font-size:50px; font-weight:bold
+.span1 {
+  font-size: 50px;
+  font-weight: bold;
 }
-.span2{
-    font-size:25px
+.span2 {
+  font-size: 25px;
 }
-.span3{
-    font-size:30px
+.span3 {
+  font-size: 30px;
 }
 
-.span5{
-    font-size:20px
+.span5 {
+  font-size: 20px;
 }
