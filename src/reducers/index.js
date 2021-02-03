@@ -5,6 +5,7 @@ import questionReducer from "./questionReducer";
 import questionsSelectReducer from "./questionsSelectReducer";
 import testReducer from "./testReducer";
 import currentQuestionReducer from "./currentQuestion";
+import organizationReducer from "./organizationsReducer";
 
 export default combineReducers({
   form: formReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   questionsSelect: questionsSelectReducer,
   currentQuestion: currentQuestionReducer,
   answers: answerReducer,
+  organizations: organizationReducer,
 });

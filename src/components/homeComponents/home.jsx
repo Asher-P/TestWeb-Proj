@@ -1,8 +1,20 @@
 import React, { Component } from "react";
-import history from "../../History/history";
-import { Button } from "react-bootstrap";
+import { fetchOrganizations } from "../../actions";
+import { connect } from "react-redux";
 
-export default class Home extends Component {
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    props.fetchOrganizations();
+    this.state = {
+      organizations: [],
+    };
+  }
+
+  showOrganizations = (e) => {
+    console.log(this.props.organizations);
+  };
+
   render() {
     return (
       <div className="Home">
@@ -12,15 +24,25 @@ export default class Home extends Component {
           <form>
             <div>
               <label>Please Select an organization</label>
+              <select></select>
             </div>
-            <Button
-              variant="btn btn-success"
-              onClick={() => history.push("/AllQuestions")}>
-              Show Questions
-            </Button>
+            <div>
+              <input
+                type="button"
+                onClick={this.showOrganizations}
+                value="Show All"
+              />
+            </div>
           </form>
         </div>
       </div>
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    organizations: state.organizations,
+  };
+};
+
+export default connect(mapStateToProps, { fetchOrganizations })(Home);
