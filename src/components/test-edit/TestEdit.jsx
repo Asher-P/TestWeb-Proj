@@ -6,13 +6,14 @@ import {
   fetchTest,
   fetchQuestion,
   fetchQuestions,
+  clearselectQuestions
 } from "../../actions";
 import FormInputs from "../test-form/FormInputs";
 import ReactDOM from "react-dom";
 import QuestionBox from "../question-box-component/QuestionBox";
 import Popup from "../popup-component/Popup";
 import TestsService from "../../services/testsService";
-import QuestionService from "../../services/questionsService";
+import Navigation from "../Navigation/navigation";
 
 function ColorRow(e) {
   let TR = e.target;
@@ -20,6 +21,10 @@ function ColorRow(e) {
     TR = TR.parentNode;
   }
   console.log("TR", TR);
+  console.log(TR.classList.contains("orange"));
+  if(TR.classList.contains("orange"))
+  TR.classList.remove("orange");
+
   if (TR.classList.contains("green")) {
     TR.classList.remove("green");
     /*console.log("disable")*/
@@ -45,7 +50,7 @@ class TestEdit extends React.Component {
 
         this.state = { dataTable: [], Test: {}, filterTag: "", questions: [], questionsSelected: [], showPopup: { show: false, content: null } };
         //console.log("test",this.state.Test); 
-
+        this.props.clearselectQuestions();
 
     }
 
@@ -67,7 +72,7 @@ class TestEdit extends React.Component {
         //console.log("TR",TRList)
         //console.log(TRList[0]);
         if(TRList.length!=0)
-            TRList[0].classList.add("green");
+            TRList[0].classList.add("orange");
         }
 
         )
@@ -105,8 +110,7 @@ class TestEdit extends React.Component {
                             ColorRow(e)
                             this.props.selectQuestions(question);
                         }}
-
-                        className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
+>
                         <td>{index}</td>
                         <td>{question.Id}</td>
                         <td><QuestionBox question={question} /></td>
@@ -121,8 +125,7 @@ class TestEdit extends React.Component {
                     onClick={(e) => {
                         ColorRow(e)
                         this.props.selectQuestions(question);
-                    }}
-                    className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
+                    }}>
                     <td>{index}</td>
                     <td>{question.Id}</td>
                     <td><QuestionBox question={question} /></td>
@@ -150,6 +153,9 @@ class TestEdit extends React.Component {
         //console.log("test data from render", this.props.test?.data);
         return (
             <div className="TestForm">
+                 <Navigation
+        organization={this.props.location.organizationProps}
+      />
                 <FormInputs renderField={this.renderQuestions} onSubmit={this.onSubmit}>
                     {this.test}
                 </FormInputs>
@@ -198,5 +204,6 @@ export default connect(mapStateToProps, {
   selectQuestions,
   fetchQuestion,
   fetchTest,
+  clearselectQuestions,
   fetchQuestions,
 })(TestEdit);

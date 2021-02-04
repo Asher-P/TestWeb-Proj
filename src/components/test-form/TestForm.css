@@ -4,6 +4,9 @@
 .green {
   background: green;
 }
+.orange {
+  background: orange;
+}
 tr:hover {
   background: green;
 }

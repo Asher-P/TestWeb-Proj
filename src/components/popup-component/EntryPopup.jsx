@@ -13,7 +13,7 @@ function EntryPopup(props) {
           <Link
             to={{
               pathname: `/home`,
-              organizationProps: { organization: props.organization },
+              organizationProps: props.organization ,
             }}>
             Yes
           </Link>

@@ -6,6 +6,7 @@ import QuestionsForm from "../questionsComponents/questionsForm";
 import TestList from "../tests-list-componenet/TestList";
 import TestForm from "../test-form/TestForm";
 import Home from "../homeComponents/home";
+import OrganizationHome from "../homeComponents/organizationHome";
 import History from "../../History/history";
 import TestNav from "../testsNav/TestNav";
 import TestEdit from "../test-edit/TestEdit";
@@ -19,6 +20,7 @@ export default class Routes extends Component {
             <Router history={History}>
                 <Switch>
                     <Route path="/" exact component={Home} />
+          <Route path="/home" exact component={OrganizationHome} />
                     <Route exact path="/questions" component={Questions} />
                     <Route path="/questionsform/:id?" component={QuestionsForm} />
                     <Route exact path="/allquestions" component={QuestionsTable} />

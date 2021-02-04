@@ -6,10 +6,10 @@ function OrganizationHome(props) {
   return (
     <div>
       <Navigation
-        organization={props.location.organizationProps.organization}
+        organization={props.location.organizationProps}
       />
       <div>
-        <h1>Welcome to {props.location.organizationProps.organization.Name}</h1>
+        <h1>Welcome to {props.location.organizationProps.Name}</h1>
         <p>Feel free to explore the site!</p>
       </div>
     </div>

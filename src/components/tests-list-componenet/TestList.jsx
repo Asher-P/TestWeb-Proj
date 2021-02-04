@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchTests } from "../../actions";
+import { fetchTests, clearselectQuestions } from "../../actions";
 import { BrowserRouter as Router, Link, useRouteMatch } from "react-router-dom";
-import TestEdit from "../test-edit/TestEdit";
+import Navigation from "../Navigation/navigation";
 
 class TestList extends React.Component {
     
@@ -10,6 +10,7 @@ class TestList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { data: [] };
+        this.props.clearselectQuestions();
     }
      copyToClipboard(text) {
             var dummy = document.createElement("textarea");
@@ -68,6 +69,9 @@ class TestList extends React.Component {
   render() {
     return (
       <div className="TestList">
+         <Navigation
+        organization={this.props.location.organizationProps}
+      />
         <div>
           <table className="ui table">
             <thead>
@@ -93,4 +97,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchTests })(TestList);
+export default connect(mapStateToProps, { fetchTests,clearselectQuestions })(TestList);
