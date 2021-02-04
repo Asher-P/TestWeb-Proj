@@ -1,18 +1,44 @@
 import React, { Component } from "react";
 import { fetchOrganizations } from "../../actions";
 import { connect } from "react-redux";
+import EntryPopup from "../popup-component/EntryPopup";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     props.fetchOrganizations();
     this.state = {
-      organizations: [],
+      currentOrganization: undefined,
+      showPopup: { show: false },
     };
   }
 
-  showOrganizations = (e) => {
-    console.log(this.props.organizations);
+  togglePopup = () => {
+    this.setState({
+      showPopup: { show: !this.state.showPopup.show },
+    });
+  };
+
+  showPopupWindow = (e) => {
+    if (
+      this.state.currentOrganization === undefined ||
+      this.state.currentOrganization === null
+    ) {
+      alert("Please choose an organization");
+      return;
+    } else {
+      console.log(this.state.currentOrganization);
+      this.togglePopup();
+    }
+  };
+
+  organizationChanged = (e) => {
+    let organizations = this.props.organizations;
+    for (let index = 0; index < organizations.length; index++) {
+      if (organizations[index].Id === Number(e.currentTarget.value)) {
+        this.setState({ currentOrganization: organizations[index] });
+      }
+    }
   };
 
   render() {
@@ -24,15 +50,25 @@ class Home extends Component {
           <form>
             <div>
               <label>Please Select an organization</label>
-              <select></select>
+              <select onChange={this.organizationChanged}>
+                <option value={1}>Sela</option>
+                <option value={2}>Microsoft</option>
+                <option value={3}>Google</option>
+              </select>
             </div>
             <div>
-              <input
-                type="button"
-                onClick={this.showOrganizations}
-                value="Show All"
-              />
+              {this.state.showPopup.show ? (
+                <EntryPopup
+                  organization={this.state.currentOrganization}
+                  closePopup={() => this.togglePopup()}
+                />
+              ) : null}
             </div>
+            <input
+              type="button"
+              onClick={this.showPopupWindow}
+              value="Continue"
+            />
           </form>
         </div>
       </div>
