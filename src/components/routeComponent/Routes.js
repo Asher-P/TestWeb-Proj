@@ -11,6 +11,7 @@ import TestNav from "../testsNav/TestNav";
 import TestEdit from "../test-edit/TestEdit";
 import Exam from "../Testing/Exam";
 import CertificateDisplay from "../certificate/CertificateDisplay";
+import ShowAnswers from "../Testing/ShowAnswers";
 
 export default class Routes extends Component {
     render() {
@@ -32,6 +33,7 @@ export default class Routes extends Component {
                         <h3>Please select a topic.</h3>
                     </Route>
                     <Route path={"/CertificateDisplay"} component={CertificateDisplay}/>
+                    <Route path={"/showanswers"} component={ShowAnswers}/>
                 </Switch>
             </Router>
         )

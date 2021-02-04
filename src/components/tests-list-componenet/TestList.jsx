@@ -43,7 +43,12 @@ class TestList extends React.Component {
                     <td>
 
                         <div>
-                            <Link to={`edittest/${t.Id}`}><button className="ui button">Edit</button></Link>
+                        <Link to={
+                    {
+                        pathname: `edittest/${t.Id}`, test: t
+                        
+                    }
+                }><button className="ui button">Edit</button></Link>
                         </div>
                     </td>
                 </tr>)

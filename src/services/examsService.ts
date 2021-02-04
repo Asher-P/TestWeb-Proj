@@ -5,10 +5,10 @@ import http from "./httpService";
   
   const ExamsService = {
     async getAllExams() {
-      return await (await http.get(serverRoute + "gettests"));
+      return await (await http.get(serverRoute + "getexams"));
     },
     async getExamById(id:string) {
-      return await (await http.get(serverRoute + `gettestbyid/${id}`));
+      return await (await http.get(serverRoute + `getexambyid/${id}`));
     },
 
     async addExam(exam: any) {

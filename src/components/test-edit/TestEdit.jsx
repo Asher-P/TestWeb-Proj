@@ -30,19 +30,18 @@ function ColorRow(e) {
 
 class TestEdit extends React.Component {
     testId = this.props.match.params.testId;
-    test = null;
+    test = this.props.location.test;
     constructor(props) {
         super(props);
-        console.log("props", props);
-        console.log("testId", this.testId)
+        console.log("test", this.test);
+        console.log("props", this.props)
+        this.props.fetchQuestions();
+        //  this.test.questions?.forEach(q =>{
+        //      console.log("select", q);
+        //      this.props.selectQuestions(q);
+        //  })
+        
 
-
-        // TestsService.getTestById(myParam).then(res=>{
-        //     this.setState({Test: res.data});
-        //     console.log(this.state.Test);
-        //})
-
-        this.questionsRef = React.createRef();
         this.state = { dataTable: [], Test: {}, filterTag: "", questions: [], questionsSelected: [], showPopup: { show: false, content: null } };
         //console.log("test",this.state.Test); 
 
@@ -50,13 +49,7 @@ class TestEdit extends React.Component {
     }
 
 
-    initQuestions = () => {
-        this.props.questions.then(res => {
-            this.setState({ questions: res.data });
-            // console.log(this.state);
-        })
-    }
-
+ 
     togglePopup = (question) => {
         this.setState({
             showPopup: { show: !this.state.showPopup.show, content: question }
@@ -65,17 +58,14 @@ class TestEdit extends React.Component {
 
 
     componentDidMount() {
-        this.props.fetchQuestions();
-        let res = this.props.fetchTest(this.testId);
-        console.log("res", res);
-        this.props.test.questions?.forEach(q =>{
-            this.props.selectQuestions(this.props.fetchQuestion(q));
-        })
-        this.props.test.questions?.map(q => {
+        let res = this.test;
+        //console.log("res", res);
+        
+        this.test.questions?.map(q => {
             let TRList = window.document.getElementsByName(q.toString());
-            {/*console.log("TR",TRList)
-        console.log(TRList[0]);*/}
-        if(TRList)
+        //console.log("TR",TRList)
+        //console.log(TRList[0]);
+        if(TRList.length!=0)
             TRList[0].classList.add("green");
         }
 
@@ -88,10 +78,10 @@ class TestEdit extends React.Component {
 
     onSubmit = (test) => {
         test = { ...test, questions: this.props.selectedQuestions.map(q => q.Id) };
-        console.log("test", test);
+        console.log("test in edit", test);
         alert("Test successfully created");
         TestsService.editTest(test);
-        //window.location.reload();
+        window.location.pathname="/testlist";
     }
     checkTags = (tag) => {
         const filterTags = this.state.filterTag.split(",");
@@ -131,7 +121,6 @@ class TestEdit extends React.Component {
                         ColorRow(e)
                         this.props.selectQuestions(question);
                     }}
-                    ref={this.questionsRef}
                     className={(this.props.selectedQuestions.find(q => q.Id === question.Id)) ? "green" : ""}>
                     <td>{index}</td>
                     <td>{question.Id}</td>
@@ -144,9 +133,7 @@ class TestEdit extends React.Component {
     }
 
     componentDidUpdate() {
-        this.test = this.props.test;
-
-        console.log("test", this.props.test);
+        //console.log("test", this.test);
        
     }
     updateFiletrState = () => {
@@ -163,7 +150,7 @@ class TestEdit extends React.Component {
         return (
             <div className="TestForm">
                 <FormInputs renderField={this.renderQuestions} onSubmit={this.onSubmit}>
-                    {this.props.test}
+                    {this.test}
                 </FormInputs>
                 <div>
                     <input id="filterInput" value={this.state.filterTag} onChange={this.updateFiletrState} />

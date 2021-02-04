@@ -1,5 +1,6 @@
 import TestsService from '../services/testsService'
 import QuestionService from '../services/questionsService'
+import ExamsService from '../services/examsService'
 export const selectQuestions = (question) => {
     return {
         type: "SELECT_QUESTIONS",
@@ -8,6 +9,7 @@ export const selectQuestions = (question) => {
 }
 export const fetchQuestions = () => async dispatch => {
     const response = await QuestionService.getAllQuestions();
+    console.log("fetchQuestions",response.data);
     dispatch(({ type: "FETCH_QUESTIONS", payload: response.data }));
 }
 
@@ -31,6 +33,10 @@ export const fetchTest = (id) => async dispatch => {
     const response = await TestsService.getTestById(id);
     dispatch({ type: "FETCH_TEST", payload: response.data });
 }
+export const fetchExam = (id) => async dispatch => {
+    const response = await ExamsService.getExamById(id);
+    dispatch({ type: "FETCH_EXAM", payload: response.data });
+}
 
 export const fetchTests = () => async dispatch => {
     const response = await TestsService.getAllTests();
@@ -41,7 +47,6 @@ export const addAnswer = (answer) => {
 }
 export const moveQuestion = (id) => async dispatch=> {
     const response = await QuestionService.getQuestionById(id);
-    console.log("in actions", response.data);
     if (response.status == 200) {
         dispatch({ type: "MOVE_QUESTION", payload: response.data });
     }

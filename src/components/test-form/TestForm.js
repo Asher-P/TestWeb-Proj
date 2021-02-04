@@ -57,7 +57,7 @@ class TestForm extends React.Component {
         test = { ...test, questions: this.props.selectedQuestions.map(q => q.Id) };
         alert("Test successfully created");
         TestsSerevice.addTest(test);
-        console.log(test);
+        console.log("test from testform",test);
         window.location.reload();
     }
     

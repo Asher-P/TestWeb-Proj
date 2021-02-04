@@ -5,6 +5,8 @@ import questionReducer from './questionReducer'
 import questionsSelectReducer from './questionsSelectReducer'
 import testReducer from './testReducer';
 import currentQuestionReducer from './currentQuestion';
+import currentExamReducer from './currentExamReducer';
+
 
 export default combineReducers({
 form: formReducer,
@@ -13,4 +15,5 @@ test: testReducer,
 questionsSelect: questionsSelectReducer,
 currentQuestion: currentQuestionReducer,
 answers: answerReducer,
+currentExam: currentExamReducer
 })
