@@ -84,9 +84,9 @@ class CertificateDisplay extends React.Component {
                     </div>
                 </div>
             </div>
-
         )
-    }
+  
 }
 
-    export default CertificateDisplay
+}
+export default CertificateDisplay;

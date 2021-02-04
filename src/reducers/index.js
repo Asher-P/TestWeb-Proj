@@ -6,6 +6,7 @@ import questionsSelectReducer from './questionsSelectReducer'
 import testReducer from './testReducer';
 import currentQuestionReducer from './currentQuestion';
 import currentExamReducer from './currentExamReducer';
+import organizationReducer from "./organizationsReducer";
 
 
 export default combineReducers({
@@ -15,5 +16,6 @@ test: testReducer,
 questionsSelect: questionsSelectReducer,
 currentQuestion: currentQuestionReducer,
 answers: answerReducer,
+organizations: organizationReducer,
 currentExam: currentExamReducer
 })

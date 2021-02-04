@@ -1,32 +1,33 @@
-import React from 'react';
-import '../test-form/TestForm.css';
-import { connect } from 'react-redux';
-import { selectQuestions, fetchTest, fetchQuestion, fetchQuestions } from '../../actions'
-import FormInputs from '../test-form/FormInputs';
-import ReactDOM from 'react-dom';
-import QuestionBox from '../question-box-component/QuestionBox';
-import Popup from '../popup-component/Popup'
-import TestsService from '../../services/testsService';
-import QuestionService from '../../services/questionsService';
+import React from "react";
+import "../test-form/TestForm.css";
+import { connect } from "react-redux";
+import {
+  selectQuestions,
+  fetchTest,
+  fetchQuestion,
+  fetchQuestions,
+} from "../../actions";
+import FormInputs from "../test-form/FormInputs";
+import ReactDOM from "react-dom";
+import QuestionBox from "../question-box-component/QuestionBox";
+import Popup from "../popup-component/Popup";
+import TestsService from "../../services/testsService";
+import QuestionService from "../../services/questionsService";
 
 function ColorRow(e) {
-    let TR = e.target;
-    while (TR.tagName != "TR") {
-        TR = TR.parentNode;
-    }
-    console.log("TR", TR);
-    if (TR.classList.contains("green")) {
-        TR.classList.remove("green");
-        /*console.log("disable")*/
-    }
-    else {
-        TR.classList.add("green");
-        /*console.log("enable")*/
-    }
+  let TR = e.target;
+  while (TR.tagName != "TR") {
+    TR = TR.parentNode;
+  }
+  console.log("TR", TR);
+  if (TR.classList.contains("green")) {
+    TR.classList.remove("green");
+    /*console.log("disable")*/
+  } else {
+    TR.classList.add("green");
+    /*console.log("enable")*/
+  }
 }
-
-
-
 
 class TestEdit extends React.Component {
     testId = this.props.match.params.testId;
@@ -182,14 +183,20 @@ class TestEdit extends React.Component {
             </div>
         )
     }
-}
+  }
+
 
 const mapStateToProps = (state) => {
-    return {
-        test: state.test,
-        questions: state.questions,
-        selectedQuestions: state.questionsSelect
-    };
-}
+  return {
+    test: state.test,
+    questions: state.questions,
+    selectedQuestions: state.questionsSelect,
+  };
+};
 
-export default connect(mapStateToProps, { selectQuestions, fetchQuestion, fetchTest, fetchQuestions })(TestEdit);
+export default connect(mapStateToProps, {
+  selectQuestions,
+  fetchQuestion,
+  fetchTest,
+  fetchQuestions,
+})(TestEdit);

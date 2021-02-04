@@ -9,12 +9,11 @@ import http from "./httpService";
     },
     async getExamById(id:string) {
       return await (await http.get(serverRoute + `getexambyid/${id}`));
+      
     },
-
     async addExam(exam: any) {
-      return await http.post(serverRoute + "addexam", exam);
-    },
+        return await http.post(serverRoute + "addexam", exam);
+      },
   };
-  
-  export default ExamsService;
-  
+
+export default ExamsService;

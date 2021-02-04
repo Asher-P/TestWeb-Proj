@@ -1,17 +1,40 @@
 import React, { Component } from "react";
-import { Button } from 'react-bootstrap';
-import history from '../../History/history';
+import { Link } from "react-router-dom";
+import Navigation from "../Navigation/navigation";
 
-function Questions() {
-    return (
-      <div className="container questions">
-        <div>
-          <Button variant="btn btn-success" onClick={() => history.push('/questionsform')}>Add a question</Button>
-        </div>
-        <div>
-          <Button variant="btn btn-success" onClick={() => history.push('/allquestions')}>Show all Questions</Button>
-        </div>
+function Questions(props) {
+  if (props.location.organizationProps.organization === undefined)
+    window.location.replace("/");
+  const organization = props.location.organizationProps.organization;
+  return (
+    <div className="container questions">
+      <Navigation
+        organization={props.location.organizationProps.organization}
+      />
+      <div>
+        <Link
+          to={{
+            pathname: `/questionsform`,
+            organizationProps: {
+              organization: organization,
+            },
+          }}>
+          Add a question
+        </Link>
       </div>
-    );
-  }
+      <div>
+        <Link
+          to={{
+            pathname: `/allquestions`,
+            organizationProps: {
+              organization: organization,
+            },
+          }}>
+          Show all Questions
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default Questions;

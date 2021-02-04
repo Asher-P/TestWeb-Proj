@@ -1,16 +1,14 @@
-import React from 'react';
-import './App.css';
-import Routes from '../routeComponent/Routes';
-import Navigation from '../Navigation/navigation';
+import React from "react";
+import "./App.css";
+import Routes from "../routeComponent/Routes";
+import Home from "../homeComponents/home";
 
 function App() {
-  return (   
+  return (
     <div className="App">
-      <header className="App-header">
-      </header>
+      <header className="App-header"></header>
       <div>
-      <Navigation/>
-      <Routes/>
+        <Routes />
       </div>
     </div>
   );
