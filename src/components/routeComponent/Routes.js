@@ -11,6 +11,7 @@ import TestNav from "../testsNav/TestNav";
 import TestEdit from "../test-edit/TestEdit";
 import Exam from "../Testing/Exam";
 import CertificateDisplay from "../certificate/CertificateDisplay";
+import OrganizationHome from "../homeComponents/organizationHome";
 
 export default class Routes extends Component {
   render() {
@@ -18,6 +19,7 @@ export default class Routes extends Component {
       <Router history={History}>
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/home" exact component={OrganizationHome} />
           <Route exact path="/questions" component={Questions} />
           <Route path="/questionsform/:id?" component={QuestionsForm} />
           <Route exact path="/allquestions" component={QuestionsTable} />

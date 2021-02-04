@@ -20,10 +20,7 @@ class Home extends Component {
   };
 
   showPopupWindow = (e) => {
-    if (
-      this.state.currentOrganization === undefined ||
-      this.state.currentOrganization === null
-    ) {
+    if (this.state.currentOrganization === undefined) {
       alert("Please choose an organization");
       return;
     } else {
@@ -50,7 +47,10 @@ class Home extends Component {
           <form>
             <div>
               <label>Please Select an organization</label>
-              <select onChange={this.organizationChanged}>
+              <select defaultValue="" onChange={this.organizationChanged}>
+                <option value="" disabled={true}>
+                  Choose
+                </option>
                 <option value={1}>Sela</option>
                 <option value={2}>Microsoft</option>
                 <option value={3}>Google</option>

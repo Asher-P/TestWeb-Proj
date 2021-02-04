@@ -4,10 +4,13 @@ import Popup from "../popup-component/Popup";
 import { connect } from "react-redux";
 import { selectQuestions, fetchQuestions } from "../../actions";
 import { Link } from "react-router-dom";
+import Navigation from "../Navigation/navigation";
 
 class QuestionsTable extends Component {
   constructor(props) {
     super(props);
+    if (props.location.organizationProps === undefined)
+      window.location.replace("/");
     props.fetchQuestions();
     this.state = {
       questions: [],
@@ -125,9 +128,13 @@ class QuestionsTable extends Component {
       showPopup: { show: !this.state.showPopup.show, content: question },
     });
   };
+
   render() {
     return (
       <div>
+        <Navigation
+          organization={this.props.location.organizationProps.organization}
+        />
         <div>
           <label htmlFor="filterInput">Search by Tag</label>
           <input
@@ -136,6 +143,18 @@ class QuestionsTable extends Component {
             onChange={this.updateFiletrState}
           />
         </div>
+        {/* <form>
+        <div>
+          <label>Please Select a field</label>
+          <select defaultValue="" onChange={this.fieldChanged}>
+            <option value="" disabled={true}>
+              Choose
+            </option>
+            <option value="all">All Fields</option>
+            {this.renderFields()}
+          </select>
+        </div>
+      </form> */}
         <div className="field">
           <label className="white">All Questions</label>
           <table className="ui celled table">

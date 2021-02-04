@@ -6,6 +6,7 @@ import Popup from "../popup-component/Popup";
 import QuestionService from "../../services/questionsService";
 import { connect } from "react-redux";
 import { fetchQuestion } from "../../actions";
+import Navigation from "../Navigation/navigation";
 
 class QuestionsForm extends Component {
   constructor(props) {
@@ -20,9 +21,12 @@ class QuestionsForm extends Component {
       tags: "",
       inputsNum: 4,
       questionType: "Choice",
+      fields: [],
       showPopup: { show: false, content: "" },
       Index: 13,
     };
+    if (props.location.organizationProps === undefined)
+      window.location.replace("/");
   }
 
   cleanAllInputs = () => {
@@ -87,6 +91,16 @@ class QuestionsForm extends Component {
         }
       }
     }
+    let organization = this.props.location.organizationProps.organization;
+    let currentFields = [];
+    for (let index = 0; index < organization.Fields.length; index++) {
+      currentFields.push({
+        Id: organization.Fields[index].Id,
+        Name: organization.Fields[index].Name,
+        isChecked: false,
+      });
+    }
+    this.setState({ fields: currentFields });
   }
 
   loadAsMultiChoiceType = (question) => {
@@ -129,6 +143,17 @@ class QuestionsForm extends Component {
     }
     allAnswers[answerId - 1].Content = e.currentTarget.value;
     this.setState({ multiAnswers: allAnswers });
+  };
+
+  fieldChecked = (e) => {
+    let currentId = Number(e.currentTarget.id);
+    let fields = this.state.fields;
+    for (let index = 0; index < fields.length; index++) {
+      if (fields[index].Id === currentId) {
+        fields[index].isChecked = !fields[index].isChecked;
+      }
+    }
+    this.setState({ fields: fields });
   };
 
   choiceAnswerChanged = (e) => {
@@ -214,6 +239,12 @@ class QuestionsForm extends Component {
     if (this.state.title.trim() === "") errors.title = "Title is required.";
     if (this.state.questionBody.trim() === "")
       errors.content = "Content is required.";
+    let count = 0;
+    for (let index = 0; index < this.state.fields.length; index++) {
+      if (!this.state.fields[index].isChecked) count++;
+    }
+    if (count === this.state.fields.length)
+      errors.fields = "At least 1 field checked is required.";
     if (!this.validateAllAnswers())
       errors.answers =
         "Please fill all of the answers and have at least 1 correct answer depends on the question type.";
@@ -278,7 +309,10 @@ class QuestionsForm extends Component {
     if (this.state.questionType === "Choice")
       answers = this.state.choiceAnswers;
     else answers = this.state.multiAnswers;
-    console.log(answers);
+    let fields = [];
+    this.state.fields.forEach((field) => {
+      fields.push(field.Id);
+    });
     const questionToAdd = {
       Title: this.state.title,
       QuestionBody: this.state.questionBody,
@@ -286,6 +320,7 @@ class QuestionsForm extends Component {
       ExtraInfo: this.state.extraInfo,
       Tags: tagsArr,
       QuestionType: this.state.questionType,
+      Fields: fields,
       LastUpdated: new Date().toLocaleDateString(),
     };
     console.log(this.props.location.formProps);
@@ -309,17 +344,39 @@ class QuestionsForm extends Component {
     window.location.replace("/questionsform");
   };
 
+  renderFields() {
+    let organization = this.props.location.organizationProps.organization;
+    return organization.Fields.map((field, index) => {
+      return (
+        <div>
+          <label htmlFor={field.Id}>{field.Name}</label>
+          <input
+            id={field.Id}
+            value={field.Name}
+            onChange={this.fieldChecked}
+            type="checkbox"
+          />
+        </div>
+      );
+    });
+  }
+
   showCurrentQuestion = () => {
     let answers = [];
     if (this.state.questionType === "Choice")
       answers = this.state.choiceAnswers;
     else answers = this.state.multiAnswers;
+    let fields = [];
+    this.state.fields.forEach((field) => {
+      fields.push(field.Name);
+    });
     const question = {
       Title: this.state.title,
       QuestionBody: this.state.questionBody,
       Answers: answers,
       ExtraInfo: this.state.extraInfo,
       Tags: this.state.tags,
+      Fields: fields,
     };
     this.togglePopup(question);
   };
@@ -339,6 +396,9 @@ class QuestionsForm extends Component {
     const { title, errors, questionBody, extraInfo, tags } = this.state;
     return (
       <div>
+        <Navigation
+          organization={this.props.location.organizationProps.organization}
+        />
         <QuestionTypes onChange={this.typeChanged} />
         <form onSubmit={this.submitQuestion}>
           <div className="form-group space">
@@ -382,13 +442,20 @@ class QuestionsForm extends Component {
               onChange={this.tagsChanged}
             />
           </div>
+          <div>
+            Fields:
+            {this.renderFields()}
+            {errors.fields && (
+              <div className="alert alert-danger">{errors.fields}</div>
+            )}
+          </div>
           <div hidden={false} id="choiceQ">
             <ChoiceQuestion
               answerChanged={this.choiceAnswerChanged}
               correctAnswerChanged={this.correctChoiceAnswerChanged}
             />
-            {errors.choiceAnswers && (
-              <div className="alert alert-danger">{errors.choiceAnswers}</div>
+            {errors.answers && (
+              <div className="alert alert-danger">{errors.answers}</div>
             )}
           </div>
           <div hidden={true} id="multipleChoiceQ">
@@ -399,8 +466,8 @@ class QuestionsForm extends Component {
               correctAnswerChanged={this.correctMultiAnswerChanged}
               updateInputsNum={this.updateInputsNum}
             />
-            {errors.multiAnswers && (
-              <div className="alert alert-danger">{errors.multiAnswers}</div>
+            {errors.answers && (
+              <div className="alert alert-danger">{errors.answers}</div>
             )}
           </div>
         </form>
