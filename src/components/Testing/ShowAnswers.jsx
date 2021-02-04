@@ -2,7 +2,6 @@ import React from 'react';
 import { fetchExam, moveQuestion } from '../../actions';
 import { connect } from 'react-redux';
 import AnswerPresent from './AnswerPresent'
-import { parseConfigFileTextToJson } from 'typescript';
 
 class ShowAnswers extends React.Component {
 
