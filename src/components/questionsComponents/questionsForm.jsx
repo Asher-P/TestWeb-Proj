@@ -368,7 +368,7 @@ class QuestionsForm extends Component {
     else answers = this.state.multiAnswers;
     let fields = [];
     this.state.fields.forEach((field) => {
-      fields.push(field.Name);
+      if (field.isChecked) fields.push(field.Name);
     });
     const question = {
       Title: this.state.title,
