@@ -24,7 +24,6 @@ class Home extends Component {
       alert("Please choose an organization");
       return;
     } else {
-      console.log(this.state.currentOrganization);
       this.togglePopup();
     }
   };
