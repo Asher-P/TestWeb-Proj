@@ -9,14 +9,18 @@ function EntryPopup(props) {
           Are you sure you want to continue as {props.organization.Name}?
         </text>
         <div>
-          <button onClick={props.closePopup}>No</button>
-          <Link
-            to={{
-              pathname: `/home`,
-              organizationProps: props.organization,
-            }}>
-            Yes
-          </Link>
+          <button class="ui inverted red button" onClick={props.closePopup}>
+            No
+          </button>
+          <button class="ui inverted primary button">
+            <Link
+              to={{
+                pathname: `/home`,
+                organizationProps: props.organization,
+              }}>
+              Yes
+            </Link>
+          </button>
         </div>
       </div>
     </div>

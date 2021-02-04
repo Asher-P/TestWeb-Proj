@@ -34,7 +34,11 @@ class Popup extends React.Component {
           <h3>
             <div className="ui list">{this.renderContent()}</div>
           </h3>
-          <button onClick={this.props.closePopup}>close me</button>
+          <button
+            class="ui inverted red button"
+            onClick={this.props.closePopup}>
+            close me
+          </button>
         </div>
       </div>
     );

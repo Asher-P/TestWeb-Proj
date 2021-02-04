@@ -479,22 +479,24 @@ class QuestionsForm extends Component {
             )}
           </div>
         </form>
-        <input
+        <button
           hidden={false}
           type="button"
           id="AddButton"
           onClick={this.submitQuestion}
-          className="btn btn-primary btn-sm"
-          value="Add Question"
-        />
-        <input
+          class="ui inverted green button"
+          value="Add Question">
+          Add Question
+        </button>
+        <button
           hidden={true}
           type="button"
           id="EditButton"
           onClick={this.submitQuestion}
-          className="btn btn-primary btn-sm"
-          value="Edit Question"
-        />
+          class="ui inverted green button"
+          value="Edit Question">
+          Edit Question
+        </button>
         <div>
           {this.state.showPopup.show ? (
             <Popup
@@ -514,6 +516,7 @@ class QuestionsForm extends Component {
         <br />
         <div>
           <input
+            class="ui inverted primary button"
             type="button"
             onClick={this.showCurrentQuestion}
             value="Show Question"

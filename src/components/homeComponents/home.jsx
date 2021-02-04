@@ -64,6 +64,7 @@ class Home extends Component {
               ) : null}
             </div>
             <input
+              class="ui inverted primary button"
               type="button"
               onClick={this.showPopupWindow}
               value="Continue"

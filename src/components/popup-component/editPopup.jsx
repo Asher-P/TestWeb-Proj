@@ -6,15 +6,17 @@ function EditPopup(props) {
     <div className="popup">
       <div className="popup_inner">
         <h1>Edited Successfully</h1>
-        <Link
-          to={{
-            pathname: `/questions`,
-            organizationProps: {
-              organization: props.organization,
-            },
-          }}>
-          Ok, great!
-        </Link>
+        <button class="ui inverted primary button">
+          <Link
+            to={{
+              pathname: `/questions`,
+              organizationProps: {
+                organization: props.organization,
+              },
+            }}>
+            Ok, great!
+          </Link>
+        </button>
       </div>
     </div>
   );
