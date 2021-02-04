@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navigation from "../Navigation/navigation";
 
 function Questions(props) {
-  if (props.location.organizationProps.organization === undefined)
+  if (props.location.organizationProps === undefined)
     window.location.replace("/");
   const organization = props.location.organizationProps.organization;
   return (

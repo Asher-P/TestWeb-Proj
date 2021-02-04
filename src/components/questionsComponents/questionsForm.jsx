@@ -7,6 +7,7 @@ import QuestionService from "../../services/questionsService";
 import { connect } from "react-redux";
 import { fetchQuestion } from "../../actions";
 import Navigation from "../Navigation/navigation";
+import EditPopup from "../popup-component/editPopup";
 
 class QuestionsForm extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class QuestionsForm extends Component {
       questionType: "Choice",
       fields: [],
       showPopup: { show: false, content: "" },
+      showEditPopup: { show: false },
       Index: 13,
     };
     if (props.location.organizationProps === undefined)
@@ -341,7 +343,7 @@ class QuestionsForm extends Component {
       multiAnswers: [{ Content: "", isCorrect: false }],
       choiceAnswers: [{ Content: "", isCorrect: false }],
     });
-    window.location.replace("/questionsform");
+    if (e.currentTarget.id === "EditButton") this.toggleEditPopup();
   };
 
   renderFields() {
@@ -384,6 +386,12 @@ class QuestionsForm extends Component {
   togglePopup = (question) => {
     this.setState({
       showPopup: { show: !this.state.showPopup.show, content: question },
+    });
+  };
+
+  toggleEditPopup = () => {
+    this.setState({
+      showEditPopup: { show: !this.state.showEditPopup.show },
     });
   };
 
@@ -493,6 +501,13 @@ class QuestionsForm extends Component {
               content={this.state.showPopup.content}
               text="Close Me"
               closePopup={() => this.togglePopup(null)}
+            />
+          ) : null}
+        </div>
+        <div>
+          {this.state.showEditPopup.show ? (
+            <EditPopup
+              organization={this.props.location.organizationProps.organization}
             />
           ) : null}
         </div>

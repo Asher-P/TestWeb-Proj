@@ -1,4 +1,4 @@
-import "./EntryPopup.css";
+import "./Popup.css";
 import { Link } from "react-router-dom";
 
 function EntryPopup(props) {
