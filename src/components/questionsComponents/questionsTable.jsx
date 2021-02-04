@@ -61,6 +61,10 @@ class QuestionsTable extends Component {
                   to={{
                     pathname: `/questionsform/${question.Id}`,
                     formProps: { currentQuestion: question },
+                    organizationProps: {
+                      organization: this.props.location.organizationProps
+                        .organization,
+                    },
                   }}>
                   Edit
                 </Link>
@@ -94,6 +98,10 @@ class QuestionsTable extends Component {
                 to={{
                   pathname: `/questionsform/${question.Id}`,
                   formProps: { currentQuestion: question },
+                  organizationProps: {
+                    organization: this.props.location.organizationProps
+                      .organization,
+                  },
                 }}>
                 Edit
               </Link>
