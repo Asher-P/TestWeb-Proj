@@ -6,6 +6,7 @@ import FormInputs from "./FormInputs";
 import TestsSerevice from "../../services/testsService";
 import QuestionBox from "../question-box-component/QuestionBox";
 import Popup from "../popup-component/Popup";
+import Navigation from '../Navigation/navigation';
 
 function ColorRow(e) {
   let TR = e.target;
@@ -152,6 +153,9 @@ class TestForm extends React.Component {
   render() {
     return (
       <div className="TestForm">
+        <Navigation
+        organization={this.props.location.organizationProps}
+      />
         <FormInputs
           renderField={this.renderQuestions}
           onSubmit={this.onSubmit}></FormInputs>
