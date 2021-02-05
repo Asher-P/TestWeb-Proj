@@ -30,9 +30,12 @@ class Home extends Component {
 
   organizationChanged = (e) => {
     let organizations = this.props.organizations;
+    console.log(organizations, "organizations");
+    console.log("current value", e.currentTarget.value);
     for (let index = 0; index < organizations.length; index++) {
       if (organizations[index].Id === Number(e.currentTarget.value)) {
         this.setState({ currentOrganization: organizations[index] });
+        console.log(organizations[index].Name, organizations[index]);
       }
     }
   };

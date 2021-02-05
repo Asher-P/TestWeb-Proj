@@ -5,22 +5,21 @@ function EntryPopup(props) {
   return (
     <div className="popup">
       <div className="popup_inner">
-        <text>
+        <p class="ui text shape">
           Are you sure you want to continue as {props.organization.Name}?
-        </text>
+        </p>
         <div>
           <button class="ui inverted red button" onClick={props.closePopup}>
             No
           </button>
-          <button class="ui inverted primary button">
-            <Link
-              to={{
-                pathname: `/home`,
-                organizationProps: props.organization,
-              }}>
-              Yes
-            </Link>
-          </button>
+          <Link
+            class="ui inverted primary button"
+            to={{
+              pathname: `/home`,
+              organizationProps: { organization: props.organization },
+            }}>
+            Yes
+          </Link>
         </div>
       </div>
     </div>

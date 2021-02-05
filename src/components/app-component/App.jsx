@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Routes from "../routeComponent/Routes";
 import Home from "../homeComponents/home";
+import Navigation from "../Navigation/navigation";
 
 function App() {
   return (

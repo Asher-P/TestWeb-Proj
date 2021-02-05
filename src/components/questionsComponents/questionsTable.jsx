@@ -49,7 +49,7 @@ class QuestionsTable extends Component {
               <td>
                 {" "}
                 <button
-                  className="ui button"
+                  class="ui primary button"
                   onClick={() => this.togglePopup(question)}>
                   Show
                 </button>
@@ -57,7 +57,7 @@ class QuestionsTable extends Component {
               <td>
                 {" "}
                 <Link
-                  className="ui button"
+                  class="ui primary button"
                   to={{
                     pathname: `/questionsform/${question.Id}`,
                     formProps: { currentQuestion: question },
@@ -86,7 +86,7 @@ class QuestionsTable extends Component {
             <td>
               {" "}
               <button
-                className="ui button"
+                class="ui primary button"
                 onClick={() => this.togglePopup(question)}>
                 Show
               </button>
@@ -94,7 +94,7 @@ class QuestionsTable extends Component {
             <td>
               {" "}
               <Link
-                className="ui button"
+                class="ui primary button"
                 to={{
                   pathname: `/questionsform/${question.Id}`,
                   formProps: { currentQuestion: question },

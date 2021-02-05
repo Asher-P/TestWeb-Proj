@@ -15,29 +15,28 @@ import CertificateDisplay from "../certificate/CertificateDisplay";
 import ShowAnswers from "../Testing/ShowAnswers";
 
 export default class Routes extends Component {
-    render() {
-        return (
-            <Router history={History}>
-                <Switch>
-                    <Route path="/" exact component={Home} />
-          <Route path="/home" exact component={OrganizationHome} />
-                    <Route exact path="/questions" component={Questions} />
-                    <Route path="/questionsform/:id?" component={QuestionsForm} />
-                    <Route exact path="/allquestions" component={QuestionsTable} />
-                    <Route exact path="/testform" component={TestForm} />
-                    <Route path="/Questions" component={Questions} />
-                    <Route path="/tests" component={TestNav} />
-                    <Route path="/testlist" component={TestList} />
-                    <Route path="/createtest" component={TestForm} />
-                    <Route path={`/edittest/:testId`} component={TestEdit} />
-                    <Route path={`/exam/:testid`} component={Exam} />
-                    <Route path={"/edittest/"}>
-                        <h3>Please select a topic.</h3>
-                    </Route>
-                    <Route path={"/CertificateDisplay"} component={CertificateDisplay}/>
-                    <Route path={"/showanswers"} component={ShowAnswers}/>
-                </Switch>
-            </Router>
-        )
-    }
+  render() {
+    return (
+      <Router history={History}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/home" component={OrganizationHome} />
+          <Route exact path="/questions" component={Questions} />
+          <Route path="/questionsform/:id?" component={QuestionsForm} />
+          <Route exact path="/allquestions" component={QuestionsTable} />
+          <Route exact path="/testform" component={TestForm} />
+          <Route path="/tests" component={TestNav} />
+          <Route path="/testlist" component={TestList} />
+          <Route path="/createtest" component={TestForm} />
+          <Route path={`/edittest/:testId`} component={TestEdit} />
+          <Route path={`/exam/:testid`} component={Exam} />
+          <Route path={"/edittest/"}>
+            <h3>Please select a topic.</h3>
+          </Route>
+          <Route path={"/CertificateDisplay"} component={CertificateDisplay} />
+          <Route path={"/showanswers"} component={ShowAnswers} />
+        </Switch>
+      </Router>
+    );
+  }
 }

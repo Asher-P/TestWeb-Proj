@@ -2,7 +2,7 @@ import React from "react";
 
 function ChoiceAnswerInput(props) {
   return (
-    <div>
+    <div class="field">
       <label htmlFor={props.Id}>Answer:</label>
       <input id={props.Id} onChange={props.answerChanged} name="allAnswers" />
       <div>
