@@ -12,18 +12,30 @@ function Questions(props) {
         organization={props.location.organizationProps.organization}
       />
       <div>
-        <Link
-          to={{
-            pathname: `/questionsform`,
-            organizationProps: {
-              organization: organization,
-            },
-          }}>
-          Add a question
-        </Link>
+        <button class="ui inverted primary button">
+          <Link
+            to={{
+              pathname: `/questionsform`,
+              organizationProps: {
+                organization: organization,
+              },
+            }}>
+            Add a question
+          </Link>
+        </button>
       </div>
       <div>
-        
+        <button class="ui inverted primary button">
+          <Link
+            to={{
+              pathname: `/allquestions`,
+              organizationProps: {
+                organization: organization,
+              },
+            }}>
+            Show all Questions
+          </Link>
+        </button>
       </div>
     </div>
   );
