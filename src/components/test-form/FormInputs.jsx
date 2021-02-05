@@ -1,11 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { reduxForm, Field } from 'redux-form';
+import thunk from 'redux-thunk';
 import { textChangeRangeIsUnchanged } from 'typescript';
 import "./FormInputs.css";
 
-const email = value =>
-    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-        'Invalid email address' : undefined
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 const required = value => value ? undefined : 'Required';
 const maxLength = max => value =>
     value && value.length > max ? `Must be ${max} characters or less` : undefined
@@ -29,6 +32,7 @@ class FormInputs extends React.Component {
         this.state = {
             Title: this.test?.Title,
             Language: this.test?.Language,
+            Field: this.test?.Field,
             PassingGrade: this.test?.PassingGrade,
             Content: this.test?.Content,
             email: this.test?.email,
@@ -73,24 +77,48 @@ class FormInputs extends React.Component {
         </select>)
     }
 
-
+validation(){
+    var errors = []
+    if(this.state.Content.length > 200)
+        errors.push(`Max charters in Content is 200, your content is ${this.state.Content.length}`);
+    if(this.state.Content == undefined || this.state.Content === "")
+    errors.push(`Content is required`);
+    if(!validateEmail(this.state.email))
+    errors.push(`Email is not valid`);
+    if(this.state.Title == undefined || this.state.Title ==="")
+    errors.push(`Title is required`);
+    
+    return errors;
+}
 
     onSubmit = (e) => {
         e.preventDefault();
          console.log(e);
-        let sendTest={
+       let errors = this.validation();
+        if(errors.length>0){
+            //console.log("in true");
+        ReactDOM.render(errors.map(e=><div className="ui red message">*{e}</div>),window.document.getElementById("errors"))
+        }
+        else{
+            let sendTest={
              Id:this.test?.Id,
              ...this.state,
-         }
+            }
+        //console.log("tin false");
          console.log("test", sendTest);
-         this.props.onSubmit(sendTest);
+         //this.props.onSubmit(sendTest);
         //this.props.onSubmit({Id:this.test?.Id,...e});
         //this.props.reset();
     }
+}
 
-    renderInputs = () => {
-
-    }
+updateField=(e)=>{
+    this.setState({ Field:{Id:e.target.getAttribute("idv"),
+    Name:e.target.value}});
+    console.log("in updateField, inputs",this.state.Field);
+    this.props.FieldChanged(this.state.Field);
+    
+}
 
 
     render() {
@@ -111,8 +139,8 @@ class FormInputs extends React.Component {
                     <select id="Languge" placeholder={this.test?.Language}
                         onChange={(e) => this.setState({ Language: e.target.value })}>
                         <option value="">Lenguage</option>
-                        <option value="0">Hebrew</option>
-                        <option value="1">English</option>
+                        <option value="Hebrew">Hebrew</option>
+                        <option value="English">English</option>
                     </select>
                 </div>
                 <div className="field">
@@ -126,6 +154,13 @@ class FormInputs extends React.Component {
                     <label>Content</label>
                     <textarea placeholder={this.test?.Content} value={this.state.Content}
                         onChange={(e) => this.setState({ Content: e.target.value })} />
+                </div>
+                <div className="field">
+                    <label>Field</label>
+                    {this.props.organization?.Fields?.map(f=>{
+                        return ( <div><input key={f.Id} idv={f.Id} name="Field" onChange={(e)=>this.updateField(e)} value={f.Name} type="radio"/>{f.Name}</div>)
+                    })}
+                   
                 </div>
                 <div className="field">
                     <label>Email</label>
@@ -154,6 +189,9 @@ class FormInputs extends React.Component {
                         onClick={(e) => this.setState({ShowAnswers:!this.state.ShowAnswers})}
                         // onChange={(e) =>this.setState({ ShowAnswers: e.target.value })}
                         type="checkbox" checked={this.state.ShowAnswers} />
+                </div>
+                <div id="errors">
+
                 </div>
 
 

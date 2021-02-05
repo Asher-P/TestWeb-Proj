@@ -154,9 +154,9 @@ class TestEdit extends React.Component {
         return (
             <div className="TestForm">
                  <Navigation
-        organization={this.props.location.organizationProps}
+        organization={this.props.location.organizationProps.organization}
       />
-                <FormInputs renderField={this.renderQuestions} onSubmit={this.onSubmit}>
+                <FormInputs organization = {this.props.location.organizationProps} renderField={this.renderQuestions} onSubmit={this.onSubmit}>
                     {this.test}
                 </FormInputs>
                 <div>

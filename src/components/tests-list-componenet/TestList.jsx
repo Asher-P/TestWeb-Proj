@@ -70,7 +70,7 @@ class TestList extends React.Component {
     return (
       <div className="TestList">
          <Navigation
-        organization={this.props.location.organizationProps}
+        organization={this.props.location.organizationProps.organization}
       />
         <div>
           <table className="ui table">

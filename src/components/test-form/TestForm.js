@@ -1,7 +1,7 @@
 import React from "react";
 import "./TestForm.css";
 import { connect } from "react-redux";
-import { selectQuestions, fetchQuestions } from "../../actions";
+import { selectQuestions, fetchQuestions,clearselectQuestions } from "../../actions";
 import FormInputs from "./FormInputs";
 import TestsSerevice from "../../services/testsService";
 import QuestionBox from "../question-box-component/QuestionBox";
@@ -32,8 +32,10 @@ class TestForm extends React.Component {
       filterTag: "",
       questions: [],
       showPopup: { show: false, content: null },
+      currentField: {},
     };
-    this.initQuestions();
+    this.props.clearselectQuestions();
+
   }
 
   initQuestions = () => {
@@ -73,11 +75,20 @@ class TestForm extends React.Component {
     if (filterTags.includes(tag)) return true;
     return false;
   };
+  FieldChanged=(field)=>{
+    console.log("field in func", field);
+    this.setState({currentField:field});
+    console.log("in FieldChanged",this.state.currentField);
+    this.props.clearselectQuestions();
+  }
 
   renderQuestions() {
+    console.log("render", this.state.currentField)
+    console.log("q.Fields",this.props.questions[0]?.Fields)
+    let filterdFieldQuestion = this.props.questions.filter(q=>q.Fields?.includes(Number(this.state.currentField?.Id)))
     if (this.state.filterTag !== "") {
       let filterTags = this.state.filterTag.split(",");
-      return this.props.questions
+      return filterdFieldQuestion
         .filter((q) => filterTags.some((t) => q.Tags.includes(t)))
         .map((question, index) => {
           return (
@@ -110,7 +121,7 @@ class TestForm extends React.Component {
           );
         });
     } else {
-      return this.props.questions.map((question, index) => {
+      return filterdFieldQuestion.map((question, index) => {
         return (
           <tr
             key={question.Id}
@@ -147,16 +158,16 @@ class TestForm extends React.Component {
       filterTag: window.document.getElementById("filterInput").value,
     });
   };
-  FilerQuestions = () => {
-    this.setState({ dataTable: this.renderQuestions() });
-  };
+
   render() {
     return (
       <div className="TestForm">
         <Navigation
-        organization={this.props.location.organizationProps}
+        organization={this.props.location.organizationProps.organization}
       />
         <FormInputs
+        FieldChanged={this.FieldChanged}
+        organization = {this.props.location.organizationProps.organization}
           renderField={this.renderQuestions}
           onSubmit={this.onSubmit}></FormInputs>
         <div>
@@ -201,6 +212,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { selectQuestions, fetchQuestions })(
+export default connect(mapStateToProps, { selectQuestions, fetchQuestions,clearselectQuestions })(
   TestForm
 );
