@@ -1,5 +1,4 @@
-import { render } from "@testing-library/react";
-import React, { Component } from "react";
+import React from "react";
 import AnswerInput from "./multiAnswerInput";
 
 function MultipleChoiceQuestion(props) {
@@ -68,8 +67,14 @@ function MultipleChoiceQuestion(props) {
           correctAnswerChanged={props.correctAnswerChanged}
         />
       </div>
-      <input type="button" value="Add Answer" onClick={props.addAnswerInput} />
       <input
+        class="ui inverted primary button"
+        type="button"
+        value="Add Answer"
+        onClick={props.addAnswerInput}
+      />
+      <input
+        class="ui inverted red button"
         type="button"
         value="Remove Answer"
         onClick={props.removeAnswerInput}

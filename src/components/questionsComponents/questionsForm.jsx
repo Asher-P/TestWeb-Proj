@@ -77,9 +77,7 @@ class QuestionsForm extends Component {
       if (this.props.location.formProps !== undefined) {
         let question = this.props.location.formProps.currentQuestion;
         let AddButton = document.getElementById("AddButton");
-        let EditButton = document.getElementById("EditButton");
-        AddButton.hidden = true;
-        EditButton.hidden = false;
+        AddButton.innerText = "Edit Button";
         this.setState({
           title: question.Title,
           questionBody: question.QuestionBody,
@@ -302,7 +300,6 @@ class QuestionsForm extends Component {
     let tags = this.state.tags.toString();
     tags = tags.trim();
     let tagsArr = tags.split(",");
-    console.log(this.state.inputsNum);
     this.setState({ errors: errors || {} });
     if (errors) {
       return;
@@ -350,14 +347,14 @@ class QuestionsForm extends Component {
     let organization = this.props.location.organizationProps.organization;
     return organization.Fields.map((field, index) => {
       return (
-        <div>
-          <label htmlFor={field.Id}>{field.Name}</label>
+        <div class="ui checkbox">
           <input
             id={field.Id}
             value={field.Name}
             onChange={this.fieldChecked}
             type="checkbox"
           />
+          <label htmlFor={field.Id}>{field.Name}</label>
         </div>
       );
     });
@@ -408,27 +405,28 @@ class QuestionsForm extends Component {
           organization={this.props.location.organizationProps.organization}
         />
         <QuestionTypes onChange={this.typeChanged} />
-        <form onSubmit={this.submitQuestion}>
-          <div className="form-group space">
+        <form class="ui form" onSubmit={this.submitQuestion}>
+          <div class="field">
             <label htmlFor="title">Title: </label>
             <input
               value={title}
               onChange={this.titleChanged}
               id="title"
               type="text"
-              className="input form-control"
+              class="ui input focus"
             />
             {errors.title && (
               <div className="alert alert-danger">{errors.title}</div>
             )}
           </div>
-          <div className="form-group space">
+          <div class="field">
             <label htmlFor="Content">Content: </label>
             <input
               value={questionBody}
               onChange={this.bodyChanged}
               id="Content"
               type="text"
+              class="ui input focus"
             />
             {errors.content && (
               <div className="alert alert-danger">{errors.content}</div>
@@ -441,12 +439,13 @@ class QuestionsForm extends Component {
               value={extraInfo}
               onChange={this.extraInfoChanged}></textarea>
           </div>
-          <div>
+          <div class="field">
             <label htmlFor="Tags">Tags</label>
             <input
               id="Tags"
               type="text"
               value={tags}
+              class="ui input"
               onChange={this.tagsChanged}
             />
           </div>
@@ -487,15 +486,6 @@ class QuestionsForm extends Component {
           class="ui inverted green button"
           value="Add Question">
           Add Question
-        </button>
-        <button
-          hidden={true}
-          type="button"
-          id="EditButton"
-          onClick={this.submitQuestion}
-          class="ui inverted green button"
-          value="Edit Question">
-          Edit Question
         </button>
         <div>
           {this.state.showPopup.show ? (
