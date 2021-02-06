@@ -40,7 +40,7 @@ class TestEdit extends React.Component {
     constructor(props) {
         super(props);
         console.log("test", this.test);
-        console.log("props", this.props)
+        console.log("Edit props", this.props)
         this.props.fetchQuestions();
         //  this.test.questions?.forEach(q =>{
         //      console.log("select", q);
@@ -154,9 +154,9 @@ class TestEdit extends React.Component {
         return (
             <div className="TestForm">
                  <Navigation
-        organization={this.props.location.organizationProps.organization}
+        organization={this.props.location.organizationProps}
       />
-                <FormInputs organization = {this.props.location.organizationProps} renderField={this.renderQuestions} onSubmit={this.onSubmit}>
+                <FormInputs organization = {this.props.location} renderField={this.renderQuestions} onSubmit={this.onSubmit}>
                     {this.test}
                 </FormInputs>
                 <div>

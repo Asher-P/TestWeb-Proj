@@ -6,11 +6,13 @@ import Navigation from "../Navigation/navigation";
 
 class TestList extends React.Component {
     
+  organization = this.props.location.organizationProps
      EXAMURL = "/exam"
     constructor(props) {
         super(props);
         this.state = { data: [] };
         this.props.clearselectQuestions();
+        console.log("props",this.props);
     }
      copyToClipboard(text) {
             var dummy = document.createElement("textarea");
@@ -42,8 +44,8 @@ class TestList extends React.Component {
                         <div>
                         <Link to={
                     {
-                        pathname: `edittest/${t.Id}`, test: t
-                        
+                        pathname: `edittest/${t.Id}`, test: t,
+                        organizationProps: this.organization 
                     }
                 }><button className="ui button">Edit</button></Link>
                         </div>
@@ -56,21 +58,19 @@ class TestList extends React.Component {
     componentWillMount() {
         this.props.fetchTests();
         let tmp = [];
-        console.log("props", this.props)
 
     }
 
   componentWillMount() {
     this.props.fetchTests();
     let tmp = [];
-    console.log("props", this.props);
   }
 
   render() {
     return (
       <div className="TestList">
          <Navigation
-        organization={this.props.location.organizationProps.organization}
+        organization={this.organization}
       />
         <div>
           <table className="ui table">

@@ -4,7 +4,8 @@ import Navigation from "../Navigation/navigation";
 
 const TestNav = (props) => {
   const organization = props.location.organizationProps.organization;
-
+ console.log("test nav props",props);
+ console.log("organization in test nav",organization);
   return (
     <div className="ui list">
       <Navigation organization={organization} />
@@ -13,7 +14,7 @@ const TestNav = (props) => {
           <Link
             to={{
               pathname: `/createtest`,
-              organizationProps: { organization: organization },
+              organizationProps: organization ,
             }}>
             Add a test
           </Link>
@@ -24,7 +25,7 @@ const TestNav = (props) => {
           <Link
             to={{
               pathname: `/testlist`,
-              organizationProps: { organization: organization },
+              organizationProps: organization ,
             }}>
             Show tests
           </Link>

@@ -23,6 +23,7 @@ function ColorRow(e) {
 }
 
 class TestForm extends React.Component {
+  organization= this.props.location.organizationProps ;
   constructor(props) {
     super(props);
     props.fetchQuestions();
@@ -35,6 +36,7 @@ class TestForm extends React.Component {
       currentField: {},
     };
     this.props.clearselectQuestions();
+    console.log("Form props",props);
 
   }
 
@@ -163,11 +165,11 @@ class TestForm extends React.Component {
     return (
       <div className="TestForm">
         <Navigation
-        organization={this.props.location.organizationProps.organization}
+        organization={this.organization}
       />
         <FormInputs
         FieldChanged={this.FieldChanged}
-        organization = {this.props.location.organizationProps.organization}
+        organization = {this.organization}
           renderField={this.renderQuestions}
           onSubmit={this.onSubmit}></FormInputs>
         <div>
