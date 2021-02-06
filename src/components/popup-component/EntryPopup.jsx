@@ -12,7 +12,7 @@ function EntryPopup(props) {
           <button class="ui inverted red button" onClick={props.closePopup}>
             No
           </button>
-          <Link
+          <Link onClick={()=> sessionStorage.setItem("organization",JSON.stringify(props.organization))}
             class="ui inverted primary button"
             to={{
               pathname: `/home`,

@@ -10,7 +10,7 @@ export const selectQuestions = (question) => {
 }
 export const fetchQuestions = () => async dispatch => {
     const response = await QuestionService.getAllQuestions();
-    console.log("fetchQuestions",response.data);
+    //console.log("fetchQuestions",response.data);
     dispatch(({ type: "FETCH_QUESTIONS", payload: response.data }));
 }
 

@@ -17,12 +17,16 @@ class ShowAnswers extends React.Component {
     }
 
     showAnswers = () => {
+        this.index = 0;
         this.props.moveQuestion(this.props.currentExam?.answers[this.index]?.questionId)
-        this.index++;
+        this.index = this.index+1;
+        console.log("index",this.index);
     }
     nextQuestion=()=>{
+        console.log("move to qustion id:",this.props.currentExam?.answers[this.index]?.questionId)
         this.props.moveQuestion(this.props.currentExam?.answers[this.index]?.questionId)
-    this.examDone();
+        this.index = this.index+1;
+        this.examDone();
 
     }
     rederQuestionData() {
@@ -48,14 +52,15 @@ class ShowAnswers extends React.Component {
     }
 
 examDone=()=>{
-    console.log("lenght",this.props.currentExam?.test?.questions?.length);
-    console.log("index",this.index);
-    this.setState({showClose: this.props.currentExam?.test?.questions?.length > this.index});
+    //console.log("lenght",this.props.currentExam?.test?.questions?.length);
+    //console.log("index",this.index);
+    //console.log("statement",this.props.currentExam?.test?.questions?.length < this.index)
+    this.setState({showClose: this.props.currentExam?.test?.questions?.length < this.index});
     
 }
 
     render() {
-        console.log("render");
+        //console.log("render");
         return (
             <div className="ShowAnswers">
                 

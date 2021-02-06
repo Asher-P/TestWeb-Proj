@@ -12,7 +12,7 @@ function Questions(props) {
         organization={props.location.organizationProps.organization}
       />
       <div>
-        <button class="ui inverted primary button">
+        <button className="ui inverted primary button">
           <Link
             to={{
               pathname: `/questionsform`,

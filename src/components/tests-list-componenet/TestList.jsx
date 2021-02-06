@@ -6,13 +6,13 @@ import Navigation from "../Navigation/navigation";
 
 class TestList extends React.Component {
     
-  organization = this.props.location.organizationProps
+  organization = this.props.location.organizationProps.organization;
      EXAMURL = "/exam"
     constructor(props) {
         super(props);
         this.state = { data: [] };
         this.props.clearselectQuestions();
-        console.log("props",this.props);
+        console.log("teste list props",this.props);
     }
      copyToClipboard(text) {
             var dummy = document.createElement("textarea");
@@ -28,7 +28,7 @@ class TestList extends React.Component {
         alert("coppied");
     }
     renderList() {
-        console.log(this.props);
+        //console.log(this.props);
       return  this.props.tests.map((t, index) =>{
           return( <tr key={index}>
                     <td>
@@ -45,7 +45,7 @@ class TestList extends React.Component {
                         <Link to={
                     {
                         pathname: `edittest/${t.Id}`, test: t,
-                        organizationProps: this.organization 
+                        organizationProps:this.organization 
                     }
                 }><button className="ui button">Edit</button></Link>
                         </div>

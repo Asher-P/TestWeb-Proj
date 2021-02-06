@@ -57,7 +57,7 @@ class AnswerPresent extends React.Component {
         this.correctAnswers = this.props.question.Answers.filter((answer) => answer.isCorrect == true).map(a => a.Content);
         this.studentAnswers = this.props.answers.find(q=>q.questionId == this.props.question.Id).answer;
 
-        console.log("render");
+        //console.log("render");
         return (
             <div className="AnswerPresent">
                 {this.renderAnswer()}

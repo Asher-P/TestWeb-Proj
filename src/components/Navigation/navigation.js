@@ -33,7 +33,9 @@ const Navigation = (props) => {
               class="item"
               to={{
                 pathname: `/tests`,
-                organizationProps: props.organization,
+                organizationProps: {
+                  organization: props.organization
+                },
               }}>
               Tests
             </Link>

@@ -27,8 +27,8 @@ class FormInputs extends React.Component {
     test = {}
     constructor(props) {
         super(props);
-        this.test = props.children;
-        console.log("Form inpur props", props);
+        this.test = props.test;
+        //console.log("Form inpur props", props);
         this.state = {
             Title: this.test?.Title,
             Language: this.test?.Language,
@@ -72,8 +72,8 @@ class FormInputs extends React.Component {
     createSelect(formProps) {
         return (<select id="Languge" placeholder={formProps.children} onChange={formProps.input.onChange}>
             <option value="">Lenguage</option>
-            <option value="0">Hebrew</option>
-            <option value="1">English</option>
+            <option value="Hebrew">Hebrew</option>
+            <option value="English">English</option>
         </select>)
     }
 
@@ -96,7 +96,7 @@ validation(){
          console.log(e);
        let errors = this.validation();
         if(errors.length>0){
-            //console.log("in true");
+        console.log("in true");
         ReactDOM.render(errors.map(e=><div className="ui red message">*{e}</div>),window.document.getElementById("errors"))
         }
         else{
@@ -104,9 +104,9 @@ validation(){
              Id:this.test?.Id,
              ...this.state,
             }
-        //console.log("tin false");
-         console.log("test", sendTest);
-         //this.props.onSubmit(sendTest);
+            //console.log("tin false");
+            console.log("test", sendTest);
+            this.props.onSubmit(sendTest);
         //this.props.onSubmit({Id:this.test?.Id,...e});
         //this.props.reset();
     }
@@ -116,7 +116,8 @@ updateField=(e)=>{
     this.setState({ Field:{Id:e.target.getAttribute("idv"),
     Name:e.target.value}});
     console.log("in updateField, inputs",this.state.Field);
-    this.props.FieldChanged(this.state.Field);
+    this.props.FieldChanged({Id:e.target.getAttribute("idv"),
+    Name:e.target.value});
     
 }
 

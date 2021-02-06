@@ -23,11 +23,11 @@ function ColorRow(e) {
 }
 
 class TestForm extends React.Component {
-  organization= this.props.location.organizationProps ;
+  organization= this.props.location.organizationProps.organization ;
   constructor(props) {
     super(props);
     props.fetchQuestions();
-    console.log(props);
+    //console.log(props);
     this.state = {
       dataTable: [],
       filterTag: "",
@@ -36,12 +36,12 @@ class TestForm extends React.Component {
       currentField: {},
     };
     this.props.clearselectQuestions();
-    console.log("Form props",props);
+    //console.log("Form props",props);
 
   }
 
   initQuestions = () => {
-    console.log("data", this.props.questions.data);
+    //console.log("data", this.props.questions.data);
 
     this.props.questions?.data?.map((res) => {
       this.setState({ questions: res });
@@ -66,14 +66,16 @@ class TestForm extends React.Component {
     alert("Test successfully created");
     TestsSerevice.addTest(test);
     console.log(test);
-    window.location.reload();
+   let organizationProps = new Object();
+    organizationProps.organization = this.organization;
+    this.props.history.push({pathname:"/tests", organizationProps:organizationProps })
   };
 
   checkTags = (tag) => {
     const filterTags = this.state.filterTag.split(",");
-    console.log("FilterTag:", filterTags);
-    console.log("tag:", tag);
-    console.log("flag", filterTags.includes(tag));
+    //console.log("FilterTag:", filterTags);
+    //console.log("tag:", tag);
+    //console.log("flag", filterTags.includes(tag));
     if (filterTags.includes(tag)) return true;
     return false;
   };
@@ -85,8 +87,8 @@ class TestForm extends React.Component {
   }
 
   renderQuestions() {
-    console.log("render", this.state.currentField)
-    console.log("q.Fields",this.props.questions[0]?.Fields)
+    //console.log("render", this.state.currentField)
+    //console.log("q.Fields",this.props.questions[0]?.Fields)
     let filterdFieldQuestion = this.props.questions.filter(q=>q.Fields?.includes(Number(this.state.currentField?.Id)))
     if (this.state.filterTag !== "") {
       let filterTags = this.state.filterTag.split(",");

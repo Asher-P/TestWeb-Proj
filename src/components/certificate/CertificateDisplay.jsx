@@ -50,6 +50,7 @@ class CertificateDisplay extends React.Component {
            add = add + scoreForAnswer;
            console.log("grade",this.state.grade);
         })
+        add= Math.ceil(add);
         this.setState({grade: add});  
        this.exam = {Id:uuidv4(),...this.formProps, Grade:add, date:this.d}
        ExamService.addExam(this.exam);
@@ -68,12 +69,18 @@ class CertificateDisplay extends React.Component {
                                 <span className="span3"><b>{this.formProps.student?.studentName},ID:{this.formProps.student?.studentId}</b></span><br /><br />
                                 <span className="span2" ><i>has completed the Test</i></span> <br /><br />
                                 <span className="span3">{this.formProps.test?.Title}</span> <br /><br />
-                                <span className="span5">with score of <b>{this.state.grade}</b></span> <br /><br /><br /><br />
+                                <span className="span5">with score of <b className="big greentxt">{this.state.grade}</b></span> <br /><br /><br /><br />
                                 <span className="span2"><i>dated</i></span><br/>
                                 <span className="span3"> {this.d.getDay()}/{this.d.getMonth()}/{this.d.getFullYear()} </span>
-                    </div>
-                    <div>
-                    <Link to={
+                               <br/>
+                               <br/>
+                               <br/>
+                               <br/>
+                               <br/>
+                               <br/>
+                                <div>
+                    <Link className="ui inverted primary button" 
+                    to={
                     {
                         pathname: `/showanswers?id=${this.exam.Id}`,
                     }
@@ -81,6 +88,7 @@ class CertificateDisplay extends React.Component {
                     params={{ testvalue: "hello" }}
                 target="_blank"
                 >Show my Answers</Link>
+                    </div>
                     </div>
                 </div>
             </div>
