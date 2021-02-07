@@ -25,7 +25,6 @@ class Reports extends Component {
   };
 
   render() {
-    console.log("reports by student props", this.props.exams);
     return (
       <div>
         <Navigation organization={this.organization} />
@@ -47,7 +46,7 @@ class Reports extends Component {
         </div>
         <div id="reportsplaceholder">
           {this.state.showReportsByTest ? (
-            <ReportsByTest />
+            <ReportsByTest tests={this.props.tests} exams={this.props.exams} />
           ) : (
             <ReportsByStudent exams={this.props.exams} />
           )}
