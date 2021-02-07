@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 import Navigation from "../Navigation/navigation";
 
 class QuestionsTable extends Component {
+  organization = JSON.parse(sessionStorage.organization);
   constructor(props) {
     super(props);
-    if (props.location.organizationProps === undefined)
-      window.location.replace("/");
+    if (this.organization === undefined) window.location.replace("/");
     props.fetchQuestions();
     this.state = {
       questions: [],
@@ -62,8 +62,7 @@ class QuestionsTable extends Component {
                     pathname: `/questionsform/${question.Id}`,
                     formProps: { currentQuestion: question },
                     organizationProps: {
-                      organization: this.props.location.organizationProps
-                        .organization,
+                      organization: this.organization,
                     },
                   }}>
                   Edit
@@ -99,8 +98,7 @@ class QuestionsTable extends Component {
                   pathname: `/questionsform/${question.Id}`,
                   formProps: { currentQuestion: question },
                   organizationProps: {
-                    organization: this.props.location.organizationProps
-                      .organization,
+                    organization: this.organization,
                   },
                 }}>
                 Edit
@@ -140,9 +138,7 @@ class QuestionsTable extends Component {
   render() {
     return (
       <div>
-        <Navigation
-          organization={this.props.location.organizationProps.organization}
-        />
+        <Navigation organization={this.organization} />
         <div>
           <label htmlFor="filterInput">Search by Tag</label>
           <input

@@ -10,6 +10,7 @@ import Navigation from "../Navigation/navigation";
 import EditPopup from "../popup-component/editPopup";
 
 class QuestionsForm extends Component {
+  organization = JSON.parse(sessionStorage.organization);
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +28,7 @@ class QuestionsForm extends Component {
       showEditPopup: { show: false },
       Index: 13,
     };
-    if (props.location.organizationProps === undefined)
-      window.location.replace("/");
+    if (this.organization === undefined) window.location.replace("/");
   }
 
   cleanAllInputs = () => {
@@ -91,7 +91,7 @@ class QuestionsForm extends Component {
         }
       }
     }
-    let organization = this.props.location.organizationProps.organization;
+    let organization = this.organization;
     let currentFields = [];
     for (let index = 0; index < organization.Fields.length; index++) {
       currentFields.push({
@@ -344,7 +344,7 @@ class QuestionsForm extends Component {
   };
 
   renderFields() {
-    let organization = this.props.location.organizationProps.organization;
+    let organization = this.organization;
     return organization.Fields.map((field, index) => {
       return (
         <div class="ui checkbox">
@@ -401,9 +401,7 @@ class QuestionsForm extends Component {
     const { title, errors, questionBody, extraInfo, tags } = this.state;
     return (
       <div>
-        <Navigation
-          organization={this.props.location.organizationProps.organization}
-        />
+        <Navigation organization={this.organization} />
         <QuestionTypes onChange={this.typeChanged} />
         <form class="ui form" onSubmit={this.submitQuestion}>
           <div class="field">
@@ -432,7 +430,7 @@ class QuestionsForm extends Component {
               <div className="alert alert-danger">{errors.content}</div>
             )}
           </div>
-          <div>
+          <div class="field">
             <label htmlFor="ExtraInfo">Extra Info</label>
             <textarea
               id="ExtraInfo"
@@ -498,9 +496,7 @@ class QuestionsForm extends Component {
         </div>
         <div>
           {this.state.showEditPopup.show ? (
-            <EditPopup
-              organization={this.props.location.organizationProps.organization}
-            />
+            <EditPopup organization={this.organization} />
           ) : null}
         </div>
         <br />

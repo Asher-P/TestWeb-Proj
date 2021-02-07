@@ -12,7 +12,9 @@ function MultiAnswerInput(props) {
           name="correctAnswers"
           onChange={props.correctAnswerChanged}
         />
-        <label htmlFor={props.Id - 1}>Correct Answer</label>
+        <label class="inputLabel" htmlFor={props.Id - 1}>
+          Correct Answer
+        </label>
       </div>
     </div>
   );
