@@ -24,19 +24,6 @@ class Reports extends Component {
     this.setState({ showReportsByTest: false });
   };
 
-  componentDidUpdate() {
-    if (this.state.showReportsByTest) {
-      ReactDOM.render(
-        <ReportsByTest tests={this.props.tests} exams={this.props.exams} />,
-        document.getElementById("reportsplaceholder")
-      );
-    } else
-      ReactDOM.render(
-        <ReportsByStudent />,
-        document.getElementById("reportsplaceholder")
-      );
-  }
-
   render() {
     console.log("reports by student props", this.props.exams);
     return (
@@ -58,7 +45,13 @@ class Reports extends Component {
             </button>
           </div>
         </div>
-        <div id="reportsplaceholder"></div>
+        <div id="reportsplaceholder">
+          {this.state.showReportsByTest ? (
+            <ReportsByTest />
+          ) : (
+            <ReportsByStudent exams={this.props.exams} />
+          )}
+        </div>
       </div>
     );
   }
