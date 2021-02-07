@@ -39,6 +39,7 @@ class FormInputs extends React.Component {
             SuccessMes: this.test?.SuccessMes,
             FailureMes: this.test?.FailureMes,
             ShowAnswers: this.test?.ShowAnswers ? this.test.ShowAnswers : false,
+            creatorOrganization: this.test?.creatorOrganization ? this.test.creatorOrganization : false,
         }
     }
 

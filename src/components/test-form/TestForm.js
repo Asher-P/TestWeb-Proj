@@ -23,7 +23,7 @@ function ColorRow(e) {
 }
 
 class TestForm extends React.Component {
-  organization= this.props.location.organizationProps.organization ;
+  organization= JSON.parse(sessionStorage.organization) ;
   constructor(props) {
     super(props);
     props.fetchQuestions();
@@ -59,13 +59,17 @@ class TestForm extends React.Component {
   }
 
   onSubmit = (test) => {
-    test = {
+   let newTest = {
       ...test,
-      questions: this.props.selectedQuestions.map((q) => q.Id),
+      creatorOrganization:this.organization
     };
-    alert("Test successfully created");
+    console.log("newTsts",newTest);
+    test = {...newTest,
+      questions: this.props.selectedQuestions.map((q) => q.Id),
+    }
+    console.log("sended test",test);
+      alert("Test successfully created");
     TestsSerevice.addTest(test);
-    console.log(test);
    let organizationProps = new Object();
     organizationProps.organization = this.organization;
     this.props.history.push({pathname:"/tests", organizationProps:organizationProps })

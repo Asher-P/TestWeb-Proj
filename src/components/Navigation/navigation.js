@@ -1,16 +1,17 @@
 import React from "react";
 import { Navbar, Nav, Form, Button } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
+import './navigation.css';
 
 const Navigation = (props) => {
   return (
-    <div>
+    <div className="ui inverted segment">
       <Navbar bg="primary" variant="dark">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
+          <Nav className="ui inverted secondary pointing menu">
             <Link
-              class="header item"
+              className={window.location.pathname==="/home"? "active item": "item"}
               to={{
                 pathname: `/home`,
                 organizationProps: {
@@ -20,7 +21,7 @@ const Navigation = (props) => {
               Home
             </Link>
             <Link
-              class="item"
+              className={window.location.pathname==="/questions"? "active item": "item"}
               to={{
                 pathname: `/questions`,
                 organizationProps: {
@@ -30,7 +31,7 @@ const Navigation = (props) => {
               Questions
             </Link>
             <Link
-              class="item"
+              className={window.location.pathname===("/tests")? "active item": "item"}
               to={{
                 pathname: `/tests`,
                 organizationProps: {
@@ -39,7 +40,7 @@ const Navigation = (props) => {
               }}>
               Tests
             </Link>
-            <Link class="item" to="/">
+            <Link className="item" to="/">
               Log Out
             </Link>
           </Nav>
