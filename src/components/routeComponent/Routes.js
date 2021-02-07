@@ -13,6 +13,7 @@ import TestEdit from "../test-edit/TestEdit";
 import Exam from "../Testing/Exam";
 import CertificateDisplay from "../certificate/CertificateDisplay";
 import ShowAnswers from "../Testing/ShowAnswers";
+import Reports from "../reportsComponents/reports";
 
 export default class Routes extends Component {
   render() {
@@ -33,6 +34,7 @@ export default class Routes extends Component {
           <Route path={"/edittest/"}>
             <h3>Please select a topic.</h3>
           </Route>
+          <Route path="/reports" component={Reports} />
           <Route path={"/CertificateDisplay"} component={CertificateDisplay} />
           <Route path={"/showanswers"} component={ShowAnswers} />
         </Switch>

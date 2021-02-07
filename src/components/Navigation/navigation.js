@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Form, Button } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
-import './navigation.css';
+import "./navigation.css";
 
 const Navigation = (props) => {
   return (
@@ -11,7 +11,9 @@ const Navigation = (props) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ui inverted secondary pointing menu">
             <Link
-              className={window.location.pathname==="/home"? "active item": "item"}
+              className={
+                window.location.pathname === "/home" ? "active item" : "item"
+              }
               to={{
                 pathname: `/home`,
                 organizationProps: {
@@ -21,7 +23,11 @@ const Navigation = (props) => {
               Home
             </Link>
             <Link
-              className={window.location.pathname==="/questions"? "active item": "item"}
+              className={
+                window.location.pathname === "/questions"
+                  ? "active item"
+                  : "item"
+              }
               to={{
                 pathname: `/questions`,
                 organizationProps: {
@@ -31,14 +37,28 @@ const Navigation = (props) => {
               Questions
             </Link>
             <Link
-              className={window.location.pathname===("/tests")? "active item": "item"}
+              className={
+                window.location.pathname === "/tests" ? "active item" : "item"
+              }
               to={{
                 pathname: `/tests`,
                 organizationProps: {
-                  organization: props.organization
+                  organization: props.organization,
                 },
               }}>
               Tests
+            </Link>
+            <Link
+              className={
+                window.location.pathname === "/reports" ? "active item" : "item"
+              }
+              to={{
+                pathname: `/reports`,
+                organizationProps: {
+                  organization: props.organization,
+                },
+              }}>
+              Reports
             </Link>
             <Link className="item" to="/">
               Log Out
