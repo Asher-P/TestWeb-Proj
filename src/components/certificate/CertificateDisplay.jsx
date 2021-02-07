@@ -108,8 +108,6 @@ class CertificateDisplay extends React.Component {
                     params={{ testvalue: "hello" }}
                     target="_blank"
                     >Show my Answers</Link>):null}
-                        {/* <button className="ui inverted primary button" onClick={this.downloadPDF}>Download</button>
-                         */}
                         <div>
                 {ready && (
                     <PDFDownloadLink document={MyDocument} fileName="PDF" className="ui button">
