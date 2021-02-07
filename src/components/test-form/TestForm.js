@@ -23,10 +23,11 @@ function ColorRow(e) {
 }
 
 class TestForm extends React.Component {
+  organization= JSON.parse(sessionStorage.organization) ;
   constructor(props) {
     super(props);
     props.fetchQuestions();
-    console.log(props);
+    //console.log(props);
     this.state = {
       dataTable: [],
       filterTag: "",
@@ -35,11 +36,12 @@ class TestForm extends React.Component {
       currentField: {},
     };
     this.props.clearselectQuestions();
+    //console.log("Form props",props);
 
   }
 
   initQuestions = () => {
-    console.log("data", this.props.questions.data);
+    //console.log("data", this.props.questions.data);
 
     this.props.questions?.data?.map((res) => {
       this.setState({ questions: res });
@@ -57,21 +59,27 @@ class TestForm extends React.Component {
   }
 
   onSubmit = (test) => {
-    test = {
+   let newTest = {
       ...test,
-      questions: this.props.selectedQuestions.map((q) => q.Id),
+      creatorOrganization:this.organization
     };
-    alert("Test successfully created");
+    console.log("newTsts",newTest);
+    test = {...newTest,
+      questions: this.props.selectedQuestions.map((q) => q.Id),
+    }
+    console.log("sended test",test);
+      alert("Test successfully created");
     TestsSerevice.addTest(test);
-    console.log(test);
-    window.location.reload();
+   let organizationProps = new Object();
+    organizationProps.organization = this.organization;
+    this.props.history.push({pathname:"/tests", organizationProps:organizationProps })
   };
 
   checkTags = (tag) => {
     const filterTags = this.state.filterTag.split(",");
-    console.log("FilterTag:", filterTags);
-    console.log("tag:", tag);
-    console.log("flag", filterTags.includes(tag));
+    //console.log("FilterTag:", filterTags);
+    //console.log("tag:", tag);
+    //console.log("flag", filterTags.includes(tag));
     if (filterTags.includes(tag)) return true;
     return false;
   };
@@ -83,8 +91,8 @@ class TestForm extends React.Component {
   }
 
   renderQuestions() {
-    console.log("render", this.state.currentField)
-    console.log("q.Fields",this.props.questions[0]?.Fields)
+    //console.log("render", this.state.currentField)
+    //console.log("q.Fields",this.props.questions[0]?.Fields)
     let filterdFieldQuestion = this.props.questions.filter(q=>q.Fields?.includes(Number(this.state.currentField?.Id)))
     if (this.state.filterTag !== "") {
       let filterTags = this.state.filterTag.split(",");
@@ -163,11 +171,11 @@ class TestForm extends React.Component {
     return (
       <div className="TestForm">
         <Navigation
-        organization={this.props.location.organizationProps.organization}
+        organization={this.organization}
       />
         <FormInputs
         FieldChanged={this.FieldChanged}
-        organization = {this.props.location.organizationProps.organization}
+        organization = {this.organization}
           renderField={this.renderQuestions}
           onSubmit={this.onSubmit}></FormInputs>
         <div>

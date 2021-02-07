@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import './CertificateDisplay.css';
 import ExamService from '../../services/examsService';
+import {PDFDownloadLink} from '@react-pdf/renderer';
+import {CertificatePDF} from './CertificatePDF';
 
 const uuidv4=()=> {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -10,6 +12,7 @@ const uuidv4=()=> {
     });
   }
 class CertificateDisplay extends React.Component {
+    
     exam={}
     formProps =this.props.location.formProps;
     scoreOfQuestion = 100/this.formProps.test.questions.length;
@@ -18,11 +21,20 @@ class CertificateDisplay extends React.Component {
         try{
         super(props);
         console.log("loc", this.formProps);
-        this.state = {grade:0};
+        this.state = {grade:0, Success:false,pdfReady:false};
         }
         catch{
-            window.location.pathname = '/';
+            //window.location.pathname = '/';
         }
+    }
+    toggle() {
+        this.setState((prevState) => ({
+            ready: false
+        }), () => {     
+            setTimeout(() => {
+                this.setState({ ready: true });
+            }, 1);
+        });
     }
     calcScore = (answer, correct)=>{
        
@@ -50,13 +62,21 @@ class CertificateDisplay extends React.Component {
            add = add + scoreForAnswer;
            console.log("grade",this.state.grade);
         })
+        add= Math.ceil(add);
+        console.log("pssing",Number(this.formProps.test.PassingGrade))
+        if(Number(this.formProps.test.PassingGrade) < add)
+            this.setState({Success:true})
         this.setState({grade: add});  
        this.exam = {Id:uuidv4(),...this.formProps, Grade:add, date:this.d}
        ExamService.addExam(this.exam);
     }
+
     
     render() {
-        console.log("exam",this.exam)
+        const { ready } = this.state;
+
+        const MyDocument = <CertificatePDF exam={this.formProps} success={this.state.Success} grade={this.state.grade}/>
+        console.log("sucsess",this.state.Success)
         return (
             <div className="CertificateDisplay">
                 <div className="div1">
@@ -68,19 +88,47 @@ class CertificateDisplay extends React.Component {
                                 <span className="span3"><b>{this.formProps.student?.studentName},ID:{this.formProps.student?.studentId}</b></span><br /><br />
                                 <span className="span2" ><i>has completed the Test</i></span> <br /><br />
                                 <span className="span3">{this.formProps.test?.Title}</span> <br /><br />
-                                <span className="span5">with score of <b>{this.state.grade}</b></span> <br /><br /><br /><br />
+                                <span className="span5">with score of <b className="big greentxt">{this.state.grade}</b></span> <br /><br /><br /><br />
                                 <span className="span2"><i>dated</i></span><br/>
-                                <span className="span3"> {this.d.getDay()}/{this.d.getMonth()}/{this.d.getFullYear()} </span>
-                    </div>
-                    <div>
-                    <Link to={
-                    {
-                        pathname: `/showanswers?id=${this.exam.Id}`,
+                                <span className="span3"> {this.d.getDate()}/{this.d.getMonth()+1}/{this.d.getFullYear()} </span>
+                               <br/>
+                               <br/>
+                               <br/>
+                               {this.state.Success ? (<span className="span2 greentxt">{this.formProps.test.SuccessMes}</span>):<span className="ui span2 redtxt">{this.formProps.test.FailureMes}</span>}
+                               <br/>
+                               <br/>
+                               <br/>
+                                <div className="ui two buttons">
+                   {this.formProps.test.ShowAnswers ? (<Link className="ui inverted primary button" 
+                    to={
+                        {
+                            pathname: `/showanswers?id=${this.exam.Id}`,
+                        }
                     }
-                }
                     params={{ testvalue: "hello" }}
-                target="_blank"
-                >Show my Answers</Link>
+                    target="_blank"
+                    >Show my Answers</Link>):null}
+                        {/* <button className="ui inverted primary button" onClick={this.downloadPDF}>Download</button>
+                         */}
+                        <div>
+                {ready && (
+                    <PDFDownloadLink document={MyDocument} fileName="PDF" className="ui button">
+                        {
+                            ({ blob, url, loading, error }) => (loading ? 'Loading document...' :
+                                <button className="ui inverted primary button"  onClick={() => (this.setState({ ready: false }))}>
+                                    download pdf
+                                </button>
+                            )
+                        }
+                    </PDFDownloadLink>
+                  )}
+                {!ready && (
+                   <button className="ui inverted primary button"  onClick={() => this.toggle()}>
+                        generate pdf
+                    </button>
+                )}
+            </div>
+                    </div>
                     </div>
                 </div>
             </div>

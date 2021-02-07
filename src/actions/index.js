@@ -10,7 +10,7 @@ export const selectQuestions = (question) => {
 }
 export const fetchQuestions = () => async dispatch => {
     const response = await QuestionService.getAllQuestions();
-    console.log("fetchQuestions",response.data);
+    //console.log("fetchQuestions",response.data);
     dispatch(({ type: "FETCH_QUESTIONS", payload: response.data }));
 }
 
@@ -39,9 +39,17 @@ export const fetchExam = (id) => async dispatch => {
     dispatch({ type: "FETCH_EXAM", payload: response.data });
 }
 
-export const fetchTests = () => async dispatch => {
-    const response = await TestsService.getAllTests();
+export const fetchTests = (organizationId) => async dispatch => {
+    console.log("organizationId",organizationId);
+    if(!organizationId)
+    {
+        const response = await TestsService.getAllTests();
+        return dispatch({ type: "FETCH_TESTS", payload: response.data });
+    }
+    else{
+        const response = await TestsService.getAllTests(organizationId);
     dispatch({ type: "FETCH_TESTS", payload: response.data });
+    }
 }
 export const addAnswer = (answer) => {
     return {type:"ADD_ANSWER",payload:answer}

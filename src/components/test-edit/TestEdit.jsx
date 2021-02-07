@@ -35,12 +35,12 @@ function ColorRow(e) {
 }
 
 class TestEdit extends React.Component {
+    organization = this.props.location.organizationProps
     testId = this.props.match.params.testId;
     test = this.props.location.test;
     constructor(props) {
         super(props);
-        console.log("test", this.test);
-        console.log("props", this.props)
+        console.log("Edit props", this.props)
         this.props.fetchQuestions();
         //  this.test.questions?.forEach(q =>{
         //      console.log("select", q);
@@ -87,7 +87,9 @@ class TestEdit extends React.Component {
         console.log("test in edit", test);
         alert("Test successfully created");
         TestsService.editTest(test);
-        window.location.pathname="/testlist";
+        let organizationProps = new Object();
+        organizationProps.organization = this.organization;
+        this.props.history.push({pathname:"/tests", organizationProps:organizationProps })
     }
     checkTags = (tag) => {
         const filterTags = this.state.filterTag.split(",");
@@ -101,9 +103,10 @@ class TestEdit extends React.Component {
 
     }
     renderQuestions() {
-        if (this.state.filterTag !== "") {
+    let filterdFieldQuestion = this.props.questions.filter(q=>q.Fields?.includes(Number(this.state.currentField?.Id)))    
+    if (this.state.filterTag !== "") {
             let filterTags = this.state.filterTag.split(',');
-            return this.props.questions.filter(q => filterTags.some(t => q.Tags.includes(t)))
+            return filterdFieldQuestion.filter(q => filterTags.some(t => q.Tags.includes(t)))
                 .map((question, index) => {
                     return (<tr key={question.Id} data-item={question}
                         onClick={(e) => {
@@ -120,7 +123,7 @@ class TestEdit extends React.Component {
                 )
         }
         else {
-            return this.props.questions.map((question, index) => {
+            return filterdFieldQuestion.map((question, index) => {
                 return (<tr name={`${question.Id}`} key={question.Id} data-item={question}
                     onClick={(e) => {
                         ColorRow(e)
@@ -147,6 +150,13 @@ class TestEdit extends React.Component {
         this.setState({ dataTable: this.renderQuestions() });
     }
 
+    FieldChanged=(field)=>{
+        console.log("field in func", field);
+        this.setState({currentField:field});
+        console.log("in FieldChanged",this.state.currentField);
+        this.props.clearselectQuestions();
+      }
+
     render() {
         //console.log("Render", this.state)
         //console.log("test from render", this.props.test);
@@ -154,10 +164,15 @@ class TestEdit extends React.Component {
         return (
             <div className="TestForm">
                  <Navigation
-        organization={this.props.location.organizationProps.organization}
+        organization={this.organization}
       />
-                <FormInputs organization = {this.props.location.organizationProps} renderField={this.renderQuestions} onSubmit={this.onSubmit}>
-                    {this.test}
+                <FormInputs 
+                organization = {this.organization}
+                 renderField={this.renderQuestions}
+                  onSubmit={this.onSubmit}
+                FieldChanged={this.FieldChanged}
+                test = {this.test}
+        >
                 </FormInputs>
                 <div>
                     <input id="filterInput" value={this.state.filterTag} onChange={this.updateFiletrState} />

@@ -1,7 +1,7 @@
 import Navigation from "../Navigation/navigation";
 
 function OrganizationHome(props) {
-  console.log(props.location.organizationProps);
+  //console.log("Organization home",props);
   if (props.location.organizationProps === undefined)
     window.location.replace("/");
   const organization = props.location.organizationProps.organization;

@@ -3,8 +3,14 @@ import http from "./httpService";
 const serverRoute = "/api/tests/";
 
 const TestsService = {
-  async getAllTests() {
+  async getAllTests(organizationId:any) {
+    console.log("in service",organizationId );
+    
+    if(organizationId == undefined)
     return await await http.get(serverRoute + "gettests");
+    else{
+    return await await http.get(serverRoute + `getorganizationtests/${organizationId}`);
+    }
   },
   async getTestById(id: string) {
     return await await http.get(serverRoute + `gettestbyid/${id}`);
