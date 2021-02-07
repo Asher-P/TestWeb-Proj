@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import Navigation from "../Navigation/navigation";
 import ReportsByStudent from "./reportsByStudent";
 import ReportsByTest from "./reportsByTest";
-import {fetchExams} from '../../actions';
-import { connect } from 'react-redux';
+import { fetchExams, fetchTests } from "../../actions";
+import { connect } from "react-redux";
+
 class Reports extends Component {
   organization = JSON.parse(sessionStorage.organization);
   constructor(props) {
@@ -12,8 +13,8 @@ class Reports extends Component {
     this.state = {
       showReportsByTest: false,
     };
-    console.log("props",props);
     this.props.fetchExams();
+    this.props.fetchTests(this.organization.Id);
   }
 
   showReportByTest = (e) => {
@@ -26,7 +27,7 @@ class Reports extends Component {
   componentDidUpdate() {
     if (this.state.showReportsByTest) {
       ReactDOM.render(
-        <ReportsByTest />,
+        <ReportsByTest tests={this.props.tests} exams={this.props.exams} />,
         document.getElementById("reportsplaceholder")
       );
     } else
@@ -37,7 +38,7 @@ class Reports extends Component {
   }
 
   render() {
-    console.log("reports by student props",this.props.exams)
+    console.log("reports by student props", this.props.exams);
     return (
       <div>
         <Navigation organization={this.organization} />
@@ -62,9 +63,12 @@ class Reports extends Component {
     );
   }
 }
-const mapStateToProps=(state)=>{
-  return{
-    exams:state.exams,
-  }
-  }
-export default connect(mapStateToProps,{fetchExams})(Reports);
+
+const mapStateToProps = (state) => {
+  return {
+    exams: state.exams,
+    tests: state.test,
+  };
+};
+
+export default connect(mapStateToProps, { fetchExams, fetchTests })(Reports);

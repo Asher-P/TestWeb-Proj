@@ -1,13 +1,32 @@
 import React, { Component } from "react";
-import { fetchTests } from "../../actions";
-import { connect } from "react-redux";
 
 class ReportsByTest extends Component {
   organization = JSON.parse(sessionStorage.organization);
   constructor(props) {
     super(props);
-    this.state = {};
-    this.props.fetchTests(this.organization.Id);
+    this.state = { currentExams: [] };
+  }
+
+  loadExams = () => {
+    let exams = [];
+    let tests = this.props.tests;
+    this.props.exams.forEach((exam) => {
+      for (let index = 0; index < tests.length; index++) {
+        if (exam.test.Id === tests[index].Id) {
+          console.log("ok");
+          exams.push(exam);
+        }
+      }
+    });
+    console.log("exams", exams);
+    this.setState({ currentExams: exams });
+  };
+
+  componentDidMount() {
+    if (this.props.exams !== undefined) this.loadExams();
+    else {
+      console.log(this.props.exams);
+    }
   }
 
   renderList() {
