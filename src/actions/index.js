@@ -38,6 +38,12 @@ export const fetchExam = (id) => async dispatch => {
     const response = await ExamsService.getExamById(id);
     dispatch({ type: "FETCH_EXAM", payload: response.data });
 }
+export const fetchExams = () => async dispatch => {
+    const response = await ExamsService.getAllExams();
+    //console.log("fetchQuestions",response.data);
+    dispatch(({ type: "FETCH_EXAMS", payload: response.data }));
+}
+
 
 export const fetchTests = (organizationId) => async dispatch => {
     console.log("organizationId",organizationId);

@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import Navigation from "../Navigation/navigation";
 import ReportsByStudent from "./reportsByStudent";
 import ReportsByTest from "./reportsByTest";
-
+import {fetchExams} from '../../actions';
+import { connect } from 'react-redux';
 class Reports extends Component {
   organization = JSON.parse(sessionStorage.organization);
   constructor(props) {
@@ -11,6 +12,8 @@ class Reports extends Component {
     this.state = {
       showReportsByTest: false,
     };
+    console.log("props",props);
+    this.props.fetchExams();
   }
 
   showReportByTest = (e) => {
@@ -34,7 +37,7 @@ class Reports extends Component {
   }
 
   render() {
-    console.log("rendered", this.state.showReportsByTest);
+    console.log("reports by student props",this.props.exams)
     return (
       <div>
         <Navigation organization={this.organization} />
@@ -59,5 +62,9 @@ class Reports extends Component {
     );
   }
 }
-
-export default Reports;
+const mapStateToProps=(state)=>{
+  return{
+    exams:state.exams,
+  }
+  }
+export default connect(mapStateToProps,{fetchExams})(Reports);
